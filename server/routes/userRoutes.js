@@ -1,11 +1,13 @@
 import express from "express";
-import { getAllUsers } from "../controllers/userController.js";
-import { registerController } from "../controllers/userController.js";
-import { loginController } from "../controllers/userController.js";
+import { registerController, loginController } from "../controllers/userController.js";
+import bodyParser from "body-parser";
+import { uploadImage } from "../controllers/imageConroller.js";
+import upload from '../middleware/upload.js';
 
 const router = express.Router();
-router.get("/all-users", getAllUsers);
-router.post("/register", registerController);
-router.post("/login", loginController);
+router.post("/register", bodyParser.json(), registerController);
+router.post("/login", bodyParser.json(), loginController);
+router.post("/file/upload", upload.single('file'), uploadImage);
 
 export default router;
+
