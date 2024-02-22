@@ -1,12 +1,10 @@
-import dotenv from 'dotenv';
-dotenv.config();
+import uploadOnCloudinary from "../utils/cloudinary.js";
 
-const url = process.env.URL;
-
-export const uploadImage = async (req, res) => {
-  if (!req.file) {
-    return res.status(404).json({ message: "File not found" });
+export const imageController = async (req, res) => {
+  try {
+    console.log(req.file)
+    res.send("hello");
+  } catch (error) {
+    res.send(error);
   }
-  const imageUrl = `${url}/file/${req.file.filename}`;
-  return res.status(200).json({ imageUrl });
 };
