@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { json, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import AuthForm from "../../components/authForm/authForm";
 
 const Auth = () => {
@@ -13,7 +13,7 @@ const Auth = () => {
   }, [searchParams, navigation]);
 
   return (
-    <div className="flex flex-col h-[100vh] gap-5">
+    <div className="h-[100vh] w-full flex flex-col items-center justify-center bg-bak bg-cover">
       <AuthForm />
     </div>
   );
@@ -32,18 +32,15 @@ export async function action({ request }) {
     password: data.get("password"),
   };
 
-  const response = await fetch(`http://localhost:3000/${mode}`, {
+  const response = await fetch(import.meta.env.VITE_AUTH+mode, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(authData)
   });
-  
 
-  const abc = await response.json();
-  console.log(abc)
-
-  return abc;
-
+  const resData = await response.json();
+  console.log(resData);
+  return resData;
 }
