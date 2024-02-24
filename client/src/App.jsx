@@ -1,9 +1,7 @@
-const App = () => {
-  return (
-    <div className="flex h-[100vh] w-full items-center justify-center">
-      <h1 className="text-3xl font-thin">Welcome to Blog-Tech</h1>
-    </div>
-  )
-}
+import { Outlet } from "react-router-dom";
 
-export default App
+const App = () => {
+  return <Outlet />;
+};
+
+export default App;

@@ -8,7 +8,7 @@ import { imageController } from "../controllers/imageConroller.js";
 import upload from "../middleware/multer.js";
 
 const router = express.Router();
-router.post("/register", registerController);
+router.post("/signup", registerController);
 router.post("/login", loginController);
 router.post("/logout", logoutController);
 router.post("/file/upload", upload.single("file"), imageController);
