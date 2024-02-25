@@ -1,15 +1,25 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { CiMenuFries } from "react-icons/ci";
 import { MdClose } from "react-icons/md";
+import { AuthContext } from "../context/Authentication";
 
 const Navbar = () => {
+  const { isAuth, setIsAuth } = useContext(AuthContext);
   const pre = "top-[-14rem] right-[-5rem]";
   const post = "right-[1.5rem] top-20 shadow-xl";
   const [active, setActive] = useState(pre);
   const menuHandler = () => {
     active === pre ? setActive(post) : setActive(pre);
   };
+
+  useEffect(()=>{
+  },[isAuth])
+
+  function logoutHandler() {
+    setIsAuth(false);
+    localStorage.removeItem("authToken");
+  }
 
   const linkStyle =
     "text-[1.1rem] p-2 rounded-md hover:bg-slate-200 transition-all";
@@ -26,12 +36,22 @@ const Navbar = () => {
           <li className={linkStyle}>
             <Link>New Blog</Link>
           </li>
-          <li className={linkStyle}>
-            <Link to="/auth?mode=login">Login</Link>
-          </li>
-          <li className="text-[1.1rem] py-2 px-4 rounded-3xl bg-purple-500 text-white hover:bg-purple-600 text-center">
-            <Link to="/auth/?mode=signup">Sign Up</Link>
-          </li>
+          {!isAuth ? (
+            <>
+              <li className={linkStyle}>
+                <Link to="/auth?mode=login">Login</Link>
+              </li>
+              <li className="text-[1.1rem] py-2 px-4 rounded-3xl bg-purple-500 text-white hover:bg-purple-600 text-center">
+                <Link to="/auth/?mode=signup">Sign Up</Link>
+              </li>
+            </>
+          ) : (
+            <li className="text-[1.1rem] py-2 px-4 rounded-3xl bg-purple-500 text-white hover:bg-purple-600 text-center">
+              <Link to="/auth/?mode=signup" onClick={logoutHandler}>
+                Logout
+              </Link>
+            </li>
+          )}
         </ul>
       </div>
       <div className="sm:hidden" onClick={menuHandler}>

@@ -6,12 +6,15 @@ dotenv.config();
 
 // handle errors
 const handleErrors = (err) => {
-  
-  if (err.message === "incorrect password") {
+  console.log(err.code, err.message);
+  if (err.message.includes("incorrect password")) {
     return { message: "Minimum password length is 6 characters" };
   }
   if (err.code === 11000) {
     return { message: "email or username is already registered" };
+  }
+  if (err.message.includes("is required")) {
+    return { message: "Please fill up all fields." };
   }
   if (err.message.includes("user validation failed")) {
     return { message: "email is invalid" };
@@ -41,16 +44,15 @@ export const registerController = async (req, res) => {
 export const loginController = async (req, res) => {
   const user = await userModel.findOne({ email: req.body.email });
   if (!user) {
-    return res.status(400).json({ message: "email does not exists" });
+    return res.status(404).json({ message: "email does not exists" });
   }
   try {
     const isValid = await bcrypt.compare(req.body.password, user.password);
     if (isValid) {
       const token = createToken(user._id);
-      res.cookie("authToken", token, { httpOnly: true, maxAge: maxAge * 1000 });
-      return res.status(201).json({ user: user._id });
+      return res.status(201).json({ user: user._id, authToken: token });
     } else {
-      res.status(400).json({ message: "invalid credentails" });
+      res.status(401).json({ message: "invalid credentails" });
     }
   } catch (err) {
     if (err.name === "ValidationError") {
@@ -59,9 +61,4 @@ export const loginController = async (req, res) => {
     }
     res.status(500).json({ message: "Internal server error" });
   }
-};
-
-export const logoutController = (req, res) => {
-  res.cookie("authToken", "", { httpOnly: true, maxAge: 1 });
-  res.redirect("/");
 };
