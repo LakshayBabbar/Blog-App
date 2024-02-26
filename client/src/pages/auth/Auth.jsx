@@ -31,10 +31,10 @@ export async function action({ request }) {
   const data = await request.formData();
   const authData = {
     username: data.get("username"),
+    fullname: data.get("fullname"),
     email: data.get("email"),
     password: data.get("password"),
   };
-
   const response = await fetch(import.meta.env.VITE_AUTH + mode, {
     method: "POST",
     headers: {
@@ -54,7 +54,7 @@ export async function action({ request }) {
     return { message: "Could not authenticate user." };
   }
   if ("authToken" in resData) {
-    localStorage.setItem("authToken", resData.authToken);
+    localStorage.setItem("authToken", "Bearer " + resData.authToken);
   } else {
     return redirect("/auth?mode=login");
   }

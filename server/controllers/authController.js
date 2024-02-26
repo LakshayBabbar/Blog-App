@@ -30,10 +30,11 @@ const createToken = (id) => {
 };
 
 export const registerController = async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, fullname, email, password } = req.body;
+  const profileImg = "https://img.freepik.com/free-psd/3d-rendering-avatar_23-2150833554.jpg?w=740&t=st=1708933835~exp=1708934435~hmac=8d744b768cf5da502f05ff8fc278a4cae919a6904ad6905ec3b8ce33854e4bd3";
 
   try {
-    await userModel.create({ username, email, password });
+    await userModel.create({ username, fullname, email, password, profileImg });
     res.status(201).json({
       success: "true",
       message: "User is created successfully",

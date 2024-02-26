@@ -6,15 +6,14 @@ import { AuthContext } from "../context/Authentication";
 
 const Navbar = () => {
   const { isAuth, setIsAuth } = useContext(AuthContext);
-  const pre = "top-[-14rem] right-[-5rem]";
+  const pre = "top-[-18rem] right-[-5rem]";
   const post = "right-[1.5rem] top-20 shadow-xl";
   const [active, setActive] = useState(pre);
   const menuHandler = () => {
     active === pre ? setActive(post) : setActive(pre);
   };
 
-  useEffect(()=>{
-  },[isAuth])
+  useEffect(() => {}, [isAuth]);
 
   function logoutHandler() {
     setIsAuth(false);
@@ -34,7 +33,7 @@ const Navbar = () => {
             <Link to="/">Home</Link>
           </li>
           <li className={linkStyle}>
-            <Link>New Blog</Link>
+            <Link to='/create-blog'>Create Blog</Link>
           </li>
           {!isAuth ? (
             <>
@@ -46,11 +45,16 @@ const Navbar = () => {
               </li>
             </>
           ) : (
-            <li className="text-[1.1rem] py-2 px-4 rounded-3xl bg-purple-500 text-white hover:bg-purple-600 text-center">
-              <Link to="/auth/?mode=signup" onClick={logoutHandler}>
-                Logout
-              </Link>
-            </li>
+            <>
+              <li className={linkStyle}>
+                <Link to="/">Profile</Link>
+              </li>
+              <li className="text-[1.1rem] py-2 px-4 rounded-3xl bg-purple-500 text-white hover:bg-purple-600 text-center">
+                <Link to="/auth/?mode=signup" onClick={logoutHandler}>
+                  Logout
+                </Link>
+              </li>
+            </>
           )}
         </ul>
       </div>

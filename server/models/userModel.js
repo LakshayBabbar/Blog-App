@@ -11,6 +11,10 @@ const userSchema = mongoose.Schema(
       unique: true,
       lowercase: true,
     },
+    fullname: {
+      type: String,
+      required: [true, "fullname is required"],
+    },
     email: {
       type: String,
       required: [true, 'email is required'],
@@ -23,6 +27,9 @@ const userSchema = mongoose.Schema(
       required: [true, "password is required"],
       minlength: [6, "incorrect password"],
     },
+    profileImg:{
+      type: String
+    }
   },
   { timestamps: true }
 );

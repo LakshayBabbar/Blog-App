@@ -5,7 +5,11 @@ import { createBrowserRouter } from "react-router-dom";
 import { RouterProvider } from "react-router-dom";
 import App from "./App.jsx";
 import Home from "./pages/home/Home";
+import Blog from "./pages/blogs/BlogDetailes.jsx";
 import Auth, { action as authAction } from "./pages/auth/Auth.jsx";
+import Users from "./pages/users/Users.jsx";
+import UserDetails from './pages/users/UserDetails.jsx';
+import BlogDetails from "./pages/blogs/BlogDetailes.jsx";
 
 const router = createBrowserRouter([
   {
@@ -17,9 +21,25 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/auth",
+        path: "auth",
         element: <Auth />,
-        action: authAction
+        action: authAction,
+      },
+      {
+        path: "users",
+        element: <Users />,
+      },
+      {
+        path: "users/:userId",
+        element: <UserDetails />,
+      },
+      {
+        path: "users/:userId/:blogId",
+        element: <BlogDetails />,
+      },
+      {
+        path: "blog/:id",
+        element: <Blog />,
       },
     ],
   },

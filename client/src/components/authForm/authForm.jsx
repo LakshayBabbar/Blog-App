@@ -30,12 +30,20 @@ const AuthForm = () => {
 
       <Form method="post" className="flex flex-col gap-5 mt-4 items-center">
         {!isLogin && (
-          <input
+          <>
+            <input
+              type="text"
+              name="username"
+              className={inputStyle}
+              placeholder="Username"
+            />
+            <input
             type="text"
-            name="username"
+            name="fullname"
             className={inputStyle}
-            placeholder="Username"
+            placeholder="Full Name"
           />
+          </>
         )}
         <input
           type="email"
