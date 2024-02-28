@@ -12,6 +12,7 @@ const Authentication = ({ children }) => {
       setIsAuth(true);
     } else {
       setIsAuth(false);
+      setToken(null);
     }
   }, [isAuth]);
 

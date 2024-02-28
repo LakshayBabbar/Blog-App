@@ -23,26 +23,34 @@ const AuthForm = () => {
   }, [data, setIsAuth]);
 
   const inputStyle =
-    "w-[75vw] sm:w-96 border h-10 rounded-md px-5 border-purple-600 selection:bg-purple-300 outline-purple-500";
+    "w-full border h-10 rounded-md px-5 border-purple-600 selection:bg-purple-300 outline-purple-500";
   return (
-    <div className="flex flex-col gap-5 bg-white border p-6 sm:p-10 rounded-xl shadow-2xl">
+    <div className="flex flex-col gap-5 bg-white border p-10 rounded-xl shadow-2xl">
       <h1 className="text-3xl font-bold">{handleTitle}</h1>
 
-      <Form method="post" className="flex flex-col gap-5 mt-4 items-center">
+      <Form method="post" className="flex flex-col gap-5 mt-4 items-center w-[72vw] sm:w-96">
         {!isLogin && (
           <>
+            <div className="flex gap-3">
+              <input
+                type="text"
+                name="firstname"
+                className={inputStyle}
+                placeholder="First Name"
+              />
+              <input
+                type="text"
+                name="lastname"
+                className={inputStyle}
+                placeholder="Last Name"
+              />
+            </div>
             <input
               type="text"
               name="username"
               className={inputStyle}
               placeholder="Username"
             />
-            <input
-            type="text"
-            name="fullname"
-            className={inputStyle}
-            placeholder="Full Name"
-          />
           </>
         )}
         <input

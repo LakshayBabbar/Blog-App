@@ -45,7 +45,7 @@ const UserDetails = () => {
               />
               <div>
                 <h1 className="text-xl">@{data.username}</h1>
-                <h1>{data.fullname}</h1>
+                <h1>{`${data.firstname} ${data.lastname}`}</h1>
                 <span className="flex items-center gap-1">
                   <FaRegCalendarAlt /> Date joined: {joinDate.substring(0, 10)}
                 </span>

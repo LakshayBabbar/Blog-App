@@ -8,7 +8,8 @@ import upload from "../middleware/multer.js";
 import blogs from "../models/blogModel.js";
 import userModel from "../models/userModel.js";
 import mongoose from "mongoose";
-// import { checkUser } from "../middleware/auth.js";
+import { checkUser } from "../middleware/auth.js";
+import uploadOnCloudinary from "../config/cloudinary.js";
 
 const router = express.Router();
 router.post("/signup", registerController);
@@ -29,47 +30,78 @@ router.get("/all-blogs", async (req, res) => {
 router.post("/users/:id", async (req, res) => {
   const userName = req.params["id"];
   const userDetails = await userModel.find({ username: userName });
-  if (userDetails.length !== 0 ) {
+  if (userDetails.length !== 0) {
     const userBlogs = await blogs.find({ author: userName });
     return res.status(200).json({
       username: userDetails[0].username,
-      fullname: userDetails[0].fullname,
+      firstname: userDetails[0].firstname,
+      lastname: userDetails[0].lastname,
       profileImg: userDetails[0].profileImg,
       joinDate: userDetails[0].createdAt,
       blogs: userBlogs,
     });
   }
   return res.status(404).json({
-    message: "User not found."
-  })
+    message: "User not found.",
+  });
 });
 
-router.get('/get-Blog/:id', async (req, res) => {
+router.get("/get-Blog/:id", async (req, res) => {
   try {
-    const blogId = req.params['id'];
+    const blogId = req.params["id"];
 
     if (!mongoose.isValidObjectId(blogId)) {
       return res.status(400).json({
-        message: "Invalid blog ID."
+        message: "Invalid blog ID.",
       });
     }
 
     const blogData = await blogs.findById(blogId);
-    
+
     if (!blogData) {
       return res.status(404).json({
-        message: "Blog not found."
+        message: "Blog not found.",
       });
     }
-    
+
     res.status(200).json(blogData);
   } catch (error) {
     console.error("Error fetching blog:", error);
     res.status(500).json({
-      message: "Internal server error."
+      message: "Internal server error.",
     });
   }
 });
 
+router.post("/create-blog", checkUser, async (req, res) => {
+  const { title, description, category } = req.body;
+  const user = res.locals.user;
+
+  try {
+    // Upload image to Cloudinary
+    const imgUrl = await uploadOnCloudinary(req.files.img.tempFilePath);
+
+    if (!imgUrl.url) {
+      throw new Error("Failed to upload image to Cloudinary");
+    }
+
+    // Create blog entry
+    const newBlog = new blogs({
+      title,
+      description,
+      category,
+      img: imgUrl.url,
+      author: user.username,
+    });
+    await newBlog.save();
+
+    res
+      .status(201)
+      .json({ message: "Blog created successfully"});
+  } catch (error) {
+    console.error("Error creating blog:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 export default router;

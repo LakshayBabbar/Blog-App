@@ -31,7 +31,8 @@ export async function action({ request }) {
   const data = await request.formData();
   const authData = {
     username: data.get("username"),
-    fullname: data.get("fullname"),
+    firstname: data.get("firstname"),
+    lastname: data.get("lastname"),
     email: data.get("email"),
     password: data.get("password"),
   };
