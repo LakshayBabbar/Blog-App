@@ -10,11 +10,11 @@ const Card = ({ data }) => {
   const redirect = useNavigate();
 
   return (
-    <div className="w-4/5 md:w-[20rem] flex flex-col rounded-md shadow-md border">
+    <div className="w-4/5 md:w-[25rem] flex flex-col rounded-md shadow-md border">
       <img
         src={data.img}
         alt="thubmnail"
-        className="w-full object-cover rounded-t-md"
+        className="w-full aspect-video rounded-t-md"
       />
       <div className=" flex flex-col gap-2 p-4 justify-between">
         <span className="py-1 px-2 bg-purple-500 w-[fit-content] rounded-sm text-white text-sm">

@@ -56,6 +56,7 @@ export async function action({ request }) {
   }
   if ("authToken" in resData) {
     localStorage.setItem("authToken", "Bearer " + resData.authToken);
+    localStorage.setItem("username", resData.username);
   } else {
     return redirect("/auth?mode=login");
   }

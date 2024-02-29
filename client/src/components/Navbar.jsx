@@ -9,11 +9,15 @@ const Navbar = () => {
   const pre = "top-[-18rem] right-[-5rem]";
   const post = "right-[1.5rem] top-20 shadow-xl";
   const [active, setActive] = useState(pre);
+  const [username, setUserName] = useState(null);
   const menuHandler = () => {
     active === pre ? setActive(post) : setActive(pre);
   };
 
-  useEffect(() => {}, [isAuth]);
+  useEffect(() => {
+    const name = localStorage.getItem("username");
+    name && setUserName(name);
+  }, [username]);
 
   function logoutHandler() {
     setIsAuth(false);
@@ -33,7 +37,7 @@ const Navbar = () => {
             <Link to="/">Home</Link>
           </li>
           <li className={linkStyle}>
-            <Link to='/create-blog'>Create Blog</Link>
+            <Link to="/create-blog">Create Blog</Link>
           </li>
           {!isAuth ? (
             <>
@@ -47,7 +51,7 @@ const Navbar = () => {
           ) : (
             <>
               <li className={linkStyle}>
-                <Link to="/">Profile</Link>
+                <Link to={`/users/${username}`}>Profile</Link>
               </li>
               <li className="text-[1.1rem] py-2 px-4 rounded-3xl bg-purple-500 text-white hover:bg-purple-600 text-center">
                 <Link to="/auth/?mode=signup" onClick={logoutHandler}>

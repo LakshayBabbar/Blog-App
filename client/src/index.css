@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.ck-editor__editable:not(.ck-editor__nested-editable) { 
+    height: 10rem;
+}

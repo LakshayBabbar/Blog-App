@@ -10,6 +10,7 @@ import userModel from "../models/userModel.js";
 import mongoose from "mongoose";
 import { checkUser } from "../middleware/auth.js";
 import uploadOnCloudinary from "../config/cloudinary.js";
+import fs from 'node:fs';
 
 const router = express.Router();
 router.post("/signup", registerController);
@@ -73,35 +74,38 @@ router.get("/get-Blog/:id", async (req, res) => {
   }
 });
 
-router.post("/create-blog", checkUser, async (req, res) => {
-  const { title, description, category } = req.body;
-  const user = res.locals.user;
+router.post(
+  "/create-blog",
+  checkUser,
+  upload.single("img"),
+  async (req, res) => {
+    const { title, description, category } = req.body;
+    const user = res.locals.user;
 
-  try {
-    // Upload image to Cloudinary
-    const imgUrl = await uploadOnCloudinary(req.files.img.tempFilePath);
+    try {
+      // Upload image to Cloudinary
+      const imgUrl = await uploadOnCloudinary(req.file.path);
 
-    if (!imgUrl.url) {
-      throw new Error("Failed to upload image to Cloudinary");
+      if (!imgUrl) {
+        throw new Error("Failed to upload image to Cloudinary");
+      }
+
+      // Create blog entry
+      const newBlog = new blogs({
+        title,
+        description,
+        category,
+        img: imgUrl.url,
+        author: user.username,
+      });
+      await newBlog.save();
+      await fs.unlinkSync(req.file.path);
+      res.status(201).json({ message: "Blog created successfully" });
+    } catch (error) {
+      console.error("Error creating blog:", error);
+      res.status(500).json({ error: "Internal server error" });
     }
-
-    // Create blog entry
-    const newBlog = new blogs({
-      title,
-      description,
-      category,
-      img: imgUrl.url,
-      author: user.username,
-    });
-    await newBlog.save();
-
-    res
-      .status(201)
-      .json({ message: "Blog created successfully"});
-  } catch (error) {
-    console.error("Error creating blog:", error);
-    res.status(500).json({ error: "Internal server error" });
   }
-});
+);
 
 export default router;

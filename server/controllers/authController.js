@@ -62,7 +62,7 @@ export const loginController = async (req, res) => {
     const isValid = await bcrypt.compare(req.body.password, user.password);
     if (isValid) {
       const token = createToken(user._id);
-      return res.status(201).json({ user: user._id, authToken: token });
+      return res.status(201).json({ user: user._id, username: user.username, authToken: token });
     } else {
       res.status(401).json({ message: "invalid credentails" });
     }
