@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/Authentication";
+import { categories, capitalizeFirstLetter } from "../../utils/categories";
 import { FaUpload } from "react-icons/fa6";
 
 const CreateBlog = () => {
@@ -58,7 +59,7 @@ const CreateBlog = () => {
   return (
     <div className="flex justify-center">
       {isAuth ? (
-        <div className="flex flex-col sm:p-10 w-[90%] sm:w-[30rem] my-28 xl:w-[35rem] h-[fit-content] gap-8 sm:shadow-xl sm:border  rounded-xl bg-white">
+        <div className="flex flex-col sm:p-10 w-[90%] sm:w-[30rem] xl:w-[35rem] h-[fit-content] gap-8 sm:shadow-xl sm:border  rounded-xl bg-white">
           <h1 className="text-3xl">What&#39;s on your mind?</h1>
           <form
             className="flex flex-col gap-4"
@@ -88,26 +89,17 @@ const CreateBlog = () => {
                 onChange={(e) => setCategory(e.target.value)}
                 className="border border-purple-500 p-2 rounded-md flex-grow"
               >
-                <option value="all">Select Category</option>
-                <option value="tech">Tech</option>
-                <option value="fashion">Fashion</option>
-                <option value="nature">Nature</option>
-                <option value="travel">Travel</option>
-                <option value="fitness">Fitness</option>
-                <option value="lifestyle">Lifestyle</option>
-                <option value="finance">Finance</option>
-                <option value="news">News</option>
-                <option value="business">Business</option>
-                <option value="crafts">Crafts</option>
-                <option value="music">Music</option>
-                <option value="food">Food</option>
-                <option value="marketing">Marketing</option>
-                <option value="photography">Photography</option>
-                <option value="others">Others</option>
+                {categories.map((items, index) => {
+                  return (
+                    <option value={items} key={index}>
+                      {capitalizeFirstLetter(items)}
+                    </option>
+                  );
+                })}
               </select>
               <label
                 htmlFor="input-file"
-                className="cursor-pointer text-white flex-grow bg-purple-500 p-2 rounded-md flex items-center justify-center gap-2"
+                className="cursor-pointer text-white flex-grow bg-bak2 font-bold p-2 rounded-md flex items-center justify-center gap-2"
               >
                 <FaUpload /> Upload File
               </label>
@@ -130,7 +122,7 @@ const CreateBlog = () => {
             )}
             <button
               type="submit"
-              className="border h-10 rounded-md bg-purple-500 text-white"
+              className="border h-10 rounded-md bg-bak2 text-white font-bold"
               disabled={loading}
             >
               Create

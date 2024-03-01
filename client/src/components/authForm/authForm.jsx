@@ -67,7 +67,7 @@ const AuthForm = () => {
         />
         <button
           type="submit"
-          className={`${inputStyle} bg-purple-600 text-white disabled:bg-purple-900`}
+          className={`${inputStyle} bg-bak2 font-bold text-white disabled:bg-gray-600`}
           disabled={isSubmitting}
         >
           {isSubmitting ? "Submitting..." : handleTitle}

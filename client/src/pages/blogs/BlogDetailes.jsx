@@ -27,7 +27,7 @@ const Blogs = () => {
   return (
     <div className="flex flex-col items-center">
       <div
-        className="flex items-center mt-24 gap-1 underline cursor-pointer w-[85%] md:w-[70%] xl:w-[50%]"
+        className="flex items-center gap-1 underline cursor-pointer w-[85%] md:w-[70%] xl:w-[50%]"
         onClick={() => history(-1)}
       >
         <IoArrowBack />

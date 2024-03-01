@@ -5,12 +5,12 @@ const Card = ({ data }) => {
   const title =
     data.title.length > 65 ? data.title.substring(0, 65) + "..." : data.title;
   const desc = data.description;
-  const description = desc.length > 120 ? desc.substring(0, 120) + "..." : desc;
+  const description = desc.length > 140 ? desc.substring(0, 140) + "..." : desc;
   const date = data.createdAt;
   const redirect = useNavigate();
 
   return (
-    <div className="w-4/5 md:w-[25rem] flex flex-col rounded-md shadow-md border">
+    <div className="w-4/5 bg-[rgba(255,255,255,0.5)] md:w-[25rem] flex flex-col rounded-md shadow-md border">
       <img
         src={data.img}
         alt="thubmnail"
@@ -21,7 +21,7 @@ const Card = ({ data }) => {
           {data.category.toUpperCase()}
         </span>
         <h1
-          className="text-xl hover:underline cursor-pointer"
+          className="text-2xl hover:underline cursor-pointer"
           onClick={() => redirect(`/users/${data.author}/${data._id}`)}
         >
           {title}

@@ -26,7 +26,7 @@ const UserDetails = () => {
   const joinDate = data.joinDate;
 
   return (
-    <div className="flex flex-col gap-5 my-24 items-center justify-center">
+    <div className="flex flex-col gap-5 items-center justify-center">
       {"blogs" in data ? (
         <div className="w-[fit-content]">
           <span
