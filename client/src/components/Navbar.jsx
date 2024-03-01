@@ -44,7 +44,7 @@ const Navbar = () => {
               <li className={linkStyle}>
                 <Link to="/auth?mode=login">Login</Link>
               </li>
-              <li className="text-[1.1rem] py-2 px-4 rounded-3xl bg-bak2 text-white hover:bg-purple-600 text-center">
+              <li className="text-[1.1rem] py-2 px-4 rounded-3xl bg-bak2 text-white text-center">
                 <Link to="/auth/?mode=signup">Sign Up</Link>
               </li>
             </>
@@ -53,7 +53,7 @@ const Navbar = () => {
               <li className={linkStyle}>
                 <Link to={`/users/${username}`}>Profile</Link>
               </li>
-              <li className="text-[1.1rem] py-2 px-4 rounded-3xl bg-purple-500 text-white hover:bg-purple-600 text-center">
+              <li className="text-[1.1rem] py-2 px-4 rounded-3xl bg-bak2 text-white text-center">
                 <Link to="/auth/?mode=signup" onClick={logoutHandler}>
                   Logout
                 </Link>

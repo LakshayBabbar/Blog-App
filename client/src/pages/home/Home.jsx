@@ -21,7 +21,7 @@ const Home = () => {
   }, [searchParams]);
 
   return (
-    <div className="flex flex-col items-center justify-center gap-10">
+    <div className="flex flex-col items-center justify-center gap-10 mt-28">
       <div className="md:w-[80%] xl:w-[65%] md:text-center flex flex-col gap-5 md:gap-10 items-center">
         <h1 className="text-5xl md:text-6xl font-[700] ml-4 sm:ml-0 mt-5 md:mt-20">
           Unlock Your Creativity:{" "}
@@ -34,12 +34,13 @@ const Home = () => {
           through our intuitive blogging platform. Unleash your creativity and
           join a community of fellow bloggers today.
         </p>
+        <div className="bg-bak w-full h-[60%] top-80 blur-[200px] z-[-1] absolute" />
         <div className="flex gap-4">
           <button className="w-40 sm:w-44 p-3 font-[500] shadow-md bg-white rounded-full">
             <Link to="/auth?mode=login">Log in</Link>
           </button>
           <button className="w-40 sm:w-44 p-3 shadow-md font-[500] bg-bak2 text-white rounded-full">
-            <Link>Getting Started</Link>
+            <Link to="/users">Connect Others</Link>
           </button>
         </div>
       </div>

@@ -11,6 +11,7 @@ import Users from "./pages/users/Users.jsx";
 import UserDetails from './pages/users/UserDetails.jsx';
 import CreateBlog from "./pages/blogs/CreateBlog.jsx";
 import BlogDetails from "./pages/blogs/BlogDetailes.jsx";
+import Error from './pages/Error.jsx';
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
       {
         path: "blog/:id",
         element: <Blog />,
+      },
+      {
+        path: "*",
+        element: <Error />,
       },
     ],
   },

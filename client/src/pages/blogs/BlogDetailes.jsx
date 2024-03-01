@@ -25,7 +25,7 @@ const Blogs = () => {
   const date = data && data.createdAt.substring(0, 10);
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center mt-28">
       <div
         className="flex items-center gap-1 underline cursor-pointer w-[85%] md:w-[70%] xl:w-[50%]"
         onClick={() => history(-1)}
