@@ -1,33 +1,44 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import Card from "../../components/ui/Card";
-import { FaRegCalendarAlt } from "react-icons/fa";
+import BlogsCard from "../../components/ui/BlogsCard";
 import { IoArrowBack } from "react-icons/io5";
+import { AuthContext } from "../../context/Authentication";
+import UsersCard from "../../components/ui/UsersCard";
 
 const UserDetails = () => {
   const history = useNavigate();
   const params = useParams();
-  const [data, setData] = useState([]);
+  const [userData, setUserData] = useState(null);
+  const [blogData, setBlogData] = useState([]);
+  const [auth, setAuth] = useState(false);
+  const { token, loading } = useContext(AuthContext);
+
   useEffect(() => {
-    const fetchdata = async () => {
+    const fetchData = async () => {
       const response = await fetch(
         import.meta.env.VITE_AUTH + "users/" + params.userId,
         {
           method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: token,
+          },
         }
       );
       const resData = await response.json();
-      setData(resData);
+      console.log(resData)
+      setUserData(resData.user);
+      setBlogData(resData.blogs);
+      setAuth(resData.auth);
     };
-    fetchdata();
-  }, [params]);
 
-  const joinDate = data.joinDate;
+    !loading && fetchData();
+  }, [params, token, loading]);
 
   return (
     <div className="flex flex-col gap-5 items-center justify-center mt-28">
-      {"blogs" in data ? (
+      {userData ? (
         <div className="w-[fit-content]">
           <span
             className="cursor-pointer underline flex items-center gap-1 mb-10 ml-10 md:ml-0"
@@ -37,25 +48,12 @@ const UserDetails = () => {
             Go back
           </span>
           <div className="flex flex-col gap-10 items-center">
-            <div className="flex gap-5 items-center">
-              <img
-                src={data.profileImg}
-                alt="profile pic"
-                className="w-28 rounded-full"
-              />
-              <div>
-                <h1 className="text-xl">@{data.username}</h1>
-                <h1>{`${data.firstname} ${data.lastname}`}</h1>
-                <span className="flex items-center gap-1">
-                  <FaRegCalendarAlt /> Date joined: {joinDate.substring(0, 10)}
-                </span>
-              </div>
-            </div>
+            <UsersCard data={userData} />
             <h1 className="text-3xl">Blogs</h1>
-            {data.blogs.length > 0 ? (
+            {blogData.length > 0 ? (
               <div className="grid md:grid-cols-2 xl:grid-cols-3 justify-items-center gap-8">
-                {data.blogs.map((items) => {
-                  return <Card key={items._id} data={items} />;
+                {blogData.map((items) => {
+                  return <BlogsCard key={items._id} data={items} auth={auth} />;
                 })}
               </div>
             ) : (

@@ -3,27 +3,7 @@ import userModel from "../models/userModel.js";
 import dotenv from "dotenv";
 dotenv.config();
 
-export const requireAuth = (req, res, next) => {
-  const token = req.cookies.jwt;
-
-  // check json web token exists & is verified
-  if (token) {
-    jwt.verify(token, process.env.ACCESS_SECRET_KEY, (err, decodedToken) => {
-      if (err) {
-        console.log(err.message);
-        res.redirect("/login");
-      } else {
-        console.log(decodedToken);
-        next();
-      }
-    });
-  } else {
-    res.redirect("/login");
-  }
-};
-
-// check current user
-export const checkUser = (req, res, next) => {
+export const authentication = (req, res, next) => {
   try {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
@@ -57,6 +37,39 @@ export const checkUser = (req, res, next) => {
     res.locals.user = null;
     return res.status(401).json({
       message: "User is not authenticated.",
+    });
+  }
+};
+
+// check current user
+export const checkUser = (req, res, next) => {
+  try {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
+    console.log(req.params['id'])
+    jwt.verify(
+      token,
+      process.env.ACCESS_SECRET_KEY,
+      async (err, decodedToken) => {
+        if (err) {
+          res.locals.auth = false;
+        } else if (decodedToken) {
+          const find = await userModel.findOne({ username: req.params["id"] });
+          if (decodedToken.id === find._id.toString()) {
+            res.locals.auth = true;
+          } else {
+            res.locals.auth = false;
+          }
+        } else {
+          res.locals.auth = false;
+        }
+        next();
+      }
+    );
+  } catch (error) {
+    console.error("Error in checkUser middleware:", error);
+    return res.status(500).json({
+      message: "Internal server error.",
     });
   }
 };

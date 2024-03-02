@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
 import { Link, useNavigate } from "react-router-dom";
+import parse from 'html-react-parser';
 
-const Card = ({ data }) => {
+const BlogsCard = ({ data }) => {
   const title =
     data.title.length > 65 ? data.title.substring(0, 65) + "..." : data.title;
   const desc = data.description;
@@ -26,7 +27,7 @@ const Card = ({ data }) => {
         >
           {title}
         </h1>
-        <p className="text-gray-600">{description}</p>
+        {parse(description)}
         <Link
           className="text-gray-600 hover:underline"
           to={`/users/${data.author}`}
@@ -39,4 +40,4 @@ const Card = ({ data }) => {
   );
 };
 
-export default Card;
+export default BlogsCard;

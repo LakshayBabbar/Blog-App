@@ -2,28 +2,24 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../context/Authentication";
 import { categories, capitalizeFirstLetter } from "../../utils/categories";
 import { FaUpload } from "react-icons/fa6";
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 const CreateBlog = () => {
   const { token, isAuth } = useContext(AuthContext);
-  const [data, setData] = useState({ title: "", description: "" });
+  const [title, setTitle] = useState("");
+  const [desc, setDesc] = useState("");
   const [img, setImg] = useState(null);
   const [category, setCategory] = useState("all");
   const formData = new FormData();
   const [loading, setLoading] = useState(false);
 
-  const handleForm = (e) => {
-    const { name, value } = e.target;
-    setData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
 
   const submitHandler = async (e) => {
     e.preventDefault();
     setLoading(true);
-    formData.append("title", data.title);
-    formData.append("description", data.description);
+    formData.append("title", title);
+    formData.append("description", desc);
     formData.append("category", category);
     formData.append("img", img);
 
@@ -44,7 +40,6 @@ const CreateBlog = () => {
       console.log(responseData);
       // Handle successful response here
       // Clear form
-      setData({ title: "", description: "" });
       setImg(null);
       // Reset FormData
       formData.delete("fileupload");
@@ -70,24 +65,22 @@ const CreateBlog = () => {
               type="text"
               name="title"
               required
-              className="border rounded-md px-2 h-10 border-purple-500 focus:outline-0"
+              className="border border-slate-300 rounded-md px-2 h-10 focus:outline-0"
               placeholder="Title"
-              value={data.title}
-              onChange={handleForm}
+              onChange={(e)=>setTitle(e.target.value)}
             />
-            <textarea
-              name="description"
-              required
-              className="border rounded-md p-2 border-purple-500 focus:outline-0 max-h-[10rem] min-h-[8rem]"
-              placeholder="Description"
-              value={data.description}
-              onChange={handleForm}
+            <CKEditor
+              editor={ClassicEditor}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setDesc(data);
+              }}
             />
             <div className="flex gap-4 flex-col sm:flex-row">
               <select
                 name="category"
                 onChange={(e) => setCategory(e.target.value)}
-                className="border border-purple-500 p-2 rounded-md flex-grow"
+                className="border border-slate-300 p-2 rounded-md flex-grow"
               >
                 {categories.map((items, index) => {
                   return (

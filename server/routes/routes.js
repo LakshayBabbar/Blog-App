@@ -8,9 +8,9 @@ import upload from "../middleware/multer.js";
 import blogs from "../models/blogModel.js";
 import userModel from "../models/userModel.js";
 import mongoose from "mongoose";
-import { checkUser } from "../middleware/auth.js";
+import { checkUser, authentication } from "../middleware/auth.js";
 import uploadOnCloudinary from "../config/cloudinary.js";
-import fs from 'node:fs';
+import fs from "node:fs";
 
 const router = express.Router();
 router.post("/signup", registerController);
@@ -28,29 +28,26 @@ router.get("/all-blogs", async (req, res) => {
   }
 });
 
-router.post("/users/:id", async (req, res) => {
-  const userName = req.params["id"];
-  const userDetails = await userModel.find({ username: userName });
-  if (userDetails.length !== 0) {
-    const userBlogs = await blogs.find({ author: userName });
+router.post("/users/:id", checkUser, async (req, res) => {
+  try {
+    const username = req.params["id"].toLowerCase();
+    const userDetails = await userModel.findOne({ username: username });
+
+    const userBlogs = await blogs.find({ author: username });
     return res.status(200).json({
-      username: userDetails[0].username,
-      firstname: userDetails[0].firstname,
-      lastname: userDetails[0].lastname,
-      profileImg: userDetails[0].profileImg,
-      joinDate: userDetails[0].createdAt,
+      user: userDetails,
       blogs: userBlogs,
+      auth: res.locals.auth
     });
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
-  return res.status(404).json({
-    message: "User not found.",
-  });
 });
 
-router.get("/get-Blog/:id", async (req, res) => {
+router.get("/get-Blog/:id/:blogId", checkUser, async (req, res) => {
   try {
-    const blogId = req.params["id"];
-
+    const blogId = req.params["blogId"];
     if (!mongoose.isValidObjectId(blogId)) {
       return res.status(400).json({
         message: "Invalid blog ID.",
@@ -65,7 +62,10 @@ router.get("/get-Blog/:id", async (req, res) => {
       });
     }
 
-    res.status(200).json(blogData);
+    res.status(200).json({
+      blogs: blogData,
+      auth: res.locals.auth
+    });
   } catch (error) {
     console.error("Error fetching blog:", error);
     res.status(500).json({
@@ -76,7 +76,7 @@ router.get("/get-Blog/:id", async (req, res) => {
 
 router.post(
   "/create-blog",
-  checkUser,
+  authentication,
   upload.single("img"),
   async (req, res) => {
     const { title, description, category } = req.body;
@@ -107,5 +107,24 @@ router.post(
     }
   }
 );
+
+router.get("/get-users/:username", async (req, res) => {
+  const ref = req.params["username"].toLowerCase();
+  if (ref === "all" || !ref) {
+    const users = await userModel.find({});
+    res.status(200).json(users);
+  } else {
+    try {
+      const user = await userModel.find({ username: ref });
+      if (user) {
+        res.status(200).json(user);
+      } else {
+        res.status(404).json({ message: "User not found." });
+      }
+    } catch (error) {
+      res.status(500).json({ message: "Internal error." });
+    }
+  }
+});
 
 export default router;

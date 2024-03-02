@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import Card from "../../components/ui/Card";
+import BlogsCard from "../../components/ui/BlogsCard";
 import { categories, capitalizeFirstLetter } from "../../utils/categories";
 
 const Home = () => {
@@ -70,7 +70,7 @@ const Home = () => {
         </div>
         {data.length > 0 ? (
           data.map((items) => {
-            return <Card key={items._id} data={items} />;
+            return <BlogsCard key={items._id} data={items} />;
           })
         ) : (
           <div className="xl:col-span-2 flex justify-center items-center">
