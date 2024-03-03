@@ -14,6 +14,7 @@ const categories = [
   "finance",
   "news",
   "business",
+  "Entertainment",
   "crafts",
   "music",
   "food",

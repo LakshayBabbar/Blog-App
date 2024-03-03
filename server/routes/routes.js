@@ -33,7 +33,7 @@ router.get("/all-blogs", async (req, res) => {
 
 router.post("/users/:id", checkUser, async (req, res) => {
   try {
-    const username = req.params["id"].toLowerCase();
+    const username = req.params["id"];
     const userDetails = await userModel.findOne({ username: username });
 
     const userBlogs = await blogs.find({ author: username });
@@ -177,5 +177,29 @@ router.put(
     }
   }
 );
+
+router.delete("/delete-blog", authentication, async (req, res) => {
+  const blogId = req.query.id;
+  const user = res.locals.user.username;
+
+  try {
+    const blogData = await blogs.findOne({ _id: blogId });
+    const BlogImg = await blogData.img.public_id;
+    if (!blogData) {
+      return res.status(404).json({ error: "Blog not found" });
+    }
+
+    const deleteImg = await deleteOnCloudinary(BlogImg);
+    const deleteBlog = await blogs.findOneAndDelete({
+      _id: blogId,
+      author: user,
+    });
+    console.log(deleteImg);
+    res.status(200).json(deleteBlog);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 export default router;

@@ -17,7 +17,7 @@ const UserDetails = () => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        import.meta.env.VITE_AUTH + "users/" + params.userId,
+        import.meta.env.VITE_AUTH + "users/" + params.username,
         {
           method: "POST",
           headers: {
