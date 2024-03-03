@@ -47,7 +47,7 @@ const Home = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 justify-items-center mt-10">
         <div className="w-[80%] md:w-[25rem] xl:w-96 bg-[rgba(255,255,255,0.3)] rounded-md px-4 py-6 flex flex-col gap-4">
-          <Link to="/create-blog">
+          <Link to="/blogs/create-blog">
             <button className="bg-bak2 w-full h-10 rounded-xl shadow-md font-bold text-white">
               Create Blog
             </button>

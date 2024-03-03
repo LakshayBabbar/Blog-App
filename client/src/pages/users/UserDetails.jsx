@@ -19,7 +19,6 @@ const UserDetails = () => {
       const response = await fetch(
         import.meta.env.VITE_AUTH + "users/" + params.username,
         {
-          method: "POST",
           headers: {
             "Content-Type": "application/json",
             authorization: token,
@@ -27,7 +26,7 @@ const UserDetails = () => {
         }
       );
       const resData = await response.json();
-      console.log(resData)
+      console.log(resData);
       setUserData(resData.user);
       setBlogData(resData.blogs);
       setAuth(resData.auth);
@@ -48,16 +47,20 @@ const UserDetails = () => {
             Go back
           </span>
           <div className="flex flex-col gap-10 items-center">
-            <UsersCard data={userData} />
+            <UsersCard data={userData} auth={auth} />
             <h1 className="text-3xl">Blogs</h1>
             {blogData.length > 0 ? (
               <div className="grid md:grid-cols-2 xl:grid-cols-3 justify-items-center gap-8">
                 {blogData.map((items) => {
-                  return <BlogsCard key={items._id} data={items} auth={auth} />;
+                  return <BlogsCard key={items._id} data={items} />;
                 })}
               </div>
             ) : (
-              <h1>It seems the user hasn&#39;t created any blogs yet.</h1>
+              <h1>
+                {auth
+                  ? "It seems that you haven't created any blogs yet."
+                  : "It seems the user hasn't created any blogs yet."}
+              </h1>
             )}
           </div>
         </div>

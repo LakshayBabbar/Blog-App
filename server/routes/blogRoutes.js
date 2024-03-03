@@ -1,26 +1,17 @@
 import express from "express";
-import {
-  registerController,
-  loginController,
-} from "../controllers/authController.js";
-import { imageController } from "../controllers/imageConroller.js";
 import upload from "../middleware/multer.js";
 import blogs from "../models/blogModel.js";
-import userModel from "../models/userModel.js";
-import mongoose from "mongoose";
-import { checkUser, authentication } from "../middleware/auth.js";
 import {
   uploadOnCloudinary,
   deleteOnCloudinary,
 } from "../config/cloudinary.js";
 import fs from "node:fs";
+import mongoose from "mongoose";
+import { checkUser, authentication } from "../middleware/auth.js";
 
-const router = express.Router();
-router.post("/signup", registerController);
-router.post("/login", loginController);
-router.post("/file/upload", upload.single("file"), imageController);
+const blogRouter = express.Router();
 
-router.get("/all-blogs", async (req, res) => {
+blogRouter.get("/all-blogs", async (req, res) => {
   const category = req.query.category;
   if (category === "" || category === "all" || !category) {
     const blogData = await blogs.find({});
@@ -31,26 +22,10 @@ router.get("/all-blogs", async (req, res) => {
   }
 });
 
-router.post("/users/:id", checkUser, async (req, res) => {
-  try {
-    const username = req.params["id"];
-    const userDetails = await userModel.findOne({ username: username });
-
-    const userBlogs = await blogs.find({ author: username });
-    return res.status(200).json({
-      user: userDetails,
-      blogs: userBlogs,
-      auth: res.locals.auth,
-    });
-  } catch (error) {
-    console.error("Error:", error);
-    return res.status(500).json({ message: "Internal Server Error" });
-  }
-});
-
-router.get("/get-Blog/:id/:blogId", checkUser, async (req, res) => {
+blogRouter.get("/get-blog/:blogId", checkUser, async (req, res) => {
   try {
     const blogId = req.params["blogId"];
+    const author = res.locals.username;
     if (!mongoose.isValidObjectId(blogId)) {
       return res.status(400).json({
         message: "Invalid blog ID.",
@@ -67,7 +42,7 @@ router.get("/get-Blog/:id/:blogId", checkUser, async (req, res) => {
 
     res.status(200).json({
       blogs: blogData,
-      auth: res.locals.auth,
+      auth: blogData.author === author ? true : false,
     });
   } catch (error) {
     console.error("Error fetching blog:", error);
@@ -77,7 +52,7 @@ router.get("/get-Blog/:id/:blogId", checkUser, async (req, res) => {
   }
 });
 
-router.post(
+blogRouter.post(
   "/create-blog",
   authentication,
   upload.single("img"),
@@ -114,31 +89,12 @@ router.post(
   }
 );
 
-router.get("/get-users/:username", async (req, res) => {
-  const ref = req.params["username"].toLowerCase();
-  if (ref === "all" || !ref) {
-    const users = await userModel.find({});
-    res.status(200).json(users);
-  } else {
-    try {
-      const user = await userModel.find({ username: ref });
-      if (user) {
-        res.status(200).json(user);
-      } else {
-        res.status(404).json({ message: "User not found." });
-      }
-    } catch (error) {
-      res.status(500).json({ message: "Internal error." });
-    }
-  }
-});
-
-router.put(
-  "/update-blog/",
+blogRouter.put(
+  "/update-blog/:id",
   authentication,
   upload.single("img"),
   async (req, res) => {
-    const blogId = req.query.id;
+    const blogId = req.params["id"];
     const user = res.locals.user.username;
     const UpdatedData = {
       title: req.body.title,
@@ -178,23 +134,27 @@ router.put(
   }
 );
 
-router.delete("/delete-blog", authentication, async (req, res) => {
-  const blogId = req.query.id;
+blogRouter.delete("/delete-blog/:id", authentication, async (req, res) => {
+  const blogId = req.params["id"];
   const user = res.locals.user.username;
 
   try {
     const blogData = await blogs.findOne({ _id: blogId });
-    const BlogImg = await blogData.img.public_id;
     if (!blogData) {
-      return res.status(404).json({ error: "Blog not found" });
+      return res.status(404).json({ message: "Blog not found" });
     }
 
+    if (blogData.author !== user) {
+      return res.status(403).json({ message: "User is not authorized." });
+    }
+
+    const BlogImg = blogData.img.public_id;
     const deleteImg = await deleteOnCloudinary(BlogImg);
     const deleteBlog = await blogs.findOneAndDelete({
       _id: blogId,
       author: user,
     });
-    console.log(deleteImg);
+
     res.status(200).json(deleteBlog);
   } catch (error) {
     console.error(error);
@@ -202,4 +162,4 @@ router.delete("/delete-blog", authentication, async (req, res) => {
   }
 });
 
-export default router;
+export default blogRouter;

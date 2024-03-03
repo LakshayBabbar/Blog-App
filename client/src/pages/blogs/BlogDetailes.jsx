@@ -17,10 +17,7 @@ const Blogs = () => {
   useEffect(() => {
     const fetchdata = async () => {
       const response = await fetch(
-        import.meta.env.VITE_AUTH +
-          "get-blog/" +
-          `${params.username}/` +
-          params.blogId,
+        import.meta.env.VITE_AUTH + "get-blog/" + params.blogId,
         {
           headers: {
             "Content-Type": "application/json",
@@ -43,13 +40,16 @@ const Blogs = () => {
   const deleteBlogHandler = async () => {
     const isSure = confirm("Are you sure to delete?");
     if (isSure) {
-      const response = await fetch(`http://localhost:3000/delete-blog?id=${data._id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: token,
-        },
-      });
+      const response = await fetch(
+        `http://localhost:3000/delete-blog/${data._id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: token,
+          },
+        }
+      );
       const resData = await response.json();
       console.log(resData);
       history(-1);
@@ -72,7 +72,7 @@ const Blogs = () => {
             <FaEdit
               className="text-green-600"
               onClick={() =>
-                history(`/update-blog/?id=${data._id}&user=${params.username}`)
+                history(`/blogs/${data._id}/edit`)
               }
             />
           </div>

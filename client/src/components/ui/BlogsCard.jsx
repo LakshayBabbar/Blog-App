@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Link, useNavigate } from "react-router-dom";
-import parse from 'html-react-parser';
+import parse from "html-react-parser";
 
 const BlogsCard = ({ data }) => {
   const title =
@@ -23,7 +23,7 @@ const BlogsCard = ({ data }) => {
         </span>
         <h1
           className="text-2xl hover:underline cursor-pointer"
-          onClick={() => redirect(`/users/${data.author}/${data._id}`)}
+          onClick={() => redirect(`/blogs/${data._id}`)}
         >
           {title}
         </h1>

@@ -51,15 +51,9 @@ export const checkUser = (req, res, next) => {
       process.env.ACCESS_SECRET_KEY,
       async (err, decodedToken) => {
         if (err) {
-          res.locals.auth = false;
-        } else if (decodedToken) {
-          if (decodedToken.username === req.params["id"]) {
-            res.locals.auth = true;
-          } else {
-            res.locals.auth = false;
-          }
+          res.locals.username = null;
         } else {
-          res.locals.auth = false;
+          res.locals.username = decodedToken.username;
         }
         next();
       }

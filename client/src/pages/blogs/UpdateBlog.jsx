@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { AuthContext } from "../../context/Authentication";
@@ -8,9 +8,7 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 const UpdateBlog = () => {
-  const [searchParams] = useSearchParams();
-  const id = searchParams.get("id");
-  const username = searchParams.get("user");
+  const params = useParams();
   const [desc, setDesc] = useState("");
   const [img, setImg] = useState(null);
   const [title, setTitle] = useState("");
@@ -20,14 +18,12 @@ const UpdateBlog = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:3000/get-blog/${username}/${id}`
-        );
+        const response = await fetch(`http://localhost:3000/get-blog/${params.blogId}`);
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
         const resData = await response.json();
-        console.log(resData)
+        console.log(resData);
         setTitle(resData.blogs.title);
         setDesc(resData.blogs.description);
         setImg(resData.blogs.img.url);
@@ -36,7 +32,7 @@ const UpdateBlog = () => {
       }
     };
     fetchData();
-  }, [id, username]);
+  }, [params]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,7 +45,7 @@ const UpdateBlog = () => {
 
     try {
       const updateData = await fetch(
-        `http://localhost:3000/update-blog?id=${id}&user=${username}`,
+        `http://localhost:3000/update-blog/${params.blogId}`,
         {
           method: "PUT",
           headers: {
@@ -63,8 +59,8 @@ const UpdateBlog = () => {
       }
 
       const resData = await updateData.json();
-      console.log(resData)
-      history(-1)
+      console.log(resData);
+      history(-1);
     } catch (error) {
       console.error("Error updating data:", error);
     }
@@ -73,7 +69,7 @@ const UpdateBlog = () => {
   return (
     <div className="my-28 flex justify-center">
       <form
-        className="w-[45%] flex flex-col gap-10 items-center"
+        className="w-[85%] xl:w-[50rem] flex flex-col gap-10 items-center"
         onSubmit={handleSubmit}
       >
         <input
@@ -87,6 +83,7 @@ const UpdateBlog = () => {
             <img
               src={typeof img === "string" ? img : URL.createObjectURL(img)}
               alt="blog image"
+              className="hover:brightness-50"
             />
           ) : (
             <div>No image selected</div>
@@ -112,17 +109,17 @@ const UpdateBlog = () => {
             }}
           />
         </div>
-        <div className="flex gap-5">
+        <div className="flex gap-5 w-[full]">
           <button
             type="button"
-            className="h-11 bg-bak2 w-44 rounded-full text-white font-bold"
+            className="w-36 bg-bak2 h-11 sm:w-44 rounded-md text-white font-bold"
             onClick={() => history(-1)}
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="h-11 bg-bak2 w-44 rounded-full text-white font-bold"
+            className="w-36 bg-bak2 h-11 sm:w-44 rounded-md text-white font-bold"
           >
             Update
           </button>

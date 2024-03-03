@@ -2,8 +2,9 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../context/Authentication";
 import { categories, capitalizeFirstLetter } from "../../utils/categories";
 import { FaUpload } from "react-icons/fa6";
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { useNavigate } from "react-router-dom";
 
 const CreateBlog = () => {
   const { token, isAuth } = useContext(AuthContext);
@@ -13,7 +14,7 @@ const CreateBlog = () => {
   const [category, setCategory] = useState("all");
   const formData = new FormData();
   const [loading, setLoading] = useState(false);
-
+  const redirect = useNavigate();
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -49,6 +50,7 @@ const CreateBlog = () => {
       console.error(error);
     }
     setLoading(false);
+    return redirect("/");
   };
 
   return (
@@ -67,7 +69,7 @@ const CreateBlog = () => {
               required
               className="border border-slate-300 rounded-md px-2 h-10 focus:outline-0"
               placeholder="Title"
-              onChange={(e)=>setTitle(e.target.value)}
+              onChange={(e) => setTitle(e.target.value)}
             />
             <CKEditor
               editor={ClassicEditor}
@@ -115,7 +117,7 @@ const CreateBlog = () => {
             )}
             <button
               type="submit"
-              className="border h-10 rounded-md bg-bak2 text-white font-bold"
+              className="border h-10 rounded-md bg-bak2 text-white font-bold disabled:brightness-50"
               disabled={loading}
             >
               Create

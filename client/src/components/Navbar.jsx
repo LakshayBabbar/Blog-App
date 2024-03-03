@@ -22,6 +22,7 @@ const Navbar = () => {
   function logoutHandler() {
     setIsAuth(false);
     localStorage.removeItem("authToken");
+    localStorage.removeItem("username");
   }
 
   const linkStyle =
@@ -37,7 +38,7 @@ const Navbar = () => {
             <Link to="/">Home</Link>
           </li>
           <li className={linkStyle}>
-            <Link to="/create-blog">Create Blog</Link>
+            <Link to="/blogs/create-blog">Create Blog</Link>
           </li>
           {!isAuth ? (
             <>
