@@ -46,7 +46,6 @@ export const checkUser = (req, res, next) => {
   try {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
-    console.log(req.params['id'])
     jwt.verify(
       token,
       process.env.ACCESS_SECRET_KEY,
@@ -54,8 +53,7 @@ export const checkUser = (req, res, next) => {
         if (err) {
           res.locals.auth = false;
         } else if (decodedToken) {
-          const find = await userModel.findOne({ username: req.params["id"] });
-          if (decodedToken.id === find._id.toString()) {
+          if (decodedToken.username === req.params["id"]) {
             res.locals.auth = true;
           } else {
             res.locals.auth = false;

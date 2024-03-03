@@ -15,10 +15,9 @@ const Blogs = () => {
   const history = useNavigate();
 
   useEffect(() => {
-    const username = localStorage.getItem("username")
     const fetchdata = async () => {
       const response = await fetch(
-        import.meta.env.VITE_AUTH + "get-blog/" + `${username}/` + params.blogId,{
+        import.meta.env.VITE_AUTH + "get-blog/" + `${params.username}/` + params.blogId,{
           headers: {
             "Content-Type": "application/json",
             authorization: token
@@ -29,7 +28,6 @@ const Blogs = () => {
         return undefined;
       }
       const resData = await response.json();
-      console.log(resData.auth)
       setAuth(resData.auth)
       setData(resData.blogs);
     };
@@ -41,22 +39,21 @@ const Blogs = () => {
   return (
     <div className="flex flex-col items-center mt-28">
       <div
-        className="flex cursor-pointer justify-between w-[85%] md:w-[70%] xl:w-[50%]"
-        onClick={() => history(-1)}
+        className="flex justify-between w-[85%] md:w-[70%] xl:w-[50%]"
       >
-        <span className="flex gap-2 items-center underline">
+        <span className="flex gap-2 items-center underline cursor-pointer w-[fit-content]" onClick={() => history(-1)}>
           <IoArrowBack />
           Go back
         </span>
-        {auth && <div className="flex gap-2 text-xl">
+        {auth && <div className="flex gap-2 text-xl cursor-pointer">
           <MdDelete className="text-red-500" />
-          <FaEdit className="text-green-600" />
+          <FaEdit className="text-green-600" onClick={()=>history(`/update-blog/?id=${data._id}&user=${params.username}`)} />
         </div>}
       </div>
       {data ? (
         <div className="flex flex-col gap-10 w-[85%] md:w-[70%] xl:w-[50%] my-10">
           <h1 className="text-5xl">{data.title}</h1>
-          <img src={data.img} alt="blog image" />
+          <img src={data.img.url} alt="blog image" />
           <div className="flex justify-between w-full">
             <Link
               to={`/users/${data.author}`}

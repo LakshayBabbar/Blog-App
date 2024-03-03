@@ -5,12 +5,12 @@ import { createBrowserRouter } from "react-router-dom";
 import { RouterProvider } from "react-router-dom";
 import App from "./App.jsx";
 import Home from "./pages/home/Home";
-import Blog from "./pages/blogs/BlogDetailes.jsx";
 import Auth, { action as authAction } from "./pages/auth/Auth.jsx";
 import Users from "./pages/users/Users.jsx";
 import UserDetails from './pages/users/UserDetails.jsx';
 import CreateBlog from "./pages/blogs/CreateBlog.jsx";
 import BlogDetails from "./pages/blogs/BlogDetailes.jsx";
+import UpdateBlog from './pages/blogs/UpdateBlog.jsx';
 import Error from './pages/Error.jsx';
 
 const router = createBrowserRouter([
@@ -32,20 +32,20 @@ const router = createBrowserRouter([
         element: <Users />,
       },
       {
-        path: "users/:userId",
+        path: "users/:username",
         element: <UserDetails />,
+      },
+      {
+        path: "users/:username/:blogId",
+        element: <BlogDetails />,
       },
       {
         path: "create-blog",
         element: <CreateBlog />,
       },
       {
-        path: "users/:userId/:blogId",
-        element: <BlogDetails />,
-      },
-      {
-        path: "blog/:id",
-        element: <Blog />,
+        path: "update-blog",
+        element: <UpdateBlog />,
       },
       {
         path: "*",

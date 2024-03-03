@@ -10,8 +10,15 @@ const schema = mongoose.Schema({
         required: true
     },
     img: {
-        type: String,
-        required: true
+        public_id: {
+            type: String,
+            required: true
+        },
+        url: {
+            type: String,
+            required: true
+        }
+    
     },
     author: {
         type: String,

@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 .ck.ck-editor__main .ck-content {
-    height: 10rem;
+    height: 15rem;
 }

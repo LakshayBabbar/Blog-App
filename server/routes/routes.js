@@ -9,7 +9,10 @@ import blogs from "../models/blogModel.js";
 import userModel from "../models/userModel.js";
 import mongoose from "mongoose";
 import { checkUser, authentication } from "../middleware/auth.js";
-import uploadOnCloudinary from "../config/cloudinary.js";
+import {
+  uploadOnCloudinary,
+  deleteOnCloudinary,
+} from "../config/cloudinary.js";
 import fs from "node:fs";
 
 const router = express.Router();
@@ -37,7 +40,7 @@ router.post("/users/:id", checkUser, async (req, res) => {
     return res.status(200).json({
       user: userDetails,
       blogs: userBlogs,
-      auth: res.locals.auth
+      auth: res.locals.auth,
     });
   } catch (error) {
     console.error("Error:", error);
@@ -64,7 +67,7 @@ router.get("/get-Blog/:id/:blogId", checkUser, async (req, res) => {
 
     res.status(200).json({
       blogs: blogData,
-      auth: res.locals.auth
+      auth: res.locals.auth,
     });
   } catch (error) {
     console.error("Error fetching blog:", error);
@@ -95,7 +98,10 @@ router.post(
         title,
         description,
         category,
-        img: imgUrl.url,
+        img: {
+          public_id: imgUrl.public_id,
+          url: imgUrl.secure_url,
+        },
         author: user.username,
       });
       await newBlog.save();
@@ -126,5 +132,50 @@ router.get("/get-users/:username", async (req, res) => {
     }
   }
 });
+
+router.put(
+  "/update-blog/",
+  authentication,
+  upload.single("img"),
+  async (req, res) => {
+    const blogId = req.query.id;
+    const user = res.locals.user.username;
+    const UpdatedData = {
+      title: req.body.title,
+      description: req.body.description,
+    };
+
+    try {
+      if (req.file) {
+        const oldBlogData = await blogs.findOne({ _id: blogId });
+        const outDatedImg = oldBlogData.img.public_id;
+        const deleteImg = await deleteOnCloudinary(outDatedImg);
+        const newImg = await uploadOnCloudinary(req.file.path);
+        UpdatedData.img = {
+          public_id: newImg.public_id,
+          url: newImg.secure_url,
+        };
+        if (!newImg) {
+          throw new Error("Failed to upload image to Cloudinary");
+        }
+        fs.unlinkSync(req.file.path);
+      }
+      const updatedBlog = await blogs.findOneAndUpdate(
+        { _id: blogId, author: user },
+        UpdatedData,
+        { new: true }
+      );
+
+      if (!updatedBlog) {
+        return res.status(404).json({ error: "Blog not found" });
+      }
+
+      res.status(200).json(updatedBlog);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+);
 
 export default router;

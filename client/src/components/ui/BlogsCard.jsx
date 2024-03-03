@@ -13,7 +13,7 @@ const BlogsCard = ({ data }) => {
   return (
     <div className="w-4/5 bg-[rgba(255,255,255,0.5)] md:w-[25rem] flex flex-col rounded-md shadow-md border">
       <img
-        src={data.img}
+        src={data.img.url}
         alt="thubmnail"
         className="w-full aspect-video rounded-t-md"
       />

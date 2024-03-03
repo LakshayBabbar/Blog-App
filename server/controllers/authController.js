@@ -23,8 +23,8 @@ const handleErrors = (err) => {
 
 // creating json web token
 const maxAge = 3 * 24 * 60 * 60;
-const createToken = (id) => {
-  return jwt.sign({ id }, process.env.ACCESS_SECRET_KEY, {
+const createToken = (id, username) => {
+  return jwt.sign({ id, username }, process.env.ACCESS_SECRET_KEY, {
     expiresIn: maxAge,
   });
 };
@@ -61,7 +61,7 @@ export const loginController = async (req, res) => {
   try {
     const isValid = await bcrypt.compare(req.body.password, user.password);
     if (isValid) {
-      const token = createToken(user._id);
+      const token = createToken(user._id, user.username);
       return res.status(201).json({ user: user._id, username: user.username, authToken: token });
     } else {
       res.status(401).json({ message: "invalid credentails" });
