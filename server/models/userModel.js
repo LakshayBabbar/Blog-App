@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-import pkg from 'validator';
+import pkg from "validator";
 const { isEmail } = pkg;
 
 const userSchema = mongoose.Schema(
@@ -21,7 +21,7 @@ const userSchema = mongoose.Schema(
     },
     email: {
       type: String,
-      required: [true, 'email is required'],
+      required: [true, "email is required"],
       unique: true,
       lowercase: true,
       validate: [isEmail, "Please enter a valid email"],
@@ -31,9 +31,21 @@ const userSchema = mongoose.Schema(
       required: [true, "password is required"],
       minlength: [6, "incorrect password"],
     },
-    profileImg:{
-      type: String
-    }
+    profileImg: {
+      public_id: {
+        type: String,
+        default: "uyrlwjrggqh38pmejv1f",
+      },
+      url: {
+        type: String,
+        default:
+          "https://res.cloudinary.com/dfl8r2ylz/image/upload/v1709557625/uyrlwjrggqh38pmejv1f.avif",
+      },
+    },
+    bio: {
+      type: String,
+      default: "",
+    },
   },
   { timestamps: true }
 );

@@ -98,6 +98,7 @@ const UpdateBlog = () => {
           className="hidden"
           id="img"
           onChange={(e) => setImg(e.target.files[0])}
+          accept="image/*"
         />
         <div className="w-full">
           <CKEditor

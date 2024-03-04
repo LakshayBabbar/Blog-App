@@ -31,7 +31,7 @@ const Users = () => {
   };
 
   return (
-    <div className="m-28 flex flex-col gap-5">
+    <div className="mt-28 flex flex-col gap-14 items-center">
       <Form className="relative w-96" onSubmit={handelSubmit}>
         <input
           type="search"
@@ -46,14 +46,16 @@ const Users = () => {
           <BiSearchAlt />
         </button>
       </Form>
-      <div className="flex gap-5">
-        {errMssg ? (
-          <h1>{errMssg}</h1>
-        ) : (
-          data.map((items) => {
-            return <UsersCard key={items._id} data={items} />;
-          })
-        )}
+      <div className="sm:w-[90%] md:w-[80%] xl:w-[75%]">
+        <div className="grid  md:grid-cols-2 xl:grid-cols-3 gap-5 justify-items-center">
+          {errMssg ? (
+            <h1>{errMssg}</h1>
+          ) : (
+            data.map((items) => {
+              return <UsersCard key={items._id} data={items} />;
+            })
+          )}
+        </div>
       </div>
     </div>
   );

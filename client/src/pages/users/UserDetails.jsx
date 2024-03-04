@@ -48,6 +48,7 @@ const UserDetails = () => {
           </span>
           <div className="flex flex-col gap-10 items-center">
             <UsersCard data={userData} auth={auth} />
+            <p>{userData.bio}</p>
             <h1 className="text-3xl">Blogs</h1>
             {blogData.length > 0 ? (
               <div className="grid md:grid-cols-2 xl:grid-cols-3 justify-items-center gap-8">

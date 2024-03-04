@@ -1,7 +1,13 @@
 import express from "express";
 import blogs from "../models/blogModel.js";
 import userModel from "../models/userModel.js";
-import { checkUser } from "../middleware/auth.js";
+import { authentication, checkUser } from "../middleware/auth.js";
+import upload from "../middleware/multer.js";
+import {
+  uploadOnCloudinary,
+  deleteOnCloudinary,
+} from "../config/cloudinary.js";
+import fs from "node:fs";
 
 const userRouter = express.Router();
 
@@ -41,5 +47,35 @@ userRouter.get("/get-users/:username", async (req, res) => {
     }
   }
 });
+
+userRouter.put(
+  "/update-user/",
+  authentication,
+  upload.single("img"),
+  async (req, res) => {
+    const userId = res.locals.user._id;
+    const data = {
+      username: req.body.username,
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      bio: req.body.bio,
+    };
+    if (req.file) {
+      const outDatedData = await userModel.findOne({ _id: userId });
+      const oldProfileImg = outDatedData.profileImg.public_id;
+      if (oldProfileImg !== "uyrlwjrggqh38pmejv1f") {
+        const deleteImg = await deleteOnCloudinary(oldProfileImg);
+        console.log(deleteImg);
+      }
+      const newImg = await uploadOnCloudinary(req.file.path);
+      data.profileImg = {
+        public_id: newImg.public_id,
+        url: newImg.secure_url,
+      };
+      fs.unlinkSync(req.file.path);
+    }
+    const updateData = await userModel.findOneAndUpdate(userId, data);
+  }
+);
 
 export default userRouter;
