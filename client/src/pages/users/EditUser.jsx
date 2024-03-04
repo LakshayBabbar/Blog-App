@@ -6,7 +6,7 @@ import { AuthContext } from "../../context/Authentication";
 const EditUser = () => {
   const params = useParams();
   const history = useNavigate();
-  const { token } = useContext(AuthContext);
+  const { token, setIsAuth } = useContext(AuthContext);
   const [data, setData] = useState({
     username: "",
     firstname: "",
@@ -57,12 +57,31 @@ const EditUser = () => {
       body: formData,
     });
     const resData = await response.json();
+    setIsAuth(false);
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("username");
     console.log(resData);
-    return history(-1);
+    history(-1);
+  };
+
+  const accountCloseHandler = async () => {
+    const isSure = confirm("Are you sure to close your account?");
+    if (isSure) {
+      const response = await fetch(import.meta.env.VITE_AUTH + "delete-user", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: token,
+        },
+      });
+      const resData = await response.json();
+      console.log(resData);
+      return history("/");
+    }
   };
 
   return (
-    <div className="mt-28 flex justify-center">
+    <div className="mt-28 flex flex-col items-center gap-10">
       <form
         className="w-[80%] md:w-[60%] xl:w-[40%] flex flex-col gap-5 items-center"
         onSubmit={submitHandler}
@@ -76,7 +95,7 @@ const EditUser = () => {
                 : URL.createObjectURL(img)
             }
             alt="Profile pic"
-            className="rounded-full w-48 sm:w-64 hover:brightness-75 aspect-square cursor-pointer"
+            className="rounded-full w-48 sm:w-64 hover:brightness-75 aspect-square object-cover cursor-pointer"
           />
         </label>
         <input
@@ -129,6 +148,14 @@ const EditUser = () => {
           </button>
         </div>
       </form>
+      <div className="w-[80%] md:w-[60%] xl:w-[40%]">
+        <button
+          className="h-10 px-4 rounded-md bg-red-600 text-white"
+          onClick={accountCloseHandler}
+        >
+          Close Account
+        </button>
+      </div>
     </div>
   );
 };
