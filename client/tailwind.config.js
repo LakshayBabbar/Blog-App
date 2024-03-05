@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+import typography from '@tailwindcss/typography';
+
 export default {
   content: [
     "./index.html",
@@ -11,6 +13,12 @@ export default {
         bak2: "linear-gradient(319deg, #663dff 0%, #aa00ff 37%, #cc4499 100%)",
       }
     },
+    fontFamily: {
+      'arapey': ['arapey','serif'],
+    }
   },
-  plugins: [],
+  plugins: [
+    typography  
+    // ...
+  ],
 }

@@ -7,6 +7,7 @@ const EditUser = () => {
   const params = useParams();
   const history = useNavigate();
   const { token, setIsAuth } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
     username: "",
     firstname: "",
@@ -40,8 +41,8 @@ const EditUser = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const formData = new FormData();
-    formData.append("username", data.username);
     formData.append("firstname", data.firstname);
     formData.append("lastname", data.lastname);
     formData.append("bio", data.bio);
@@ -57,14 +58,13 @@ const EditUser = () => {
       body: formData,
     });
     const resData = await response.json();
-    setIsAuth(false);
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("username");
-    console.log(resData);
-    history(-1);
+    resData && setLoading(false);
+    resData && alert("hello");
+    return history(-1);
   };
 
   const accountCloseHandler = async () => {
+    setLoading(true);
     const isSure = confirm("Are you sure to close your account?");
     if (isSure) {
       const response = await fetch(import.meta.env.VITE_AUTH + "delete-user", {
@@ -75,15 +75,18 @@ const EditUser = () => {
         },
       });
       const resData = await response.json();
-      console.log(resData);
+      resData && setLoading(false);
+      setIsAuth(false);
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("username");
       return history("/");
     }
   };
 
   return (
-    <div className="mt-28 flex flex-col items-center gap-10">
+    <div className="mt-28 flex flex-col items-center gap-5">
       <form
-        className="w-[80%] md:w-[60%] xl:w-[40%] flex flex-col gap-5 items-center"
+        className="w-[80%] md:w-[60%] xl:w-[40%] flex flex-col gap-4 items-center"
         onSubmit={submitHandler}
         encType="multipart/form-data"
       >
@@ -105,52 +108,74 @@ const EditUser = () => {
           className="hidden"
           accept="image/*"
         />
-        <input
-          type="text"
-          name="username"
-          value={data.username}
-          onChange={handelData}
-          className="border h-10 px-4 w-full"
-        />
-        <div className="flex gap-5 w-full flex-col sm:flex-row">
+        <div className="w-full">
+          <label htmlFor="username">Username</label>
           <input
             type="text"
-            name="firstname"
-            value={data.firstname}
-            onChange={handelData}
-            className="flex-grow border h-10 px-4"
-          />
-          <input
-            type="text"
-            name="lastname"
-            value={data.lastname}
-            onChange={handelData}
-            className="flex-grow border h-10 px-4"
+            name="username"
+            id="username"
+            value={data.username}
+            onChange={() => alert("Username cannot be changed.")}
+            className="border h-10 px-4 rounded w-full border-purple-500 focus:outline-purple-500"
           />
         </div>
-        <input
-          type="text"
-          name="bio"
-          value={data.bio}
-          onChange={handelData}
-          className="flex-grow border h-10 px-4 w-full"
-        />
+        <div className="flex gap-5 w-full flex-col sm:flex-row">
+          <div className="flex flex-col flex-grow">
+            <label htmlFor="firstname" className="">
+              First Name
+            </label>
+            <input
+              type="text"
+              name="firstname"
+              id="firstname"
+              value={data.firstname}
+              onChange={handelData}
+              className="border h-10 px-4 rounded border-purple-500 focus:outline-purple-500"
+            />
+          </div>
+          <div className="flex flex-col flex-grow">
+            <label htmlFor="lastname">Last Name</label>
+            <input
+              type="text"
+              name="lastname"
+              id="lastname"
+              value={data.lastname}
+              onChange={handelData}
+              className="border h-10 px-4 rounded border-purple-500 focus:outline-purple-500"
+            />
+          </div>
+        </div>
+        <div className="w-full">
+          <label htmlFor="bio">Bio</label>
+          <input
+            type="text"
+            name="bio"
+            id="bio"
+            value={data.bio}
+            onChange={handelData}
+            className="border h-10 px-4 w-full rounded border-purple-500 focus:outline-purple-500"
+          />
+        </div>
         <div className="flex gap-5 w-full">
           <button
             type="reset"
-            className="flex-grow h-10 px-4 border rounded"
+            className="flex-grow h-10 px-4 border rounded-md bg-bak2 text-white"
             onClick={() => history(-1)}
           >
             Cancel
           </button>
-          <button type="submit" className="flex-grow h-10 border px-4 rounded">
+          <button
+            type="submit"
+            disabled={loading}
+            className="flex-grow h-10 border px-4 rounded-md bg-bak2 text-white disabled:brightness-50"
+          >
             Done
           </button>
         </div>
       </form>
       <div className="w-[80%] md:w-[60%] xl:w-[40%]">
         <button
-          className="h-10 px-4 rounded-md bg-red-600 text-white"
+          className="h-10 px-4 rounded-md bg-red-600 text-white ring-red-300 active:ring-4"
           onClick={accountCloseHandler}
         >
           Close Account

@@ -58,7 +58,7 @@ const Blogs = () => {
 
   return (
     <div className="flex flex-col items-center mt-28">
-      <div className="flex justify-between w-[85%] md:w-[70%] xl:w-[50%]">
+      <div className="flex justify-between w-[85%] md:w-[70%] xl:w-[55%]">
         <span
           className="flex gap-2 items-center underline cursor-pointer w-[fit-content]"
           onClick={() => history(-1)}
@@ -71,17 +71,15 @@ const Blogs = () => {
             <MdDelete className="text-red-500" onClick={deleteBlogHandler} />
             <FaEdit
               className="text-green-600"
-              onClick={() =>
-                history(`/blogs/${data._id}/edit`)
-              }
+              onClick={() => history(`/blogs/${data._id}/edit`)}
             />
           </div>
         )}
       </div>
       {data ? (
-        <div className="flex flex-col gap-10 w-[85%] md:w-[70%] xl:w-[50%] my-10">
-          <h1 className="text-5xl">{data.title}</h1>
-          <img src={data.img.url} alt="blog image" />
+        <div className="flex flex-col gap-10 w-[85%] md:w-[70%] xl:w-[55%] my-10 font-arapey">
+        <h1 className="text-4xl md:text-6xl">{data.title}</h1>
+        <img src={data.img.url} alt="blog image" />
           <div className="flex justify-between w-full">
             <Link
               to={`/users/${data.author}`}
@@ -91,7 +89,9 @@ const Blogs = () => {
             </Link>
             <span>Created on: {date}</span>
           </div>
-          {parse(data.description)}
+          <article className="prose-neutral prose-lg lg:prose-xl">
+            {parse(data.description)}
+          </article>
         </div>
       ) : (
         <h1 className="text-2xl font-light my-10">Blog not found.</h1>

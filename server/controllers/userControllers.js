@@ -46,7 +46,6 @@ export const getAllUsers = async (req, res) => {
 export const updateUser = async (req, res) => {
   const userId = res.locals.user._id;
   const data = {
-    username: req.body.username,
     firstname: req.body.firstname,
     lastname: req.body.lastname,
     bio: req.body.bio,

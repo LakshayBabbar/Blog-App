@@ -17,7 +17,7 @@ const Auth = () => {
   }, [searchParams, redirect, isAuth]);
 
   return (
-    <div className="flex items-center justify-center mt-28">
+    <div className="flex items-center justify-center h-lvh bg-bak">
       <AuthForm />
     </div>
   );

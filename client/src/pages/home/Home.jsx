@@ -29,19 +29,23 @@ const Home = () => {
             Explore a World of Inspiration with Our Blogging Platform
           </span>
         </h1>
-        <p className="ml-4 md:w-[80%] text-xl font-[500]">
+        <p className="ml-4 md:w-[80%] text-xl font-arapey">
           Ignite your passion for writing and share your voice with the world
           through our intuitive blogging platform. Unleash your creativity and
           join a community of fellow bloggers today.
         </p>
         <div className="bg-bak w-full h-[60%] top-80 blur-[200px] z-[-1] absolute" />
         <div className="flex gap-4">
-          <button className="w-40 sm:w-44 p-3 font-[500] shadow-md bg-white rounded-full">
-            <Link to="/auth?mode=login">Log in</Link>
-          </button>
-          <button className="w-40 sm:w-44 p-3 shadow-md font-[500] bg-bak2 text-white rounded-full">
-            <Link to="/users">Connect Others</Link>
-          </button>
+          <Link to="/auth?mode=login">
+            <button className="w-40 sm:w-44 p-3 font-[500] shadow-md bg-white rounded-full">
+              Log in
+            </button>
+          </Link>
+          <Link to="/users">
+            <button className="w-40 sm:w-44 p-3 shadow-md font-[500] bg-bak2 text-white rounded-full">
+              Connect Others
+            </button>
+          </Link>
         </div>
       </div>
 
