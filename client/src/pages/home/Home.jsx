@@ -1,24 +1,12 @@
-import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import BlogsCard from "../../components/ui/BlogsCard";
 import { categories, capitalizeFirstLetter } from "../../utils/categories";
+import useFetch from "../../hooks/useFetch";
 
 const Home = () => {
-  const [data, setData] = useState([]);
   const [searchParams] = useSearchParams();
-
-  useEffect(() => {
-    const category = searchParams.get("category") || "all";
-    const fetchdata = async () => {
-      const response = await fetch(
-        import.meta.env.VITE_AUTH + "all-blogs/?category=" + category
-      );
-      const resData = await response.json();
-      setData(resData);
-      console.log(resData);
-    };
-    fetchdata();
-  }, [searchParams]);
+  const category = searchParams.get("category") || "all";
+  const { data } = useFetch("all-blogs/?category=" + category, "GET", []);
 
   return (
     <div className="flex flex-col items-center justify-center gap-10 mt-28">

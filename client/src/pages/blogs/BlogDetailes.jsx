@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { IoArrowBack } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
@@ -6,65 +6,26 @@ import parse from "html-react-parser";
 import { MdDelete } from "react-icons/md";
 import { AuthContext } from "../../context/Authentication";
 import { FaEdit } from "react-icons/fa";
+import useFetch from "../../hooks/useFetch";
 
 const Blogs = () => {
   const params = useParams();
-  const [data, setData] = useState(null);
-  const [commentData, setCommentData] = useState([]);
+  const [refresh, setRefresh] = useState(null);
+  const { data } = useFetch(`get-blog/${params.blogId}`, "GET", {
+    blogs: null,
+    auth: false,
+  });
   const [comment, setComment] = useState("");
-  const [auth, setAuth] = useState(false);
+  const { blogs } = data;
+  const { data: commentData } = useFetch(
+    `get-comments/${params.blogId}`,
+    "GET",
+    [],
+    null,
+    refresh
+  );
   const { token } = useContext(AuthContext);
   const history = useNavigate();
-
-  const fetchBlogData = useCallback(async () => {
-    try {
-      const response = await fetch(
-        import.meta.env.VITE_AUTH + "get-blog/" + params.blogId,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            authorization: token,
-          },
-        }
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch blog data");
-      }
-      const resData = await response.json();
-      setAuth(resData.auth);
-      setData(resData.blogs);
-    } catch (error) {
-      console.error("Error fetching blog data:", error);
-    }
-  }, [params.blogId, token]);
-
-  const fetchComments = useCallback(async () => {
-    try {
-      const response = await fetch(
-        import.meta.env.VITE_AUTH + "get-comments/" + params.blogId,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            authorization: token,
-          },
-        }
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch comments");
-      }
-      const resData = await response.json();
-      setCommentData(resData);
-    } catch (error) {
-      console.error("Error fetching comments:", error);
-    }
-  }, [params.blogId, token]);
-
-  useEffect(() => {
-    fetchBlogData();
-    fetchComments();
-  }, [fetchBlogData, fetchComments]);
-
-  const date = data && data.createdAt.substring(0, 10);
 
   const deleteBlogHandler = async () => {
     const isSure = window.confirm("Are you sure to delete?");
@@ -112,9 +73,9 @@ const Blogs = () => {
         throw new Error("Failed to create comment");
       }
       const resData = await response.json();
-      setComment("");
-      fetchComments();
       console.log(resData);
+      setRefresh(resData);
+      setComment("");
     } catch (error) {
       console.error("Error creating comment:", error);
     }
@@ -136,8 +97,8 @@ const Blogs = () => {
         throw new Error("Failed to delete comment");
       }
       const resData = await response.json();
-      fetchComments();
       console.log(resData);
+      setRefresh(resData);
     } catch (error) {
       console.error("Error deleting comment:", error);
     }
@@ -153,7 +114,7 @@ const Blogs = () => {
           <IoArrowBack />
           Go back
         </span>
-        {auth && (
+        {data.auth && (
           <div className="flex gap-2 text-xl cursor-pointer">
             <MdDelete className="text-red-500" onClick={deleteBlogHandler} />
             <FaEdit
@@ -163,21 +124,21 @@ const Blogs = () => {
           </div>
         )}
       </div>
-      {data ? (
+      {blogs ? (
         <div className="flex flex-col gap-10 w-[85%] md:w-[70%] xl:w-[55%] my-10 font-arapey">
-          <h1 className="text-4xl md:text-6xl">{data.title}</h1>
-          <img src={data.img.url} alt="blog image" />
+          <h1 className="text-4xl md:text-6xl">{blogs.title}</h1>
+          <img src={blogs.img.url} alt="blog image" />
           <div className="flex justify-between w-full">
             <Link
-              to={`/users/${data.author}`}
+              to={`/users/${blogs.author}`}
               className="cursor-pointer hover:underline"
             >
-              By {data.author}
+              By {blogs.author}
             </Link>
-            <span>Created on: {date}</span>
+            <span>Created on: {blogs.createdAt.substring(0, 10)}</span>
           </div>
           <article className="prose-neutral prose-lg lg:prose-xl">
-            {parse(data.description)}
+            {parse(blogs.description)}
           </article>
           <div className="space-y-4">
             <form

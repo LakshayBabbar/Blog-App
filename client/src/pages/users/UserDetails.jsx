@@ -1,37 +1,18 @@
-import { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import BlogsCard from "../../components/ui/BlogsCard";
-import { AuthContext } from "../../context/Authentication";
 import { FaRegEdit } from "react-icons/fa";
 import { FaRegCalendarAlt } from "react-icons/fa";
+import useFetch from "../../hooks/useFetch";
 
 const UserDetails = () => {
   const params = useParams();
-  const [userData, setUserData] = useState(null);
-  const [blogData, setBlogData] = useState([]);
-  const [auth, setAuth] = useState(false);
-  const { token, loading } = useContext(AuthContext);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch(
-        import.meta.env.VITE_AUTH + "users/" + params.username,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            authorization: token,
-          },
-        }
-      );
-      const resData = await response.json();
-      console.log(resData);
-      setUserData(resData.user);
-      setBlogData(resData.blogs);
-      setAuth(resData.auth);
-    };
-
-    !loading && fetchData();
-  }, [params, token, loading]);
+  const { data } = useFetch(`users/${params.username}`, "GET", {
+    user: null,
+    blogs: [],
+    auth: false,
+  });
+  const { user:userData, blogs: blogData, auth } = data;
+  console.log(data)
 
   return (
     <div className="flex items-center justify-center mt-28">
