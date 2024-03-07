@@ -134,13 +134,15 @@ export const deleteBlog = async (req, res) => {
     }
 
     const BlogImg = blogData.img.public_id;
-    const deleteImg = await deleteOnCloudinary(BlogImg);
-    const deleteBlog = await blogs.findOneAndDelete({
+    await deleteOnCloudinary(BlogImg);
+    await blogs.findOneAndDelete({
       _id: blogId,
       author: user,
     });
 
-    res.status(200).json(deleteBlog);
+    res.status(200).json({
+      message: "Blog is deleted successfully.",
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });

@@ -7,7 +7,7 @@ import useFetch from "../../hooks/useFetch";
 const Users = () => {
   const [input, setInput] = useState("all");
   const [search, setSearch] = useState(null);
-  const { data, error } = useFetch(`get-users/${input}`, "GET", []);
+  const { data, error } = useFetch(`get-users/${input}`, []);
 
   const handelSubmit = () => {
     if (search.length === 0) {

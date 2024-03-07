@@ -33,7 +33,6 @@ export const authentication = (req, res, next) => {
       }
     );
   } catch (error) {
-    console.error("Error in checkUser middleware:", error);
     res.locals.user = null;
     return res.status(401).json({
       message: "User is not authenticated.",
@@ -59,7 +58,6 @@ export const checkUser = (req, res, next) => {
       }
     );
   } catch (error) {
-    console.error("Error in checkUser middleware:", error);
     return res.status(500).json({
       message: "Internal server error.",
     });

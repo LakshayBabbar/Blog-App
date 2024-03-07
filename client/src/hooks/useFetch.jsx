@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/Authentication";
 
-const useFetch = (url, method, initValue, body, refresh) => {
+const useFetch = (url, initValue, refresh) => {
   const { token } = useContext(AuthContext);
   const [data, setData] = useState(initValue);
   const [error, setError] = useState(null);
@@ -10,19 +10,13 @@ const useFetch = (url, method, initValue, body, refresh) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const options = {
-          method: method,
+        const res = await fetch(import.meta.env.VITE_AUTH + url, {
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
             Authorization: token,
           },
-        };
-
-        if (method === "POST" || method === "PUT") {
-          options.body = body;
-        }
-
-        const res = await fetch(import.meta.env.VITE_AUTH + url, options);
+        });
         if (!res.ok) {
           const errorData = await res.json();
           throw new Error(errorData.message || "Error while fetching data.");
@@ -38,7 +32,7 @@ const useFetch = (url, method, initValue, body, refresh) => {
     };
 
     fetchData();
-  }, [token, body, method, url, refresh]);
+  }, [token, url, refresh]);
 
   return { data, setData, error, loading };
 };

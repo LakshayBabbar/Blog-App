@@ -6,7 +6,7 @@ import useFetch from "../../hooks/useFetch";
 const Home = () => {
   const [searchParams] = useSearchParams();
   const category = searchParams.get("category") || "all";
-  const { data } = useFetch("all-blogs/?category=" + category, "GET", []);
+  const { data } = useFetch("all-blogs/?category=" + category, []);
 
   return (
     <div className="flex flex-col items-center justify-center gap-10 mt-28">

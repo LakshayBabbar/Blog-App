@@ -6,13 +6,13 @@ import useFetch from "../../hooks/useFetch";
 
 const UserDetails = () => {
   const params = useParams();
-  const { data } = useFetch(`users/${params.username}`, "GET", {
+  const { data } = useFetch(`users/${params.username}`, {
     user: null,
     blogs: [],
     auth: false,
   });
-  const { user:userData, blogs: blogData, auth } = data;
-  console.log(data)
+  const { user: userData, blogs: blogData, auth } = data;
+  console.log(data);
 
   return (
     <div className="flex items-center justify-center mt-28">

@@ -1,17 +1,17 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { IoArrowBack } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import parse from "html-react-parser";
 import { MdDelete } from "react-icons/md";
-import { AuthContext } from "../../context/Authentication";
 import { FaEdit } from "react-icons/fa";
 import useFetch from "../../hooks/useFetch";
+import useSend from "../../hooks/useSend";
 
 const Blogs = () => {
   const params = useParams();
   const [refresh, setRefresh] = useState(null);
-  const { data } = useFetch(`get-blog/${params.blogId}`, "GET", {
+  const { data } = useFetch(`get-blog/${params.blogId}`, {
     blogs: null,
     auth: false,
   });
@@ -19,89 +19,41 @@ const Blogs = () => {
   const { blogs } = data;
   const { data: commentData } = useFetch(
     `get-comments/${params.blogId}`,
-    "GET",
     [],
-    null,
     refresh
   );
-  const { token } = useContext(AuthContext);
+  const { fetchData } = useSend();
   const history = useNavigate();
 
   const deleteBlogHandler = async () => {
     const isSure = window.confirm("Are you sure to delete?");
     if (isSure) {
-      try {
-        const response = await fetch(
-          `http://localhost:3000/delete-blog/${data._id}`,
-          {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-              authorization: token,
-            },
-          }
-        );
-        if (!response.ok) {
-          throw new Error("Failed to delete blog");
-        }
-        const resData = await response.json();
-        console.log(resData);
-        history(-1);
-      } catch (error) {
-        console.error("Error deleting blog:", error);
-      }
+      const response = await fetchData(
+        `delete-blog/${params.blogId}`,
+        "DELETE"
+      );
+      console.log(response);
+      history(-1);
     }
   };
 
   const handleComment = async (e) => {
     e.preventDefault();
-    try {
-      const response = await fetch(
-        `http://localhost:3000/create-comment/${params.blogId}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: token,
-          },
-          body: JSON.stringify({
-            description: comment,
-          }),
-        }
-      );
-      if (!response.ok) {
-        throw new Error("Failed to create comment");
+    const response = await fetchData(
+      `create-comment/${params.blogId}`,
+      "POST",
+      {
+        description: comment,
       }
-      const resData = await response.json();
-      console.log(resData);
-      setRefresh(resData);
-      setComment("");
-    } catch (error) {
-      console.error("Error creating comment:", error);
-    }
+    );
+    !response && alert("Login to add a comment.")
+    setRefresh(response);
+    setComment("");
   };
 
   const deleteComment = async (id) => {
-    try {
-      const response = await fetch(
-        `http://localhost:3000/delete-comment/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: token,
-          },
-        }
-      );
-      if (!response.ok) {
-        throw new Error("Failed to delete comment");
-      }
-      const resData = await response.json();
-      console.log(resData);
-      setRefresh(resData);
-    } catch (error) {
-      console.error("Error deleting comment:", error);
-    }
+    const response = await fetchData(`delete-comment/${id}`, "DELETE");
+    setRefresh(response);
   };
 
   return (
