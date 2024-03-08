@@ -1,10 +1,15 @@
-import { useContext, useState } from "react";
-import { AuthContext } from "../context/Authentication";
+import { useEffect, useState } from "react";
 
 const useFetch = () => {
-  const { token } = useContext(AuthContext);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [token, setToken] = useState(null);
+  useEffect(() => {
+    const isToken = localStorage.getItem("authToken");
+    if (isToken) {
+      setToken(isToken);
+    }
+  }, []);
 
   const fetchData = async (url, method, body) => {
     setLoading(true);

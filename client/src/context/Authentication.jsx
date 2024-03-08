@@ -1,24 +1,25 @@
-import { createContext, useEffect, useState } from "react";
+/* eslint-disable react/prop-types */
+import { createContext, useState, useEffect } from "react";
 export const AuthContext = createContext({});
+import useFetch from "../hooks/useFetch";
 
 const Authentication = ({ children }) => {
   const [isAuth, setIsAuth] = useState(false);
-  const [token, setToken] = useState("");
+  const { data } = useFetch("");
+  const [username, setUserName] = useState("");
 
   useEffect(() => {
-    console.log("Context Call")
-    const getToken = localStorage.getItem("authToken");
-    if (getToken) {
-      setToken(getToken);
+    if (data && data.isLogedin) {
       setIsAuth(true);
+      setUserName(data.username);
     } else {
       setIsAuth(false);
-      setToken(null);
+      localStorage.removeItem("authToken");
     }
-  }, [isAuth]);
+  }, [data]);
 
   return (
-    <AuthContext.Provider value={{ isAuth, setIsAuth, token }}>
+    <AuthContext.Provider value={{ isAuth, setIsAuth, username }}>
       {children}
     </AuthContext.Provider>
   );

@@ -6,7 +6,7 @@ import useFetch from "../../hooks/useFetch";
 
 const UserDetails = () => {
   const params = useParams();
-  const { data } = useFetch(`users/${params.username}`, {
+  const { data, loading } = useFetch(`users/${params.username}`, {
     user: null,
     blogs: [],
     auth: false,
@@ -14,7 +14,11 @@ const UserDetails = () => {
   const { user: userData, blogs: blogData, auth } = data;
   console.log(data);
 
-  return (
+  return loading ? (
+    <div className="flex justify-center mt-28">
+      Loading...
+    </div>
+  ) : (
     <div className="flex items-center justify-center mt-28">
       {userData ? (
         <div className="w-[fit-content] flex flex-col gap-10 items-center">

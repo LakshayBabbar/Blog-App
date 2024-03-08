@@ -1,15 +1,13 @@
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../context/Authentication";
+import { useEffect, useState } from "react";
 
 const useFetch = (url, initValue, refresh) => {
-  const { token } = useContext(AuthContext);
   const [data, setData] = useState(initValue);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const token = localStorage.getItem("authToken");
     const fetchData = async () => {
-      console.log("UseFetch")
       try {
         const res = await fetch(import.meta.env.VITE_AUTH + url, {
           method: "GET",
@@ -33,7 +31,7 @@ const useFetch = (url, initValue, refresh) => {
     };
 
     fetchData();
-  }, [token, url, refresh]);
+  }, [url, refresh]);
 
   return { data, setData, error, loading };
 };
