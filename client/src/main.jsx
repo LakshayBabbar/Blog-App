@@ -7,12 +7,12 @@ import App from "./App.jsx";
 import Home from "./pages/home/Home";
 import Auth, { action as authAction } from "./pages/auth/Auth.jsx";
 import Users from "./pages/users/Users.jsx";
-import UserDetails from './pages/users/UserDetails.jsx';
+import UserDetails from "./pages/users/UserDetails.jsx";
 import CreateBlog from "./pages/blogs/CreateBlog.jsx";
-import EditUser from './pages/users/EditUser.jsx';
+import EditUser from "./pages/users/EditUser.jsx";
 import BlogDetails from "./pages/blogs/BlogDetailes.jsx";
-import UpdateBlog from './pages/blogs/UpdateBlog.jsx';
-import Error from './pages/Error.jsx';
+import UpdateBlog from "./pages/blogs/UpdateBlog.jsx";
+import Error from "./pages/Error.jsx";
 
 const router = createBrowserRouter([
   {
@@ -52,11 +52,11 @@ const router = createBrowserRouter([
         path: "blogs/:blogId/edit",
         element: <UpdateBlog />,
       },
-      {
-        path: "*",
-        element: <Error />,
-      },
     ],
+  },
+  {
+    path: "*",
+    element: <Error />,
   },
 ]);
 

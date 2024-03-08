@@ -27,7 +27,7 @@ export const getBlogById = async (req, res) => {
       });
     }
 
-    const blogData = await blogs.findById(blogId);
+    const blogData = await blogs.findById(blogId).lean();
 
     if (!blogData) {
       return res.status(404).json({
@@ -36,7 +36,7 @@ export const getBlogById = async (req, res) => {
     }
 
     res.status(200).json({
-      blogs: blogData,
+      ...blogData,
       auth: blogData.author === author ? true : false,
     });
   } catch (error) {

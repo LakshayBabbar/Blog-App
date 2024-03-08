@@ -9,6 +9,7 @@ const useFetch = (url, initValue, refresh) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log("UseFetch")
       try {
         const res = await fetch(import.meta.env.VITE_AUTH + url, {
           method: "GET",

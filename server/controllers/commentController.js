@@ -43,11 +43,6 @@ export const getAllComments = async (req, res) => {
   const username = res.locals.username;
   try {
     const comments = await commentModel.find({ blogId }).lean();
-    if (comments.length === 0) {
-      return res.status(404).json({
-        message: "This blog has no comments yet.",
-      });
-    }
     const sortedComments = comments.map((item) => {
       return { ...item, isUser: item.username === username };
     });

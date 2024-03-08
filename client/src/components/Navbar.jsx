@@ -1,23 +1,17 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { CiMenuFries } from "react-icons/ci";
 import { MdClose } from "react-icons/md";
 import { AuthContext } from "../context/Authentication";
 
 const Navbar = () => {
-  const { isAuth, setIsAuth } = useContext(AuthContext);
+  const { isAuth, setIsAuth, username } = useContext(AuthContext);
   const pre = "top-[-18rem] right-[-5rem]";
   const post = "right-[1.5rem] top-20 shadow-xl";
   const [active, setActive] = useState(pre);
-  const [username, setUserName] = useState(null);
   const menuHandler = () => {
     active === pre ? setActive(post) : setActive(pre);
   };
-
-  useEffect(() => {
-    const name = localStorage.getItem("username");
-    name && setUserName(name);
-  }, [username]);
 
   function logoutHandler() {
     setIsAuth(false);

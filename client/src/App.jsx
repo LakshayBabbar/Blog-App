@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import Authentication from "./context/Authentication";
 
 const App = () => {
+  console.log("App Call");
   return (
     <Authentication>
       <Navbar />
