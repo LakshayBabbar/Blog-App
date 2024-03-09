@@ -6,7 +6,7 @@ import useFetch from "../../hooks/useFetch";
 const Home = () => {
   const [searchParams] = useSearchParams();
   const category = searchParams.get("category") || "all";
-  const { data } = useFetch(
+  const { data, loading } = useFetch(
     "get-blogs/?category=" + category,
     `home/category=${category}`
   );
@@ -63,7 +63,9 @@ const Home = () => {
             })}
           </ul>
         </div>
-        {data && data.length > 0 ? (
+        {loading ? (
+          <h1>Loading...</h1>
+        ) : data.length > 0 ? (
           data.map((items) => {
             return <BlogsCard key={items._id} data={items} />;
           })

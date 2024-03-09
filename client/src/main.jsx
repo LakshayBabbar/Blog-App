@@ -13,7 +13,11 @@ import EditUser from "./pages/users/EditUser.jsx";
 import BlogDetails from "./pages/blogs/BlogDetailes.jsx";
 import UpdateBlog from "./pages/blogs/UpdateBlog.jsx";
 import Error from "./pages/Error.jsx";
+import Authentication from "./context/Authentication";
+import ProtectedRoute from "./pages/protected/ProtectedRoute.jsx";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+const queryClient = new QueryClient();
 const router = createBrowserRouter([
   {
     path: "/",
@@ -38,11 +42,19 @@ const router = createBrowserRouter([
       },
       {
         path: "users/:username/edit",
-        element: <EditUser />,
+        element: (
+          <ProtectedRoute>
+            <EditUser />,
+          </ProtectedRoute>
+        ),
       },
       {
         path: "blogs/create-blog",
-        element: <CreateBlog />,
+        element: (
+          <ProtectedRoute>
+            <CreateBlog />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "blogs/:blogId",
@@ -50,7 +62,11 @@ const router = createBrowserRouter([
       },
       {
         path: "blogs/:blogId/edit",
-        element: <UpdateBlog />,
+        element: (
+          <ProtectedRoute>
+            <UpdateBlog />,
+          </ProtectedRoute>
+        ),
       },
     ],
   },
@@ -62,6 +78,10 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <QueryClientProvider client={queryClient}>
+      <Authentication>
+        <RouterProvider router={router} />
+      </Authentication>
+    </QueryClientProvider>
   </React.StrictMode>
 );

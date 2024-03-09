@@ -12,15 +12,18 @@ const AuthForm = () => {
   const [searchParams] = useSearchParams();
   const isLogin = searchParams.get("mode") === "login";
   const data = useActionData();
-  const { setIsAuth } = useContext(AuthContext);
+  const { setIsAuth, setUserName } = useContext(AuthContext);
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
   const handleTitle = isLogin ? "Login" : "Sign Up";
 
   // checking if token is recieved and then change the authentication state to true
   useEffect(() => {
-    data && "authToken" in data && setIsAuth(true);
-  }, [data, setIsAuth]);
+    if (data && "authToken" in data) {
+      setIsAuth(true);
+      setUserName(data.username);
+    }
+  }, [data, setIsAuth, setUserName]);
 
   const inputStyle =
     "w-full border h-10 rounded-md px-5 border-purple-600 selection:bg-purple-300 outline-purple-500";
@@ -28,7 +31,10 @@ const AuthForm = () => {
     <div className="flex flex-col gap-5 bg-white border p-10 rounded-xl shadow-2xl">
       <h1 className="text-3xl font-bold">{handleTitle}</h1>
 
-      <Form method="post" className="flex flex-col gap-5 mt-4 items-center w-[72vw] sm:w-96">
+      <Form
+        method="post"
+        className="flex flex-col gap-5 mt-4 items-center w-[72vw] sm:w-96"
+      >
         {!isLogin && (
           <>
             <div className="flex gap-3">

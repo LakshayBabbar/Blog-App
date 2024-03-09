@@ -49,7 +49,7 @@ const EditUser = () => {
       setIsAuth(false);
       localStorage.removeItem("authToken");
       localStorage.removeItem("username");
-      return history("/");
+      return history("/", { replace: true });
     }
   };
 
