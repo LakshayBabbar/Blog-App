@@ -12,6 +12,11 @@ export const getUserDetails = async (req, res) => {
     const username = res.locals.username;
     const userDetails = await userModel.findOne({ username: user }).lean();
 
+    if (!userDetails) {
+      return res.status(404).json({
+        message: "User not found.",
+      });
+    }
     const userBlogs = await blogs.find({ author: user });
     return res.status(200).json({
       ...userDetails,

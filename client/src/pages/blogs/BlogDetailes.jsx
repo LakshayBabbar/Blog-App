@@ -7,10 +7,11 @@ import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import useFetch from "../../hooks/useFetch";
 import useSend from "../../hooks/useSend";
+import Footer from '../../components/Footer';
 
 const Blogs = () => {
   const params = useParams();
-  const { data, loading } = useFetch(
+  const { data, loading, isError } = useFetch(
     `get-blog/${params.blogId}`,
     params.blogId
   );
@@ -57,7 +58,7 @@ const Blogs = () => {
     <div className="flex flex-col items-center mt-28">
       {loading ? (
         <h1 className="text-xl">Loading...</h1>
-      ) : data ? (
+      ) : data && !isError ? (
         <div className="w-[85%] md:w-[70%] xl:w-[55%]">
           <div className="flex justify-between">
             <span
@@ -145,6 +146,7 @@ const Blogs = () => {
       ) : (
         <h1 className="text-xl">Blog not found.</h1>
       )}
+      <Footer />
     </div>
   );
 };

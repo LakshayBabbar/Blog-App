@@ -6,11 +6,10 @@ import useFetch from "../../hooks/useFetch";
 const Users = () => {
   const [input, setInput] = useState("all");
   const [search, setSearch] = useState(null);
-  const { data, error, loading } = useFetch(
+  const { data, isError, loading } = useFetch(
     `get-users/${input}`,
     `users/${input}`
   );
-  console.log(input)
   const handelSubmit = (e) => {
     e.preventDefault();
     if (search.length === 0) {
@@ -40,8 +39,8 @@ const Users = () => {
       ) : (
         <div className="sm:w-[90%] md:w-[80%] xl:w-[75%]">
           <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5 justify-items-center">
-            {error ? (
-              <h1>{error.message}</h1>
+            {isError ? (
+              <h1>User not found.</h1>
             ) : (
               data &&
               data.map((items) => {

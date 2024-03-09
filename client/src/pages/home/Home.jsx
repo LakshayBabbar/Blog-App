@@ -2,6 +2,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import BlogsCard from "../../components/ui/BlogsCard";
 import { categories, capitalizeFirstLetter } from "../../utils/categories";
 import useFetch from "../../hooks/useFetch";
+import Footer from "../../components/Footer";
 
 const Home = () => {
   const [searchParams] = useSearchParams();
@@ -77,7 +78,8 @@ const Home = () => {
             </h1>
           </div>
         )}
-      </div>
+        </div>
+        <Footer />
     </div>
   );
 };

@@ -6,7 +6,7 @@ import useFetch from "../../hooks/useFetch";
 
 const UserDetails = () => {
   const params = useParams();
-  const { data, loading } = useFetch(
+  const { data, loading, isError } = useFetch(
     `users/${params.username}`,
     params.username
   );
@@ -15,7 +15,7 @@ const UserDetails = () => {
     <div className="flex justify-center mt-28">Loading...</div>
   ) : (
     <div className="flex items-center justify-center mt-28">
-      {data ? (
+      {data && !isError ? (
         <div className="w-[fit-content] flex flex-col gap-10 items-center">
           <div className="flex sm:items-start gap-5 sm:gap-14">
             <img
