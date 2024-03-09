@@ -10,11 +10,11 @@ export const getUserDetails = async (req, res) => {
   try {
     const user = req.params["id"];
     const username = res.locals.username;
-    const userDetails = await userModel.findOne({ username: user });
+    const userDetails = await userModel.findOne({ username: user }).lean();
 
     const userBlogs = await blogs.find({ author: user });
     return res.status(200).json({
-      user: userDetails,
+      ...userDetails,
       blogs: userBlogs,
       auth: user === username ? true : false,
     });
@@ -32,10 +32,10 @@ export const getAllUsers = async (req, res) => {
   } else {
     try {
       const user = await userModel.find({ username: ref });
-      if (user.length > 0) {
+      if (user.length >= 0) {
         res.status(200).json(user);
       } else {
-        res.status(404).json({ message: "User not found." });
+        res.status(404).error({ message: "User not found." });
       }
     } catch (error) {
       res.status(500).json({ message: "Internal error." });

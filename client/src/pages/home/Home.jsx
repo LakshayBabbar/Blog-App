@@ -6,7 +6,10 @@ import useFetch from "../../hooks/useFetch";
 const Home = () => {
   const [searchParams] = useSearchParams();
   const category = searchParams.get("category") || "all";
-  const { data } = useFetch("all-blogs/?category=" + category, []);
+  const { data } = useFetch(
+    "get-blogs/?category=" + category,
+    `home/category=${category}`
+  );
 
   return (
     <div className="flex flex-col items-center justify-center gap-10 mt-28">
@@ -60,7 +63,7 @@ const Home = () => {
             })}
           </ul>
         </div>
-        {data.length > 0 ? (
+        {data && data.length > 0 ? (
           data.map((items) => {
             return <BlogsCard key={items._id} data={items} />;
           })

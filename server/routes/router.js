@@ -37,7 +37,7 @@ router.put("/update-user/", authentication, upload.single("img"), updateUser);
 router.delete("/delete-user", authentication, deleteUser);
 
 // Blogs Routes
-router.get("/all-blogs", getAllBlogs);
+router.get("/get-blogs", getAllBlogs);
 router.get("/get-blog/:blogId", checkUser, getBlogById);
 router.post("/create-blog", authentication, upload.single("img"), createBlog);
 router.put(

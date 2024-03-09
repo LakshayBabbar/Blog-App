@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -9,10 +9,15 @@ import useSend from "../../hooks/useSend";
 
 const UpdateBlog = () => {
   const params = useParams();
+  const { data: fd } = useFetch(`get-blog/${params.blogId}`, params.blogId);
+  const [data, setData] = useState("");
   const [img, setImg] = useState(null);
-  const { data, setData } = useFetch(`get-blog/${params.blogId}`);
   const { fetchData, loading } = useSend();
   const history = useNavigate();
+
+  useEffect(() => {
+    setData(fd);
+  }, [fd]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

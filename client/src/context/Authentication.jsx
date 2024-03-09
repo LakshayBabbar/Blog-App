@@ -14,7 +14,7 @@ const Authentication = ({ children }) => {
       setUserName(data.username);
     } else {
       setIsAuth(false);
-      localStorage.removeItem("authToken");
+/*       localStorage.removeItem("authToken"); */
     }
   }, [data]);
 

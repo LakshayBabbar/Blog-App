@@ -10,13 +10,14 @@ import useSend from "../../hooks/useSend";
 
 const Blogs = () => {
   const params = useParams();
-  const [refresh, setRefresh] = useState(null);
-  const { data, loading } = useFetch(`get-blog/${params.blogId}`);
+  const { data, loading } = useFetch(
+    `get-blog/${params.blogId}`,
+    params.blogId
+  );
   const [comment, setComment] = useState("");
-  const { data: commentData } = useFetch(
+  const { data: commentData, refetch } = useFetch(
     `get-comments/${params.blogId}`,
-    [],
-    refresh
+    `comments-${params.blogId}`
   );
   const { fetchData } = useSend();
   const history = useNavigate();
@@ -43,13 +44,13 @@ const Blogs = () => {
       }
     );
     !response && alert("Login to add a comment.");
-    setRefresh(response);
     setComment("");
+    return refetch();
   };
 
   const deleteComment = async (id) => {
-    const response = await fetchData(`delete-comment/${id}`, "DELETE");
-    setRefresh(response);
+    await fetchData(`delete-comment/${id}`, "DELETE");
+    return refetch();
   };
 
   return (
@@ -115,28 +116,29 @@ const Blogs = () => {
                   Add
                 </button>
               </form>
-              {commentData.map((item) => (
-                <div key={item._id} className="text-lg">
-                  <div className="flex justify-between">
-                    <Link
-                      to={`/users/${item.username}`}
-                      className="hover:underline"
-                    >
-                      @{item.username}
-                    </Link>
-                    <div className="flex items-center gap-1">
-                      <span>{item.createdAt.substring(0, 10)}</span>
-                      {item.isUser && (
-                        <MdDelete
-                          onClick={() => deleteComment(item._id)}
-                          className="cursor-pointer text-red-600"
-                        />
-                      )}
+              {commentData &&
+                commentData.map((item) => (
+                  <div key={item._id} className="text-lg">
+                    <div className="flex justify-between">
+                      <Link
+                        to={`/users/${item.username}`}
+                        className="hover:underline"
+                      >
+                        @{item.username}
+                      </Link>
+                      <div className="flex items-center gap-1">
+                        <span>{item.createdAt.substring(0, 10)}</span>
+                        {item.isUser && (
+                          <MdDelete
+                            onClick={() => deleteComment(item._id)}
+                            className="cursor-pointer text-red-600"
+                          />
+                        )}
+                      </div>
                     </div>
+                    <p>{item.description}</p>
                   </div>
-                  <p>{item.description}</p>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/Authentication";
@@ -11,18 +11,16 @@ const EditUser = () => {
   const { setIsAuth } = useContext(AuthContext);
   const [img, setImg] = useState(null);
   const { fetchData, loading } = useSend();
-  const { data: fd, setData } = useFetch(`users/${params.username}`, null);
-  const data = fd && fd.user;
-  console.log(data);
+  const { data: fd } = useFetch(`users/${params.username}`, params.username);
+  const [data, setData] = useState();
+  useEffect(() => setData(fd), [fd]);
 
   const handelData = (e) => {
+    const { name, value } = e.target;
     setData((prev) => {
       return {
         ...prev,
-        user: {
-          ...prev.user,
-          [e.target.name]: e.target.value,
-        },
+        [name]: value,
       };
     });
   };
@@ -33,7 +31,7 @@ const EditUser = () => {
     formData.append("firstname", data.firstname);
     formData.append("lastname", data.lastname);
     formData.append("bio", data.bio);
-    if (typeof img !== "string") {
+    if (img) {
       formData.append("img", img);
     }
     await fetchData("update-user", "PUT", formData);
@@ -41,7 +39,7 @@ const EditUser = () => {
     formData.delete("lastname");
     formData.delete("bio");
     formData.delete("img");
-    return history(-1);
+    history(-1);
   };
 
   const accountCloseHandler = async () => {
@@ -60,8 +58,8 @@ const EditUser = () => {
       {data && (
         <form
           className="w-[80%] md:w-[60%] xl:w-[40%] flex flex-col gap-4 items-center"
-          onSubmit={submitHandler}
           encType="multipart/form-data"
+          onSubmit={submitHandler}
         >
           <label htmlFor="img">
             <img
