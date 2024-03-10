@@ -35,7 +35,7 @@ const CreateBlog = () => {
 
   return (
     <div className="flex justify-center mt-28">
-      <div className="flex flex-col sm:p-10 w-[90%] sm:w-[30rem] xl:w-[35rem] h-[fit-content] gap-8 sm:shadow-xl sm:border  rounded-xl bg-white">
+      <div className="flex flex-col sm:p-10 w-[90%] sm:w-[30rem] xl:w-[35rem] h-[fit-content] gap-8 sm:shadow-xl sm:border  rounded-xl bg-white text-black">
         <h1 className="text-3xl">What&#39;s on your mind?</h1>
         <form
           className="flex flex-col gap-4"

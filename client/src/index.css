@@ -1,8 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Arapey:ital@0;1&display=swap');
 @tailwind base;
+body{
+    background: rgb(19, 19, 19);
+    color: white
+}
 @tailwind components;
 @tailwind utilities;
 
 .ck.ck-editor__main .ck-content {
     height: 15rem;
 }
+/* ===== Scrollbar CSS ===== */
+* {
+    scrollbar-width: auto;
+    scrollbar-color: rgb(236, 13, 236) black;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  *::-webkit-scrollbar-thumb {
+    background-color: rgb(236, 13, 236);
+    border-radius: 10px;
+  }

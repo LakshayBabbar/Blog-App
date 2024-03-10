@@ -17,7 +17,7 @@ const Auth = () => {
   }, [searchParams, redirect, isAuth]);
 
   return (
-    <div className="flex items-center justify-center h-lvh bg-bak">
+    <div className="flex items-center justify-center h-lvh">
       <AuthForm />
     </div>
   );
@@ -30,7 +30,6 @@ export async function action({ request }) {
 
   const data = await request.formData();
   const authData = {
-    username: data.get("username"),
     firstname: data.get("firstname"),
     lastname: data.get("lastname"),
     email: data.get("email"),

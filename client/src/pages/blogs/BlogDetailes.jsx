@@ -7,7 +7,8 @@ import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import useFetch from "../../hooks/useFetch";
 import useSend from "../../hooks/useSend";
-import Footer from '../../components/Footer';
+import Footer from "../../components/Footer";
+import { motion, useScroll } from "framer-motion";
 
 const Blogs = () => {
   const params = useParams();
@@ -54,8 +55,14 @@ const Blogs = () => {
     return refetch();
   };
 
+  const { scrollYProgress } = useScroll();
+
   return (
     <div className="flex flex-col items-center mt-28">
+      <motion.div
+        style={{ scaleX: scrollYProgress }}
+        className="h-1 w-full fixed left-0 right-0 top-16 bg-purple-500 transform origin-left"
+      />
       {loading ? (
         <h1 className="text-xl">Loading...</h1>
       ) : data && !isError ? (
@@ -81,8 +88,8 @@ const Blogs = () => {
               </div>
             )}
           </div>
-          <div className="flex flex-col gap-10 my-10 font-arapey">
-            <h1 className="text-4xl md:text-6xl">{data.title}</h1>
+          <div className="flex flex-col gap-10 my-10">
+            <h1 className="text-4xl md:text-6xl font-arapey">{data.title}</h1>
             <img src={data.img.url} alt="blog image" />
             <div className="flex justify-between w-full">
               <Link
@@ -93,7 +100,7 @@ const Blogs = () => {
               </Link>
               <span>Created on: {data.createdAt.substring(0, 10)}</span>
             </div>
-            <article className="prose-neutral prose-lg lg:prose-xl">
+            <article className="prose-neutral prose-lg lg:prose-xl text-gray-300">
               {parse(data.description)}
             </article>
             <div className="space-y-4">
@@ -105,14 +112,14 @@ const Blogs = () => {
                 <input
                   type="text"
                   required
-                  className="w-full border-b h-10 px-2 focus:outline-0"
+                  className="w-full bg-transparent border-b h-10 px-2 focus:outline-0"
                   placeholder="Add a comment..."
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
                 />
                 <button
                   type="submit"
-                  className="absolute right-0 border px-4 py-1 rounded-md"
+                  className="absolute right-0 px-4 py-1 rounded-md"
                 >
                   Add
                 </button>

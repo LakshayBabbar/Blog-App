@@ -26,14 +26,22 @@ const AuthForm = () => {
   }, [data, setIsAuth, setUserName]);
 
   const inputStyle =
-    "w-full border h-10 rounded-md px-5 border-purple-600 selection:bg-purple-300 outline-purple-500";
+    "w-full border h-12 bg-zinc-800 rounded-md px-5 border-zinc-600 selection:bg-purple-300";
   return (
-    <div className="flex flex-col gap-5 bg-white border p-10 rounded-xl shadow-2xl">
-      <h1 className="text-3xl font-bold">{handleTitle}</h1>
-
+    <div className="w-[90%] sm:w-[fit-content] p-8 gap-4 border border-zinc-700 rounded-2xl flex flex-col items-center">
+      <div>
+        <h1 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
+          Welcome to Blog-Tech
+        </h1>
+        <h1 className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
+          {isLogin
+            ? "Login to manage your profile or create blogs."
+            : "Sign Up to join our community."}
+        </h1>
+      </div>
       <Form
         method="post"
-        className="flex flex-col gap-5 mt-4 items-center w-[72vw] sm:w-96"
+        className="flex flex-col gap-5 mt-4 items-center w-[72vw] sm:w-[25rem]"
       >
         {!isLogin && (
           <>
@@ -51,12 +59,6 @@ const AuthForm = () => {
                 placeholder="Last Name"
               />
             </div>
-            <input
-              type="text"
-              name="username"
-              className={inputStyle}
-              placeholder="Username"
-            />
           </>
         )}
         <input
@@ -73,7 +75,7 @@ const AuthForm = () => {
         />
         <button
           type="submit"
-          className={`${inputStyle} bg-bak2 font-bold text-white disabled:bg-gray-600`}
+          className={`border border-zinc-700 w-full h-12 rounded-md bg-zinc-900 transition-all duration-300 disabled:bg-gray-600 `}
           disabled={isSubmitting}
         >
           {isSubmitting ? "Submitting..." : handleTitle}
@@ -82,17 +84,11 @@ const AuthForm = () => {
       </Form>
       {isLogin ? (
         <p>
-          Need an account?{" "}
-          <Link to="?mode=signup" className="text-purple-700">
-            Sign Up
-          </Link>
+          Need an account? <Link to="?mode=signup">Sign Up </Link>
         </p>
       ) : (
         <p>
-          Already have an account?{" "}
-          <Link to="?mode=login" className="text-purple-700">
-            Login
-          </Link>
+          Already have an account? <Link to="?mode=login">Login</Link>
         </p>
       )}
     </div>

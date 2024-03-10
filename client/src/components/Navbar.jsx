@@ -6,8 +6,8 @@ import { AuthContext } from "../context/Authentication";
 
 const Navbar = () => {
   const { isAuth, setIsAuth, username } = useContext(AuthContext);
-  const pre = "top-[-18rem] right-[-5rem]";
-  const post = "right-[1.5rem] top-20 shadow-xl";
+  const pre = "top-[-22rem] right-[-5rem]";
+  const post = "right-[1.5rem] top-20 shadow-xl bg-zinc-900";
   const [active, setActive] = useState(pre);
   const menuHandler = () => {
     active === pre ? setActive(post) : setActive(pre);
@@ -20,49 +20,59 @@ const Navbar = () => {
   }
 
   const linkStyle =
-    "text-[1.1rem] p-2 rounded-md hover:bg-slate-200 transition-all";
+    "text-[1.1rem] p-2 rounded-md hover:bg-slate-600 transition-all";
   return (
-    <div className="fixed top-0 left-0 h-16 bg-white w-full flex items-center justify-around sm:justify-evenly shadow-md z-10">
-      <h2 className="text-2xl bg-bak2 bg-clip-text text-transparent font-bold">Blog-Tech</h2>
-      <div
-        className={`absolute bg-white rounded-2xl sm:relative ${active} sm:top-0 sm:right-0 sm:shadow-none transition-all duration-300`}
-      >
-        <ul className="w-36 p-4 flex flex-col gap-2 sm:gap-4 sm:flex-row sm:w-[fit-content] sm:p-0">
-          <li className={linkStyle}>
-            <Link to="/">Home</Link>
-          </li>
-          <li className={linkStyle}>
-            <Link to="/blogs/create-blog">Create Blog</Link>
-          </li>
-          {!isAuth ? (
-            <>
-              <li className={linkStyle}>
-                <Link to="/auth?mode=login">Login</Link>
-              </li>
-              <li className="text-[1.1rem] py-2 px-4 rounded-3xl bg-bak2 text-white text-center">
-                <Link to="/auth/?mode=signup">Sign Up</Link>
-              </li>
-            </>
+    <div className="fixed top-0 sm:top-5 left-0 w-full h-16 flex justify-center items-center z-50">
+      <div className="bg-zinc-900 flex items-center justify-between sm:justify-normal gap-4 sm:rounded-full px-5 py-4 w-full sm:w-auto">
+        <h2 className="text-2xl bg-bak2 bg-clip-text text-transparent font-bold">
+          Blog-Tech
+        </h2>
+        <div
+          className={`absolute rounded-2xl sm:relative ${active} sm:top-0 sm:right-0 sm:shadow-none transition-all duration-300 w-44 sm:w-auto`}
+        >
+          <ul className="w-36 py-7 pl-5 flex flex-col gap-2 sm:gap-4 sm:flex-row sm:w-[fit-content] sm:p-0">
+            <li className={linkStyle}>
+              <Link to="/">Home</Link>
+            </li>
+            <li className={linkStyle}>
+              <a href="/#blogs">Blogs</a>
+            </li>
+            <li className={linkStyle}>
+              <Link to="/users">Creators</Link>
+            </li>
+            <li className={linkStyle}>
+              <Link to="/blogs/create-blog">Create</Link>
+            </li>
+            {!isAuth ? (
+              <>
+                <li className={linkStyle}>
+                  <Link to="/auth?mode=login">Login</Link>
+                </li>
+                <li className="text-[1.1rem] py-2 px-4 rounded-3xl bg-bak2 text-white text-center">
+                  <Link to="/auth/?mode=signup">Sign Up</Link>
+                </li>
+              </>
+            ) : (
+              <>
+                <li className={linkStyle}>
+                  <Link to={`/users/${username}`}>Profile</Link>
+                </li>
+                <li className="text-[1.1rem] py-2 px-4 rounded-3xl bg-bak2 text-white text-center">
+                  <Link to="/auth/?mode=signup" onClick={logoutHandler}>
+                    Logout
+                  </Link>
+                </li>
+              </>
+            )}
+          </ul>
+        </div>
+        <div className="sm:hidden" onClick={menuHandler}>
+          {active === pre ? (
+            <CiMenuFries className="text-2xl cursor-pointer" />
           ) : (
-            <>
-              <li className={linkStyle}>
-                <Link to={`/users/${username}`}>Profile</Link>
-              </li>
-              <li className="text-[1.1rem] py-2 px-4 rounded-3xl bg-bak2 text-white text-center">
-                <Link to="/auth/?mode=signup" onClick={logoutHandler}>
-                  Logout
-                </Link>
-              </li>
-            </>
+            <MdClose className="text-2xl cursor-pointer" />
           )}
-        </ul>
-      </div>
-      <div className="sm:hidden" onClick={menuHandler}>
-        {active === pre ? (
-          <CiMenuFries className="text-2xl" />
-        ) : (
-          <MdClose className="text-2xl" />
-        )}
+        </div>
       </div>
     </div>
   );
