@@ -32,7 +32,7 @@ const useFetch = () => {
         }
       }
 
-      const res = await fetch(import.meta.env.VITE_AUTH + url, options);
+      const res = await fetch(import.meta.env.VITE_BASE_URL + url, options);
       if (!res.ok) {
         const errorData = await res.json();
         throw new Error(errorData.message || "Error while fetching data.");

@@ -61,7 +61,7 @@ const Blogs = () => {
     <div className="flex flex-col items-center mt-28">
       <motion.div
         style={{ scaleX: scrollYProgress }}
-        className="h-1 w-full fixed left-0 right-0 top-16 bg-purple-500 transform origin-left"
+        className="h-1 w-full fixed left-0 right-0 top-0 bg-purple-500 transform origin-left"
       />
       {loading ? (
         <h1 className="text-xl">Loading...</h1>

@@ -9,7 +9,6 @@ const Authentication = ({ children }) => {
   const [username, setUserName] = useState("");
 
   useEffect(() => {
-    console.log("effect call")
     if (data && data.isLogedin) {
       setIsAuth(true);
       setUserName(data.username);
