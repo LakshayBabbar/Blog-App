@@ -30,7 +30,8 @@ const createToken = (id, username) => {
 };
 
 export const registerController = async (req, res) => {
-  const { username, firstname, lastname, email, password } = req.body;
+  const { firstname, lastname, email, password } = req.body;
+  const username = email.split("@")[0];
   try {
     await userModel.create({
       username,

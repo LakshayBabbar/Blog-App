@@ -34,12 +34,12 @@ const userSchema = mongoose.Schema(
     profileImg: {
       public_id: {
         type: String,
-        default: "uyrlwjrggqh38pmejv1f",
+        default: "qo4bnnmunbtain0qxinx",
       },
       url: {
         type: String,
         default:
-          "https://res.cloudinary.com/dfl8r2ylz/image/upload/v1709557625/uyrlwjrggqh38pmejv1f.avif",
+          "https://res.cloudinary.com/dfl8r2ylz/image/upload/v1710076946/qo4bnnmunbtain0qxinx.avif",
       },
     },
     bio: {

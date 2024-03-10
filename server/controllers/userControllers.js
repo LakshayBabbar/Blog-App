@@ -58,7 +58,7 @@ export const updateUser = async (req, res) => {
   if (req.file) {
     const outDatedData = await userModel.findOne({ _id: userId });
     const oldProfileImg = outDatedData.profileImg.public_id;
-    if (oldProfileImg !== "uyrlwjrggqh38pmejv1f") {
+    if (oldProfileImg !== "qo4bnnmunbtain0qxinx") {
       const deleteImg = await deleteOnCloudinary(oldProfileImg);
       console.log(deleteImg);
     }
@@ -79,7 +79,9 @@ export const deleteUser = async (req, res) => {
     const profileImg = res.locals.user.profileImg.public_id;
 
     // Delete user document
-    await deleteOnCloudinary(profileImg);
+    if (profileImg !== "qo4bnnmunbtain0qxinx") {
+      await deleteOnCloudinary(profileImg);
+    }
     await userModel.findOneAndDelete({ _id: userId });
 
     const allBlogs = await blogs.find({ author: username });
