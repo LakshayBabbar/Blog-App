@@ -20,7 +20,7 @@ const Navbar = () => {
   }
 
   const linkStyle =
-    "text-[1.1rem] p-2 rounded-md hover:bg-slate-600 transition-all";
+    "text-[1.1rem] p-2 rounded-full hover:bg-bak2 transition-all";
   return (
     <div className="fixed top-0 sm:top-5 left-0 w-full h-16 flex justify-center items-center z-50">
       <div className="bg-zinc-900 flex items-center justify-between sm:justify-normal gap-4 sm:rounded-full px-5 py-4 w-full sm:w-auto">

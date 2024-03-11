@@ -12,9 +12,9 @@ const UserDetails = () => {
   );
 
   return loading ? (
-    <div className="flex justify-center mt-28">Loading...</div>
+    <div className="flex justify-center mt-36">Loading...</div>
   ) : (
-    <div className="flex items-center justify-center mt-28">
+    <div className="flex items-center justify-center mt-36">
       {data && !isError ? (
         <div className="w-[fit-content] flex flex-col gap-10 items-center">
           <div className="flex sm:items-start gap-5 sm:gap-14">
@@ -38,14 +38,14 @@ const UserDetails = () => {
               {data.auth && (
                 <Link
                   to={`/users/${data.username}/edit`}
-                  className="flex items-center justify-center gap-1 border text=xl px-3 py-2 h-10 rounded-md"
+                  className="flex items-center justify-center gap-1 border border-zinc-700 bg-zinc-800 text=xl px-3 py-2 h-10 rounded-md"
                 >
                   <FaRegEdit /> Edit
                 </Link>
               )}
             </div>
           </div>
-          <hr className="w-full" />
+          <hr className="w-full border-zinc-600" />
           <h1 className="text-3xl">Blogs</h1>
           {data.blogs.length > 0 ? (
             <div className="grid md:grid-cols-2 xl:grid-cols-3 justify-items-center gap-8">

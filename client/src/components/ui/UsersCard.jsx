@@ -4,7 +4,7 @@ import { FaRegCalendarAlt } from "react-icons/fa";
 
 const UsersCard = ({ data }) => {
   return (
-    <div className="flex flex-col gap-10 items-center border w-[fit-content] rounded-md p-5">
+    <div className="flex flex-col gap-10 items-center border border-zinc-700 w-[fit-content] rounded-md p-8">
       <div className="flex gap-5">
         <img
           src={data.profileImg.url}
