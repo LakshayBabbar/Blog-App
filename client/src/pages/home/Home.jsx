@@ -49,7 +49,7 @@ const Home = () => {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="ml-4 md:ml-0 w-[90%] md:w-[80%] xl:w-[65%] md:text-center flex flex-col gap-5 md:gap-10 md:items-center mt-36 z-10">
+      <div className="ml-4 md:ml-0 w-[90%] md:w-[80%] xl:w-[65%] md:text-center flex flex-col gap-5 md:gap-10 md:items-center mt-24 sm:mt-36 z-10">
         <h1 className="text-5xl md:text-6xl xl:text-7xl font-bold mt-5 md:mt-20">
           Unlock Your Creativity: Explore a World of Inspiration with Our
           Blogging Platform
@@ -59,7 +59,6 @@ const Home = () => {
           through our intuitive blogging platform. Unleash your creativity and
           join a community of fellow bloggers today.
         </p>
-        {/*         <div className="bg-bak w-full h-[60%] top-80 blur-[200px] z-[-1] absolute" /> */}
         <div className="flex gap-4">
           <Link to="/auth?mode=login">
             <button className="w-40 sm:w-44 p-3 font-[500] shadow-md bg-white text-black rounded-full">

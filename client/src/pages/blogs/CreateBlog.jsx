@@ -1,9 +1,9 @@
 import { categories, capitalizeFirstLetter } from "../../utils/categories";
 import { useState } from "react";
 import { FaUpload } from "react-icons/fa6";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { useNavigate } from "react-router-dom";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import useSend from "../../hooks/useSend";
 
 const CreateBlog = () => {
@@ -34,8 +34,8 @@ const CreateBlog = () => {
   };
 
   return (
-    <div className="flex justify-center mt-28">
-      <div className="flex flex-col sm:p-10 w-[90%] sm:w-[30rem] xl:w-[35rem] h-[fit-content] gap-8 sm:shadow-xl sm:border  rounded-xl bg-white text-black">
+    <div className="flex justify-center my-24 sm:my-36">
+      <div className="flex flex-col sm:p-10 w-[90%] sm:w-[30rem] xl:w-[35rem] h-[fit-content] gap-8 sm:shadow-xl sm:border border-zinc-600 rounded-xl">
         <h1 className="text-3xl">What&#39;s on your mind?</h1>
         <form
           className="flex flex-col gap-4"
@@ -46,22 +46,16 @@ const CreateBlog = () => {
             type="text"
             name="title"
             required
-            className="border border-slate-300 rounded-md px-2 h-10 focus:outline-0"
+            className="w-full border h-12 bg-zinc-800 rounded-md px-5 border-zinc-600 selection:bg-purple-300"
             placeholder="Title"
             onChange={(e) => setTitle(e.target.value)}
           />
-          <CKEditor
-            editor={ClassicEditor}
-            onChange={(event, editor) => {
-              const data = editor.getData();
-              setDesc(data);
-            }}
-          />
+          <ReactQuill theme="snow" value={desc} onChange={setDesc} />
           <div className="flex gap-4 flex-col sm:flex-row">
             <select
               name="category"
               onChange={(e) => setCategory(e.target.value)}
-              className="border border-slate-300 p-2 rounded-md flex-grow"
+              className="border border-zinc-700 flex-grow px-5 h-12 rounded-md bg-zinc-900 transition-all duration-300 disabled:bg-gray-600"
             >
               {categories.map((items, index) => {
                 return (
@@ -73,7 +67,7 @@ const CreateBlog = () => {
             </select>
             <label
               htmlFor="input-file"
-              className="cursor-pointer text-white flex-grow bg-bak2 font-bold p-2 rounded-md flex items-center justify-center gap-2"
+              className="cursor-pointer flex items-center justify-center gap-2 flex-grow border h-12 bg-zinc-800 rounded-md px-5 border-zinc-600 selection:bg-purple-300"
             >
               <FaUpload /> Upload File
             </label>
@@ -96,7 +90,7 @@ const CreateBlog = () => {
           )}
           <button
             type="submit"
-            className="border h-10 rounded-md bg-bak2 text-white font-bold disabled:brightness-50"
+            className="border border-zinc-700 w-full h-12 rounded-md bg-zinc-900 transition-all duration-300 disabled:bg-gray-600"
             disabled={loading}
           >
             Create

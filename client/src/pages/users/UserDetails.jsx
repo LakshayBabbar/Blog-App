@@ -14,7 +14,7 @@ const UserDetails = () => {
   return loading ? (
     <div className="flex justify-center mt-36">Loading...</div>
   ) : (
-    <div className="flex items-center justify-center mt-36">
+    <div className="flex items-center justify-center my-24 sm:my-36">
       {data && !isError ? (
         <div className="w-[fit-content] flex flex-col gap-10 items-center">
           <div className="flex sm:items-start gap-5 sm:gap-14">

@@ -19,7 +19,7 @@ const Users = () => {
   };
 
   return (
-    <div className="mt-36 flex flex-col gap-14 items-center">
+    <div className="my-24 sm:my-36 flex flex-col gap-14 items-center">
       <form className="relative w-96 xl:w-[25%]" onSubmit={handelSubmit}>
         <input
           type="search"

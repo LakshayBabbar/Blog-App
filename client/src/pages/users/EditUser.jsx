@@ -54,7 +54,7 @@ const EditUser = () => {
   };
 
   return (
-    <div className="mt-28 flex flex-col items-center gap-5">
+    <div className="my-24 sm:my-36 flex flex-col items-center gap-5">
       {data && (
         <form
           className="w-[80%] md:w-[60%] xl:w-[40%] flex flex-col gap-4 items-center"
@@ -75,7 +75,7 @@ const EditUser = () => {
             className="hidden"
             accept="image/*"
           />
-          <div className="w-full">
+          <div className="w-full space-y-2">
             <label htmlFor="username">Username</label>
             <input
               type="text"
@@ -83,11 +83,11 @@ const EditUser = () => {
               id="username"
               value={data.username}
               onChange={() => alert("Username cannot be changed.")}
-              className="border h-10 px-4 rounded w-full border-purple-500 focus:outline-purple-500"
+              className="w-full border h-12 bg-zinc-800 rounded-md px-5 border-zinc-600 selection:bg-purple-300"
             />
           </div>
           <div className="flex gap-5 w-full flex-col sm:flex-row">
-            <div className="flex flex-col flex-grow">
+            <div className="flex flex-col flex-grow space-y-2">
               <label htmlFor="firstname" className="">
                 First Name
               </label>
@@ -97,10 +97,10 @@ const EditUser = () => {
                 id="firstname"
                 value={data.firstname}
                 onChange={handelData}
-                className="border h-10 px-4 rounded border-purple-500 focus:outline-purple-500"
+                className="w-full border h-12 bg-zinc-800 rounded-md px-5 border-zinc-600 selection:bg-purple-300"
               />
             </div>
-            <div className="flex flex-col flex-grow">
+            <div className="flex flex-col flex-grow space-y-2">
               <label htmlFor="lastname">Last Name</label>
               <input
                 type="text"
@@ -108,11 +108,11 @@ const EditUser = () => {
                 id="lastname"
                 value={data.lastname}
                 onChange={handelData}
-                className="border h-10 px-4 rounded border-purple-500 focus:outline-purple-500"
+                className="w-full border h-12 bg-zinc-800 rounded-md px-5 border-zinc-600 selection:bg-purple-300"
               />
             </div>
           </div>
-          <div className="w-full">
+          <div className="w-full space-y-2">
             <label htmlFor="bio">Bio</label>
             <input
               type="text"
@@ -120,13 +120,13 @@ const EditUser = () => {
               id="bio"
               value={data.bio}
               onChange={handelData}
-              className="border h-10 px-4 w-full rounded border-purple-500 focus:outline-purple-500"
+              className="w-full border h-12 bg-zinc-800 rounded-md px-5 border-zinc-600 selection:bg-purple-300"
             />
           </div>
           <div className="flex gap-5 w-full">
             <button
               type="reset"
-              className="flex-grow h-10 px-4 border rounded-md bg-bak2 text-white"
+              className="border border-zinc-700 w-full h-12 rounded-md bg-zinc-900 transition-all duration-300 disabled:bg-gray-600"
               onClick={() => history(-1)}
             >
               Cancel
@@ -134,7 +134,7 @@ const EditUser = () => {
             <button
               type="submit"
               disabled={loading}
-              className="flex-grow h-10 border px-4 rounded-md bg-bak2 text-white disabled:brightness-50"
+              className="border border-zinc-700 w-full h-12 rounded-md bg-zinc-900 transition-all duration-300 disabled:bg-gray-600"
             >
               Done
             </button>

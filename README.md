@@ -15,7 +15,7 @@ Welcome to Blog-Tech! This project is a full-stack web application built using t
 - **Backend:** Node.js, Express.js
 - **Database:** MongoDB
 - **Authentication:** JSON Web Tokens (JWT)
-- **Styling:** Tailwind CSS
+- **Styling:** Tailwind CSS, Framer Motion
 
 ## Getting Started
 
