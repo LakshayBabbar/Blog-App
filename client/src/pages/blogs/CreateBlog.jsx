@@ -34,7 +34,7 @@ const CreateBlog = () => {
   };
 
   return (
-    <div className="flex justify-center my-24 sm:my-36">
+    <div className="flex justify-center my-24 sm:mt-36">
       <div className="flex flex-col sm:p-10 w-[90%] sm:w-[30rem] xl:w-[35rem] h-[fit-content] gap-8 sm:shadow-xl sm:border border-zinc-600 rounded-xl">
         <h1 className="text-3xl">What&#39;s on your mind?</h1>
         <form
@@ -55,7 +55,7 @@ const CreateBlog = () => {
             <select
               name="category"
               onChange={(e) => setCategory(e.target.value)}
-              className="border border-zinc-700 flex-grow px-5 h-12 rounded-md bg-zinc-900 transition-all duration-300 disabled:bg-gray-600"
+              className="border border-zinc-700 flex-grow px-5 h-12 rounded-md bg-zinc-900 disabled:bg-gray-600"
             >
               {categories.map((items, index) => {
                 return (
@@ -67,7 +67,7 @@ const CreateBlog = () => {
             </select>
             <label
               htmlFor="input-file"
-              className="cursor-pointer flex items-center justify-center gap-2 flex-grow border h-12 bg-zinc-800 rounded-md px-5 border-zinc-600 selection:bg-purple-300"
+              className="cursor-pointer flex items-center justify-center gap-2 flex-grow border h-12 bg-zinc-800 rounded-md border-zinc-600 selection:bg-purple-300"
             >
               <FaUpload /> Upload File
             </label>
@@ -90,7 +90,7 @@ const CreateBlog = () => {
           )}
           <button
             type="submit"
-            className="border border-zinc-700 w-full h-12 rounded-md bg-zinc-900 transition-all duration-300 disabled:bg-gray-600"
+            className="border border-zinc-700 w-full h-12 rounded-md bg-zinc-900 disabled:bg-gray-600"
             disabled={loading}
           >
             Create

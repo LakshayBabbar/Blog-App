@@ -19,13 +19,12 @@ const Navbar = () => {
     localStorage.removeItem("username");
   }
 
-  const linkStyle =
-    "text-[1.1rem] p-2 rounded-full hover:bg-bak2 transition-all";
+  const linkStyle = "text-[1.1rem] p-2 rounded-xl hover:bg-bak2 transition-all";
   return (
     <div className="fixed top-0 sm:top-5 left-0 w-full h-16 flex justify-center items-center z-50">
-      <div className="sm:bg-[rgb(0,0,0)] border-purple-500 sm:border-b  backdrop-blur-md flex items-center justify-between sm:justify-normal gap-10 sm:rounded-full px-5 py-4 w-full sm:w-auto">
+      <div className="sm:bg-[rgb(0,0,0)] gap-4 backdrop-blur-md flex items-center justify-between sm:justify-normal sm:rounded-xl p-4 w-full sm:w-auto h-16">
         <h2 className="text-2xl bg-bak2 bg-clip-text text-transparent font-bold">
-          Blog-Tech
+          Blog Tech
         </h2>
         <div
           className={`absolute rounded-2xl sm:relative ${active} sm:top-0 sm:right-0 sm:shadow-none transition-all duration-300 w-44 sm:w-auto`}
@@ -48,7 +47,7 @@ const Navbar = () => {
                 <li className={linkStyle}>
                   <Link to="/auth?mode=login">Login</Link>
                 </li>
-                <li className="text-[1.1rem] py-2 px-4 rounded-3xl bg-bak2 text-white text-center">
+                <li className="text-[1.1rem] py-2 px-4 rounded-xl bg-bak2 text-white text-center">
                   <Link to="/auth/?mode=signup">Sign Up</Link>
                 </li>
               </>
@@ -57,7 +56,7 @@ const Navbar = () => {
                 <li className={linkStyle}>
                   <Link to={`/users/${username}`}>Profile</Link>
                 </li>
-                <li className="text-[1.1rem] py-2 px-4 rounded-3xl bg-bak2 text-white text-center">
+                <li className="text-[1.1rem] py-2 px-4 rounded-xl bg-bak2 text-white text-center">
                   <Link to="/auth/?mode=signup" onClick={logoutHandler}>
                     Logout
                   </Link>

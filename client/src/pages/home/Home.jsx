@@ -3,9 +3,6 @@ import BlogsCard from "../../components/ui/BlogsCard";
 import { categories, capitalizeFirstLetter } from "../../utils/categories";
 import useFetch from "../../hooks/useFetch";
 import Footer from "../../components/Footer";
-import { useRef } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { images, images2, images3 } from "../../utils/list";
 
 const Home = () => {
   const [searchParams] = useSearchParams();
@@ -14,45 +11,15 @@ const Home = () => {
     "get-blogs/?category=" + category,
     `home/category=${category}`
   );
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-
-  const springConfig = { stiffness: 200, damping: 40, bounce: 100 };
-
-  const translateX = useSpring(
-    useTransform(scrollYProgress, [0, 1], [0, 1000]),
-    springConfig
-  );
-  const translateXReverse = useSpring(
-    useTransform(scrollYProgress, [0, 1], [0, -1000]),
-    springConfig
-  );
-  const rotateX = useSpring(
-    useTransform(scrollYProgress, [0, 0.2], [15, 0]),
-    springConfig
-  );
-  const opacity = useSpring(
-    useTransform(scrollYProgress, [0, 0.2], [0.1, 1]),
-    springConfig
-  );
-  const rotateZ = useSpring(
-    useTransform(scrollYProgress, [0, 0.2], [20, 0]),
-    springConfig
-  );
-  const translateY = useSpring(
-    useTransform(scrollYProgress, [0, 0.2], [-700, 500]),
-    springConfig
-  );
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="ml-4 md:ml-0 w-[90%] md:w-[80%] xl:w-[65%] md:text-center flex flex-col gap-5 md:gap-10 md:items-center mt-24 sm:mt-36 z-10">
-        <h1 className="text-5xl md:text-6xl xl:text-7xl font-bold mt-5 md:mt-20">
-          Unlock Your Creativity: Explore a World of Inspiration with Our
-          Blogging Platform
+      <div className="ml-4 md:ml-0 w-[90%] md:w-[80%] xl:w-[65%] md:text-center flex flex-col gap-5 md:gap-10 md:items-center mt-20 xl:mt-[10vh] z-10">
+        <h1 className="text-5xl leading-tight md:text-6xl md:leading-tight xl:text-7xl xl:leading-tight font-bold mt-5 md:mt-20">
+          Unlock Your Creativity:{" "}
+          <span className="text-transparent bg-bak2 bg-clip-text">
+            Explore a World of Inspiration with Our Blogging Platform
+          </span>
         </h1>
         <p className="md:w-[70%] text-xl">
           Ignite your passion for writing and share your voice with the world
@@ -61,18 +28,18 @@ const Home = () => {
         </p>
         <div className="flex gap-4">
           <Link to="/auth?mode=login">
-            <button className="w-40 sm:w-44 p-3 font-[500] shadow-md bg-white text-black rounded-full">
+            <button className="w-40 sm:w-44 p-3 font-[500] shadow-md bg-white text-black rounded-xl">
               Log in
             </button>
           </Link>
           <Link to="/users">
-            <button className="w-40 sm:w-44 p-3 shadow-md font-[500] bg-bak2 text-white rounded-full">
+            <button className="w-40 sm:w-44 p-3 shadow-md font-[500] bg-bak2 text-white rounded-xl">
               Creators
             </button>
           </Link>
         </div>
       </div>
-      <motion.div
+      {/* <motion.div
         style={{
           rotateX,
           rotateZ,
@@ -119,18 +86,22 @@ const Home = () => {
             );
           })}
         </motion.div>
-      </motion.div>
-      <div
-        className="mt-[35rem] space-y-10 w-[80%] md:w-[52rem] xl:w-[80rem]"
-        id="blogs"
-      >
-        <h1 className="text-4xl">Categories</h1>
+      </motion.div> */}
+      <div className="absolute bg-bak2 size-36 top-0 left-0 sm:left-48 blur-[90px] sm:blur-[70px] xl:blur-[120px] -rotate-45 animate-pulse-slow" />
+      <div className="absolute bg-bak2 size-20 bottom-40 right-0 sm:right-48 blur-[90px] sm:blur-[70px] xl:blur-[120px] rounded-full animate-bounce-slow" />
+      <div className="absolute bg-bak2 size-40 top-52 right-0 sm:right-32 blur-[90px] sm:blur-[70px] xl:blur-[120px] rounded-full animate-bounce-slow" />
+      <div className="absolute bg-bak2 size-28 bottom-0 sm:bottom-24 left-0 sm:left-48 blur-[90px] sm:blur-[70px] xl:blur-[120px] rounded-full animate-bounce-slow" />
+      <div className="absolute bg-bak2 sm:size-36 bottom-60 blur-[90px] sm:blur-[70px] xl:blur-[120px] rounded-full animate-pulse-slow" />
+      <div className="space-y-10 w-[80%] md:w-[52rem] xl:w-[80rem]" id="blogs">
+        <h1 className="mt-40 text-4xl">Categories</h1>
         <ul className="flex gap-4 flex-wrap">
           {categories.map((items, index) => {
             return (
               <li
                 key={index}
-                className="p-4 bg-zinc-800 py-1 shadow-md text-white rounded-full cursor-pointer"
+                className={`p-4 py-1 shadow-md rounded-full cursor-pointer ${
+                  category === items ? "bg-bak2" : "text-white bg-zinc-800"
+                }`}
               >
                 <Link to={`/?category=${items}`}>
                   {capitalizeFirstLetter(items)}
@@ -142,7 +113,7 @@ const Home = () => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 justify-items-center mt-20">
         {loading ? (
-          <h1>Loading...</h1>
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500" />
         ) : data.length > 0 ? (
           data.map((items) => {
             return <BlogsCard key={items._id} data={items} />;

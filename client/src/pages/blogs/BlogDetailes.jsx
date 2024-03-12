@@ -12,16 +12,17 @@ import { motion, useScroll } from "framer-motion";
 
 const Blogs = () => {
   const params = useParams();
-  const { data, loading, isError } = useFetch(
-    `get-blog/${params.blogId}`,
-    params.blogId
-  );
+  const {
+    data,
+    loading: loadingBlog,
+    isError,
+  } = useFetch(`get-blog/${params.blogId}`, params.blogId);
   const [comment, setComment] = useState("");
   const { data: commentData, refetch } = useFetch(
     `get-comments/${params.blogId}`,
     `comments-${params.blogId}`
   );
-  const { fetchData } = useSend();
+  const { fetchData, loading } = useSend();
   const history = useNavigate();
 
   const deleteBlogHandler = async () => {
@@ -63,8 +64,8 @@ const Blogs = () => {
         style={{ scaleX: scrollYProgress }}
         className="h-1 w-full fixed left-0 right-0 top-0 bg-purple-500 transform origin-left"
       />
-      {loading ? (
-        <h1 className="text-xl">Loading...</h1>
+      {loadingBlog ? (
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500" />
       ) : data && !isError ? (
         <div className="w-[85%] md:w-[70%] xl:w-[55%]">
           <div className="flex justify-between">
@@ -119,12 +120,13 @@ const Blogs = () => {
                 />
                 <button
                   type="submit"
-                  className="absolute right-0 px-4 py-1 rounded-md"
+                  className="absolute right-0 px-4 py-1 rounded-md disabled:brightness-50"
+                  disabled={loading}
                 >
                   Add
                 </button>
               </form>
-              {commentData &&
+              {commentData && commentData.length > 0 ? (
                 commentData.map((item) => (
                   <div key={item._id} className="text-lg">
                     <div className="flex justify-between">
@@ -137,16 +139,24 @@ const Blogs = () => {
                       <div className="flex items-center gap-1">
                         <span>{item.createdAt.substring(0, 10)}</span>
                         {item.isUser && (
-                          <MdDelete
-                            onClick={() => deleteComment(item._id)}
-                            className="cursor-pointer text-red-600"
-                          />
+                          <button
+                            disabled={loading}
+                            className="disabled:brightness-50"
+                          >
+                            <MdDelete
+                              onClick={() => deleteComment(item._id)}
+                              className="cursor-pointer text-red-600"
+                            />
+                          </button>
                         )}
                       </div>
                     </div>
                     <p>{item.description}</p>
                   </div>
-                ))}
+                ))
+              ) : (
+                <h1>There are currently no comments on this blog post.</h1>
+              )}
             </div>
           </div>
         </div>

@@ -17,7 +17,7 @@ const UserDetails = () => {
     <div className="flex items-center justify-center my-24 sm:my-36">
       {data && !isError ? (
         <div className="w-[fit-content] flex flex-col gap-10 items-center">
-          <div className="flex sm:items-start gap-5 sm:gap-14">
+          <div className="flex px-5 sm:px-0 sm:items-start gap-5 sm:gap-14">
             <img
               src={data.profileImg.url}
               alt="Profile pic"
@@ -38,7 +38,7 @@ const UserDetails = () => {
               {data.auth && (
                 <Link
                   to={`/users/${data.username}/edit`}
-                  className="flex items-center justify-center gap-1 border border-zinc-700 bg-zinc-800 text=xl px-3 py-2 h-10 rounded-md"
+                  className="w-20 sm:w-auto flex items-center justify-center gap-1 border border-zinc-700 bg-zinc-800 text=xl px-3 py-2 h-10 rounded-md"
                 >
                   <FaRegEdit /> Edit
                 </Link>
