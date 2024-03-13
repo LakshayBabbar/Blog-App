@@ -51,9 +51,7 @@ const Home = () => {
             onFocus={() => setIsFocused(true)}
             onBlur={handleInputBlur}
           />
-          <button type="submit" className="absolute h-11 right-5 text-xl">
-            <BiSearchAlt />
-          </button>
+          <BiSearchAlt className="absolute h-11 top-1 right-5 text-xl" />
           {searchRes && searchRes.length > 0 && isFocused && (
             <motion.div
               className="absolute backdrop-blur-xl bg-[rgba(0,0,0,0.44)] mt-5 p-5 rounded-xl max-h-80 overflow-y-scroll"
