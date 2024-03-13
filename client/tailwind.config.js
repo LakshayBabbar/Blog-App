@@ -10,8 +10,8 @@ export default {
         bak2: "linear-gradient(319deg, #663dff 0%, #aa00ff 37%, #cc4499 100%)",
       },
       animation: {
-        "pulse-slow": "pulse 4s linear infinite", // Example custom animation
-        "bounce-slow": "bounce 4s linear infinite",
+        "pulse-slow": "pulse 3.4s linear infinite", // Example custom animation
+        "bounce-slow": "bounce 3.4s linear infinite",
       },
     },
     fontFamily: {

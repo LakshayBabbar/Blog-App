@@ -17,6 +17,7 @@ import {
   createBlog,
   updateBlog,
   deleteBlog,
+  searchBlog,
 } from "../controllers/blogController.js";
 import {
   createComment,
@@ -52,5 +53,7 @@ router.delete("/delete-blog/:id", authentication, deleteBlog);
 router.post("/create-comment/:blogId", authentication, createComment);
 router.get("/get-comments/:blogId", checkUser, getAllComments);
 router.delete("/delete-comment/:commentId", authentication, deleteComment);
+
+router.get("/search/:id", searchBlog);
 
 export default router;

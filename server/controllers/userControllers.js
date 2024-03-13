@@ -36,7 +36,13 @@ export const getAllUsers = async (req, res) => {
     res.status(200).json(users);
   } else {
     try {
-      const user = await userModel.find({ username: ref });
+      const user = await userModel.find({
+        $or: [
+          { firstname: { $regex: ref, $options: "i" } },
+          { lastname: { $regex: ref, $options: "i" } },
+          { username: { $regex: ref, $options: "i" } },
+        ],
+      });
       if (user.length >= 0) {
         res.status(200).json(user);
       } else {
