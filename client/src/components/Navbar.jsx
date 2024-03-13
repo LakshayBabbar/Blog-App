@@ -31,7 +31,7 @@ const Navbar = () => {
         >
           <ul className="w-36 py-7 pl-5 flex flex-col gap-2 sm:gap-4 sm:flex-row sm:w-[fit-content] sm:p-0">
             <li className={linkStyle}>
-              <Link to="/">Home</Link>
+              <a href="/#home">Home</a>
             </li>
             <li className={linkStyle}>
               <a href="/#blogs">Blogs</a>

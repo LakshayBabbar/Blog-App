@@ -6,6 +6,7 @@ import useSend from "../../hooks/useSend";
 import { BiSearchAlt } from "react-icons/bi";
 import Footer from "../../components/Footer";
 import { useRef, useState } from "react";
+import { motion } from "framer-motion";
 
 const Home = () => {
   const [searchParams] = useSearchParams();
@@ -32,23 +33,18 @@ const Home = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      <div className="ml-4 md:ml-0 w-[90%] md:w-[80%] xl:w-[65%] md:text-center flex flex-col gap-5 md:gap-10 md:items-center z-10 my-20 sm:my-[15vh]">
+    <div className="flex flex-col items-center justify-center" id="home">
+      <div className="ml-4 md:ml-0 w-[90%] md:w-[80%] xl:w-[65%] md:text-center flex flex-col gap-5 md:gap-8 md:items-center z-10 my-20 sm:my-[15vh]">
         <h1 className="text-5xl leading-tight md:text-6xl md:leading-tight xl:text-7xl xl:leading-tight font-bold mt-5">
           Unlock Your Creativity:{" "}
           <span className="text-transparent bg-bak2 bg-clip-text">
             Explore a World of Inspiration with Our Blogging Platform
           </span>
         </h1>
-        <p className="md:w-[70%] text-xl">
-          Ignite your passion for writing and share your voice with the world
-          through our intuitive blogging platform. Unleash your creativity and
-          join a community of fellow bloggers today.
-        </p>
         <div className="md:w-96 xl:w-[30rem] relative">
           <input
             type="text"
-            className="h-11 w-full rounded-xl bg-transparent border-2 border-pink-500 outline-none px-5"
+            className="h-12 w-full rounded-xl bg-transparent border-2 border-pink-500 outline-none px-5"
             placeholder="Search Blogs"
             ref={search}
             onChange={searchHandler}
@@ -59,7 +55,12 @@ const Home = () => {
             <BiSearchAlt />
           </button>
           {searchRes && searchRes.length > 0 && isFocused && (
-            <div className="absolute bg-[rgba(0,0,0,0.19)] mt-5 p-5 rounded-xl max-h-80 overflow-y-scroll">
+            <motion.div
+              className="absolute backdrop-blur-xl bg-[rgba(0,0,0,0.44)] mt-5 p-5 rounded-xl max-h-80 overflow-y-scroll"
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ type: "spring", stiffness: 200, damping: 10 }}
+            >
               <ul className="w-96 flex flex-col gap-2 items-start">
                 {searchRes.map((blogs) => {
                   return (
@@ -78,15 +79,21 @@ const Home = () => {
                   );
                 })}
               </ul>
-            </div>
+            </motion.div>
           )}
         </div>
+        <p className="md:w-[70%] text-xl">
+          Ignite your passion for writing and share your voice with the world
+          through our intuitive blogging platform. Unleash your creativity and
+          join a community of fellow bloggers today.
+        </p>
       </div>
-      <div className="absolute bg-bak2 size-36 top-0 left-0 sm:left-48 blur-[90px] sm:blur-[70px] xl:blur-[120px] -rotate-45 animate-pulse-slow" />
+      <div className="absolute bg-bak2 size-36 top-0 left-0 xl:left-28 blur-[90px] sm:blur-[70px] xl:blur-[120px] animate-pulse-slow" />
       <div className="absolute bg-bak2 size-20 bottom-40 right-0 sm:right-48 blur-[90px] sm:blur-[70px] xl:blur-[120px] rounded-full animate-bounce-slow" />
-      <div className="absolute bg-bak2 size-40 top-52 right-0 sm:right-32 blur-[90px] sm:blur-[70px] xl:blur-[120px] rounded-full animate-bounce-slow" />
-      <div className="absolute bg-bak2 size-28 bottom-0 sm:bottom-24 left-0 sm:left-48 blur-[90px] sm:blur-[70px] xl:blur-[120px] rounded-full animate-bounce-slow" />
-      <div className="absolute bg-bak2 sm:size-36 bottom-60 blur-[90px] sm:blur-[70px] xl:blur-[120px] rounded-full animate-pulse-slow" />
+      <div className="absolute bg-bak2 size-40 top-48 right-0 sm:right-30 blur-[90px] sm:blur-[70px] xl:blur-[120px] rounded-full animate-bounce-slow" />
+      <div className="absolute bg-bak2 size-28 bottom-0 sm:bottom-20 left-0 sm:left-20 blur-[90px] sm:blur-[70px] xl:blur-[120px] rounded-full animate-bounce-slow" />
+      <div className="absolute bg-bak2 md:size-36 bottom-60 blur-[90px] sm:blur-[70px] xl:blur-[120px] rounded-full animate-pulse-slow" />
+
       <div className="space-y-10 w-[80%] md:w-[52rem] xl:w-[80rem]" id="blogs">
         <h1 className="mt-40 text-4xl">Categories</h1>
         <ul className="flex gap-4 flex-wrap">
