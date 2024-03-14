@@ -65,13 +65,17 @@ const Navbar = () => {
             )}
           </ul>
         </div>
-        <div className="sm:hidden" onClick={menuHandler}>
+        <button
+          className="sm:hidden"
+          onClick={menuHandler}
+          onBlur={menuHandler}
+        >
           {active === pre ? (
             <CiMenuFries className="text-2xl cursor-pointer" />
           ) : (
             <MdClose className="text-2xl cursor-pointer" />
           )}
-        </div>
+        </button>
       </div>
     </div>
   );

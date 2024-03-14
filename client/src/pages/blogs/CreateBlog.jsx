@@ -13,7 +13,7 @@ const CreateBlog = () => {
   const [category, setCategory] = useState("all");
   const formData = new FormData();
   const redirect = useNavigate();
-  const { fetchData, loading } = useSend();
+  const { fetchData, loading, error } = useSend();
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -24,7 +24,9 @@ const CreateBlog = () => {
       formData.append("img", img);
     }
     const response = await fetchData("create-blog", "POST", formData);
-    console.log(response);
+    if (!response) {
+      return null;
+    }
     setImg(null);
     formData.delete("img");
     formData.delete("title");
@@ -95,7 +97,14 @@ const CreateBlog = () => {
           >
             Create
           </button>
-          <h1>{loading && "Processing...Please Wait."}</h1>
+          <h1 className="text-center">
+            {loading && "Processing...Please Wait."}
+          </h1>
+          {!loading && error && (
+            <h1 className="text-red-500 text-center">
+              Error while creating blog.
+            </h1>
+          )}
         </form>
       </div>
     </div>

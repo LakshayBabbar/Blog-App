@@ -113,14 +113,14 @@ const Home = () => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 justify-items-center mt-20">
         {loading ? (
-          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500" />
-        ) : data.length > 0 ? (
+          <div className="col-span-3 animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500" />
+        ) : data && data.length > 0 ? (
           data.map((items) => {
             return <BlogsCard key={items._id} data={items} />;
           })
         ) : (
           <div className="xl:col-span-3 flex justify-center items-center">
-            <h1>Cannot find any blog with &#39;{category}&#39; category.</h1>
+            <h1>Cannot find any blog.</h1>
           </div>
         )}
       </div>
