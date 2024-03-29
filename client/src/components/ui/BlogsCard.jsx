@@ -8,7 +8,7 @@ const BlogsCard = ({ data }) => {
 
   return (
     <motion.div
-      className="w-4/5 md:w-[25rem] flex flex-col rounded-xl bg-black"
+      className="min-w-4/5 md:w-[25rem] flex flex-col rounded-xl bg-black"
       whileHover={{ scale: 1.05 }}
       transition={{ type: "spring" }}
     >
