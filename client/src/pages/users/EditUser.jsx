@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/Authentication";
 import useSend from "../../hooks/useSend";
 import useFetch from "../../hooks/useFetch";
+import Button from "../../components/ui/Button";
 
 const EditUser = () => {
   const params = useParams();
@@ -124,20 +125,20 @@ const EditUser = () => {
             />
           </div>
           <div className="flex gap-5 w-full">
-            <button
+            <Button
               type="reset"
-              className="border border-zinc-700 w-full h-12 rounded-md bg-zinc-900 transition-all duration-300 disabled:bg-gray-600"
-              onClick={() => history(-1)}
+              clickEvent={() => history(-1)}
+              style="flex-grow bg-zinc-800"
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               type="submit"
               disabled={loading}
-              className="border border-zinc-700 w-full h-12 rounded-md bg-zinc-900 transition-all duration-300 disabled:bg-gray-600"
+              style="flex-grow bg-zinc-800"
             >
               Done
-            </button>
+            </Button>
           </div>
         </form>
       )}

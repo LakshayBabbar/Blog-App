@@ -75,7 +75,7 @@ export const updateUser = async (req, res) => {
     };
     fs.unlinkSync(req.file.path);
   }
-  const updateData = await userModel.findOneAndUpdate(userId, data);
+  await userModel.findOneAndUpdate(userId, data);
 };
 
 export const deleteUser = async (req, res) => {

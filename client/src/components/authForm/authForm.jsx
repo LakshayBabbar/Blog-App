@@ -7,6 +7,7 @@ import {
   useNavigation,
 } from "react-router-dom";
 import { AuthContext } from "../../context/Authentication";
+import Button from "../ui/Button";
 
 const AuthForm = () => {
   const [searchParams] = useSearchParams();
@@ -73,13 +74,9 @@ const AuthForm = () => {
           className={inputStyle}
           placeholder="Password"
         />
-        <button
-          type="submit"
-          className={`border border-zinc-700 w-full h-12 rounded-md bg-zinc-900 transition-all duration-300 disabled:bg-gray-600 `}
-          disabled={isSubmitting}
-        >
+        <Button type="submit" disabled={isSubmitting} style="w-full">
           {isSubmitting ? "Submitting..." : handleTitle}
-        </button>
+        </Button>
         {data && <p className="text-red-600">{data.message}</p>}
       </Form>
       {isLogin ? (
