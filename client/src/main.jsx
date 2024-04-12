@@ -10,7 +10,7 @@ import ProtectedRoute from "./pages/protected/ProtectedRoute.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import LoadingSpinner from "./components/LoadingSpinner.jsx";
 import App from "./App.jsx";
-const Home = React.lazy(() => import("./pages/home/Home"));
+import Home from "./pages/home/Home.jsx";
 const Auth = React.lazy(() => import("./pages/auth/Auth.jsx"));
 const Users = React.lazy(() => import("./pages/users/Users.jsx"));
 const UserDetails = React.lazy(() => import("./pages/users/UserDetails.jsx"));

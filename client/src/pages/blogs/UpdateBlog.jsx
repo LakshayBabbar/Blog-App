@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
 import useSend from "../../hooks/useSend";
 import ReactQuill from "react-quill";
-import Button from "../../components/ui/Button";
+import  Button  from "../../components/ui/Button";
 import "react-quill/dist/quill.snow.css";
 
 const UpdateBlog = () => {
@@ -76,9 +76,7 @@ const UpdateBlog = () => {
             <ReactQuill theme="snow" value={desc} onChange={setDesc} />
           </div>
           <div className="flex gap-5 w-[full]">
-            <Button type="button" clickEvent={() => history(-1)}>
-              Cancel
-            </Button>
+            <Button onClick={() => history(-1)}>Cancel</Button>
             <Button type="submit" disabled={loading}>
               Update
             </Button>

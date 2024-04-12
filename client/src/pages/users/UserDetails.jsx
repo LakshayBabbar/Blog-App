@@ -1,8 +1,9 @@
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import BlogsCard from "../../components/ui/BlogsCard";
 import { FaRegEdit } from "react-icons/fa";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import useFetch from "../../hooks/useFetch";
+import GradientButton from "@/components/ui/GradientButton";
 
 const UserDetails = () => {
   const params = useParams();
@@ -10,9 +11,11 @@ const UserDetails = () => {
     `users/${params.username}`,
     params.username
   );
-
+  const redirect = useNavigate();
   return loading ? (
-    <div className="flex justify-center mt-36">Loading...</div>
+    <div className="flex justify-center mt-36">
+      <div className="col-span-3 animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-slate-500" />
+    </div>
   ) : (
     <div className="flex items-center justify-center my-24 sm:my-36">
       {data && !isError ? (
@@ -35,14 +38,17 @@ const UserDetails = () => {
                   <p>{data.bio}</p>
                 </div>
               </div>
-              {data.auth && (
-                <Link
-                  to={`/users/${data.username}/edit`}
-                  className="w-20 sm:w-auto flex items-center justify-center gap-1 border border-zinc-700 bg-zinc-800 text=xl px-3 py-2 h-10 rounded-md"
-                >
-                  <FaRegEdit /> Edit
-                </Link>
-              )}
+              <div>
+                {data.auth && (
+                  <GradientButton
+                    clickEvent={() => redirect(`/users/${data.username}/edit`)}
+                  >
+                    <span className="flex items-center gap-2">
+                      <FaRegEdit /> Edit
+                    </span>
+                  </GradientButton>
+                )}
+              </div>
             </div>
           </div>
           <hr className="w-full border-zinc-600" />

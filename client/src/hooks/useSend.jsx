@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 const useFetch = () => {
+  const [isError, setIsError] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useState(null);
@@ -34,7 +35,9 @@ const useFetch = () => {
 
       const res = await fetch(import.meta.env.VITE_BASE_URL + url, options);
       if (!res.ok) {
+        setIsError(true);
         const errorData = await res.json();
+        setError(errorData.message)
         throw new Error(errorData.message || "Error while fetching data.");
       }
 
@@ -42,12 +45,12 @@ const useFetch = () => {
       setLoading(false);
       return resData;
     } catch (error) {
-      setError(error);
+      console.log(error)
       setLoading(false);
     }
   };
 
-  return { fetchData, error, loading };
+  return { fetchData, isError, error, loading };
 };
 
 export default useFetch;

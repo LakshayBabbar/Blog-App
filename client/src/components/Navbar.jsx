@@ -1,13 +1,14 @@
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { CiMenuFries } from "react-icons/ci";
+import { RiMenu4Fill } from "react-icons/ri";
 import { MdClose } from "react-icons/md";
 import { AuthContext } from "../context/Authentication";
+import GradientButton from "./ui/GradientButton";
 
 const Navbar = () => {
   const { isAuth, setIsAuth, username } = useContext(AuthContext);
   const pre = "top-[-22rem] right-[-5rem]";
-  const post = "right-[1.5rem] top-20 shadow-xl bg-zinc-900";
+  const post = "right-[1.5rem] top-20 shadow-xl bg-gray-900";
   const [active, setActive] = useState(pre);
   const menuHandler = () => {
     active === pre ? setActive(post) : setActive(pre);
@@ -19,17 +20,17 @@ const Navbar = () => {
     localStorage.removeItem("username");
   }
 
-  const linkStyle = "text-[1.1rem] p-2 rounded-xl hover:bg-bak2 transition-all";
+  const linkStyle = "rounded-xl transition-all";
   return (
     <div className="fixed top-0 sm:top-5 left-0 w-full h-16 flex justify-center items-center z-50">
-      <div className="sm:bg-[rgb(0,0,0)] gap-4 backdrop-blur-md flex items-center justify-between sm:justify-normal sm:rounded-xl p-4 w-full sm:w-auto h-16">
-        <h2 className="text-2xl bg-bak2 bg-clip-text text-transparent font-bold">
-          Blog Tech
-        </h2>
+      <div className="backdrop-blur-md sm:bg-gradient-to-b from-neutral-900 to-slate-900 sm:border gap-4 flex items-center justify-between sm:justify-normal sm:rounded-full px-6 w-full sm:w-auto h-14">
+        <div className="sm:hidden">
+          <h1>Blog Tech</h1>
+        </div>
         <div
-          className={`absolute rounded-2xl sm:relative ${active} sm:top-0 sm:right-0 sm:shadow-none transition-all duration-300 w-44 sm:w-auto`}
+          className={`absolute rounded-2xl sm:relative ${active} sm:top-0 sm:right-0 sm:shadow-none transition-all duration-300 w-36 sm:w-auto`}
         >
-          <ul className="w-36 py-7 pl-5 flex flex-col gap-2 sm:gap-4 sm:flex-row sm:w-[fit-content] sm:p-0">
+          <ul className="w-28 py-5 pl-5 text-sm flex flex-col gap-4 sm:flex-row sm:w-[fit-content] sm:p-0 sm:items-center">
             <li className={linkStyle}>
               <Link href="/#home">Home</Link>
             </li>
@@ -42,27 +43,21 @@ const Navbar = () => {
             <li className={linkStyle}>
               <Link to="/blogs/create-blog">Create</Link>
             </li>
-            {!isAuth ? (
-              <>
-                <li className={linkStyle}>
-                  <Link to="/auth?mode=login">Login</Link>
-                </li>
-                <li className="text-[1.1rem] py-2 px-4 rounded-xl bg-bak2 text-white text-center">
-                  <Link to="/auth/?mode=signup">Sign Up</Link>
-                </li>
-              </>
-            ) : (
-              <>
-                <li className={linkStyle}>
-                  <Link to={`/users/${username}`}>Profile</Link>
-                </li>
-                <li className="text-[1.1rem] py-2 px-4 rounded-xl bg-bak2 text-white text-center">
-                  <Link to="/auth/?mode=signup" onClick={logoutHandler}>
-                    Logout
-                  </Link>
-                </li>
-              </>
-            )}
+            <li className={linkStyle}>
+              <Link to={!isAuth ? "/auth?mode=login" : `/users/${username}`}>
+                {!isAuth ? "Login" : "Profile"}
+              </Link>
+            </li>
+            <li>
+              <Link
+                to={!isAuth ? "/auth/?mode=signup" : "/auth/?mode=signup"}
+                onClick={isAuth && logoutHandler}
+              >
+                <GradientButton>
+                  {!isAuth ? "Sign Up" : "Logout"}
+                </GradientButton>
+              </Link>
+            </li>
           </ul>
         </div>
         <button
@@ -71,9 +66,9 @@ const Navbar = () => {
           onBlur={menuHandler}
         >
           {active === pre ? (
-            <CiMenuFries className="text-2xl cursor-pointer" />
+            <RiMenu4Fill className="text-xl cursor-pointer" />
           ) : (
-            <MdClose className="text-2xl cursor-pointer" />
+            <MdClose className="text-xl cursor-pointer" />
           )}
         </button>
       </div>

@@ -35,7 +35,7 @@ const Users = () => {
         </button>
       </form>
       {loading ? (
-        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500" />
+        <div className="col-span-3 animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-slate-500" />
       ) : (
         <div className="sm:w-[90%] md:w-[80%] xl:w-[75%]">
           <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5 justify-items-center">

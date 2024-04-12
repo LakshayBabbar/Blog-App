@@ -9,21 +9,22 @@ import useFetch from "../../hooks/useFetch";
 import useSend from "../../hooks/useSend";
 import Footer from "../../components/Footer";
 import { motion, useScroll } from "framer-motion";
+import { useToast } from "@/components/ui/use-toast";
 
 const Blogs = () => {
   const params = useParams();
-  const {
-    data,
-    loading: loadingBlog,
-    isError,
-  } = useFetch(`get-blog/${params.blogId}`, params.blogId);
+  const { data, loading: loadingBlog } = useFetch(
+    `get-blog/${params.blogId}`,
+    params.blogId
+  );
   const [comment, setComment] = useState("");
   const { data: commentData, refetch } = useFetch(
     `get-comments/${params.blogId}`,
     `comments-${params.blogId}`
   );
-  const { fetchData, loading } = useSend();
+  const { fetchData, loading, isError, error } = useSend();
   const history = useNavigate();
+  const { toast } = useToast();
 
   const deleteBlogHandler = async () => {
     const isSure = window.confirm("Are you sure to delete?");
@@ -33,6 +34,11 @@ const Blogs = () => {
         "DELETE"
       );
       console.log(response);
+      const date = new Date();
+      toast({
+        title: isError ? error : response.message,
+        description: !isError && date.toString(),
+      });
       history(-1);
     }
   };
@@ -62,10 +68,10 @@ const Blogs = () => {
     <div className="flex flex-col items-center mt-28">
       <motion.div
         style={{ scaleX: scrollYProgress }}
-        className="h-1 w-full fixed left-0 right-0 top-0 bg-purple-500 transform origin-left"
+        className="h-1 w-full fixed left-0 right-0 top-0 bg-slate-300 transform origin-left"
       />
       {loadingBlog ? (
-        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500" />
+        <div className="col-span-3 animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-slate-500" />
       ) : data && !isError ? (
         <div className="w-[85%] md:w-[70%] xl:w-[55%]">
           <div className="flex justify-between">

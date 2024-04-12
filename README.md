@@ -11,11 +11,11 @@ Welcome to Blog-Tech! This project is a full-stack web application built using t
 
 ## Tech Stack
 
-- **Frontend:** React.js, React Router
+- **Frontend:** React.js, React Query
 - **Backend:** Node.js, Express.js
-- **Database:** MongoDB
+- **Database:** MongoDB, Cloudinary
 - **Authentication:** JSON Web Tokens (JWT)
-- **Styling:** Tailwind CSS, Framer Motion
+- **Styling:** Tailwind CSS, ShadCn, Framer Motion
 
 ## Getting Started
 
@@ -39,4 +39,4 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 ## Contact
 
-For any questions or feedback, please contact [Lakshay Babbar].
+For any questions or feedback, please contact Lakshay Babbar.

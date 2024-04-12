@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/Authentication";
 import useSend from "../../hooks/useSend";
 import useFetch from "../../hooks/useFetch";
+import { Input } from "@/components/ui/input";
 import Button from "../../components/ui/Button";
 
 const EditUser = () => {
@@ -78,13 +79,13 @@ const EditUser = () => {
           />
           <div className="w-full space-y-2">
             <label htmlFor="username">Username</label>
-            <input
+            <Input
               type="text"
               name="username"
               id="username"
               value={data.username}
               onChange={() => alert("Username cannot be changed.")}
-              className="w-full border h-12 bg-zinc-800 rounded-md px-5 border-zinc-600 selection:bg-purple-300"
+              className="h-12"
             />
           </div>
           <div className="flex gap-5 w-full flex-col sm:flex-row">
@@ -92,63 +93,56 @@ const EditUser = () => {
               <label htmlFor="firstname" className="">
                 First Name
               </label>
-              <input
+              <Input
                 type="text"
                 name="firstname"
                 id="firstname"
                 value={data.firstname}
                 onChange={handelData}
-                className="w-full border h-12 bg-zinc-800 rounded-md px-5 border-zinc-600 selection:bg-purple-300"
+                className="h-12"
               />
             </div>
             <div className="flex flex-col flex-grow space-y-2">
               <label htmlFor="lastname">Last Name</label>
-              <input
+              <Input
                 type="text"
                 name="lastname"
                 id="lastname"
                 value={data.lastname}
                 onChange={handelData}
-                className="w-full border h-12 bg-zinc-800 rounded-md px-5 border-zinc-600 selection:bg-purple-300"
+                className="h-12"
               />
             </div>
           </div>
           <div className="w-full space-y-2">
             <label htmlFor="bio">Bio</label>
-            <input
+            <Input
               type="text"
               name="bio"
               id="bio"
               value={data.bio}
               onChange={handelData}
-              className="w-full border h-12 bg-zinc-800 rounded-md px-5 border-zinc-600 selection:bg-purple-300"
+              className="h-12"
             />
           </div>
           <div className="flex gap-5 w-full">
             <Button
               type="reset"
-              clickEvent={() => history(-1)}
-              style="flex-grow bg-zinc-800"
+              onClick={() => history(-1)}
+              className="flex-grow"
             >
               Cancel
             </Button>
-            <Button
-              type="submit"
-              disabled={loading}
-              style="flex-grow bg-zinc-800"
-            >
+            <Button type="submit" disabled={loading} className="flex-grow">
               Done
             </Button>
           </div>
         </form>
       )}
       <div className="w-[80%] md:w-[60%] xl:w-[40%]">
-        <button
-          className="h-10 px-4 rounded-md bg-red-600 text-white ring-red-300 active:ring-4"
-          onClick={accountCloseHandler}
-        >
+        <Button variant="destructive" onClick={accountCloseHandler}>
           Close Account
-        </button>
+        </Button>
       </div>
     </div>
   );

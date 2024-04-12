@@ -70,9 +70,9 @@ export const createBlog = async (req, res) => {
       },
       author: user.username,
     });
-    await newBlog.save();
+    const createdBlog = await newBlog.save();
     await fs.unlinkSync(req.file.path);
-    res.status(201).json({ message: "Blog created successfully" });
+    res.status(201).json(createdBlog);
   } catch (error) {
     console.error("Error creating blog:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -145,7 +145,7 @@ export const deleteBlog = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 

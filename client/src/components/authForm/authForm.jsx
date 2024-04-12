@@ -74,7 +74,7 @@ const AuthForm = () => {
           className={inputStyle}
           placeholder="Password"
         />
-        <Button type="submit" disabled={isSubmitting} style="w-full">
+        <Button type="submit" disabled={isSubmitting} className="w-full">
           {isSubmitting ? "Submitting..." : handleTitle}
         </Button>
         {data && <p className="text-red-600">{data.message}</p>}

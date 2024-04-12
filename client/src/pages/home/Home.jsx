@@ -1,12 +1,13 @@
 import { Link, useSearchParams } from "react-router-dom";
 import BlogsCard from "../../components/ui/BlogsCard";
-import { categories, capitalizeFirstLetter } from "../../utils/categories";
+import { categories, capitalizeFirstLetter } from "../../lib/categories";
 import useFetch from "../../hooks/useFetch";
 import useSend from "../../hooks/useSend";
 import { BiSearchAlt } from "react-icons/bi";
 import Footer from "../../components/Footer";
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { Input } from "@/components/ui/input";
 
 const Home = () => {
   const [searchParams] = useSearchParams();
@@ -34,18 +35,21 @@ const Home = () => {
 
   return (
     <div className="flex flex-col items-center justify-center" id="home">
-      <div className="ml-4 md:ml-0 w-[90%] md:w-[80%] xl:w-[65%] md:text-center flex flex-col gap-5 md:gap-8 md:items-center z-10 my-20 sm:my-[15vh]">
-        <h1 className="text-5xl leading-tight md:text-6xl md:leading-tight xl:text-7xl xl:leading-tight font-bold mt-5">
-          Unlock Your Creativity:{" "}
-          <span className="text-transparent bg-bak2 bg-clip-text">
-            Explore a World of Inspiration with Our Blogging Platform
-          </span>
+      <div className="absolute inset-0 -z-10 h-full w-full bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem] opacity-[0.05]" />
+      <div className="absolute size-96 bg-neutral-700 top-0 rounded-full blur-[150px] -z-50" />
+      <div className="w-full h-lvh flex flex-col gap-10 items-center justify-center md:text-center">
+        <h1
+          id="heading"
+          className="text-5xl md:w-[70%] md:text-6xl xl:text-7xl md:tracking-widest font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50 leading-tight px-4 md:px-0"
+        >
+          Elevating Insights: Journeys Through Words and Wonder
         </h1>
-        <div className="md:w-96 xl:w-[30rem] relative">
-          <input
+
+        <div className="w-11/12 md:w-[47%] relative">
+          <Input
             type="text"
-            className="h-12 w-full rounded-xl bg-transparent border-2 border-pink-500 outline-none px-5"
             placeholder="Search Blogs"
+            className="rounded-xl h-12 bg-transparent"
             ref={search}
             onChange={searchHandler}
             onFocus={() => setIsFocused(true)}
@@ -54,12 +58,12 @@ const Home = () => {
           <BiSearchAlt className="absolute h-11 top-1 right-5 text-xl" />
           {searchRes && searchRes.length > 0 && isFocused && (
             <motion.div
-              className="absolute backdrop-blur-xl bg-[rgba(0,0,0,0.44)] mt-5 p-5 rounded-xl max-h-80 overflow-y-scroll"
+              className="absolute backdrop-blur-xl bg-slate-950 mt-5 p-5 rounded-xl max-h-80 overflow-y-scroll"
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ type: "spring", stiffness: 200, damping: 10 }}
             >
-              <ul className="w-96 flex flex-col gap-2 items-start">
+              <ul className="w-[30rem] flex flex-col gap-2 items-start">
                 {searchRes.map((blogs) => {
                   return (
                     <li
@@ -80,30 +84,26 @@ const Home = () => {
             </motion.div>
           )}
         </div>
-        <p className="md:w-[70%] text-xl">
+        <p className="w-11/12 md:w-[50%] text-slate-300 tracking-widest w-">
           Ignite your passion for writing and share your voice with the world
           through our intuitive blogging platform. Unleash your creativity and
           join a community of fellow bloggers today.
         </p>
       </div>
-      <div className="absolute bg-bak2 size-36 top-0 left-0 xl:left-28 blur-[90px] sm:blur-[70px] xl:blur-[120px] animate-pulse-slow" />
-      <div className="absolute bg-bak2 size-20 bottom-40 right-0 sm:right-48 blur-[90px] sm:blur-[70px] xl:blur-[120px] rounded-full animate-bounce-slow" />
-      <div className="absolute bg-bak2 size-40 top-48 right-0 sm:right-30 blur-[90px] sm:blur-[70px] xl:blur-[120px] rounded-full animate-bounce-slow" />
-      <div className="absolute bg-bak2 size-28 bottom-0 sm:bottom-20 left-0 sm:left-20 blur-[90px] sm:blur-[70px] xl:blur-[120px] rounded-full animate-bounce-slow" />
-      <div className="absolute bg-bak2 md:size-36 bottom-60 blur-[90px] sm:blur-[70px] xl:blur-[120px] rounded-full animate-pulse-slow" />
-
       <div className="space-y-10 w-[80%] md:w-[52rem] xl:w-[80rem]" id="blogs">
-        <h1 className="mt-40 text-4xl">Categories</h1>
+        <h1 className="text-4xl">Categories</h1>
         <ul className="flex gap-4 flex-wrap">
           {categories.map((items, index) => {
             return (
-              <li
-                key={index}
-                className={`p-4 py-1 shadow-md rounded-full cursor-pointer ${
-                  category === items ? "bg-bak2" : "text-white bg-zinc-800"
-                }`}
-              >
-                <Link to={`/?category=${items}`}>
+              <li key={index}>
+                <Link
+                  to={`/?category=${items}`}
+                  className={`p-4 py-1 shadow-md rounded-full cursor-pointer ${
+                    category === items
+                      ? "bg-white text-black"
+                      : "text-white bg-zinc-800"
+                  }`}
+                >
                   {capitalizeFirstLetter(items)}
                 </Link>
               </li>
@@ -113,7 +113,7 @@ const Home = () => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 justify-items-center mt-20">
         {loading ? (
-          <div className="col-span-3 animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500" />
+          <div className="col-span-3 animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-slate-500" />
         ) : data && data.length > 0 ? (
           data.map((items) => {
             return <BlogsCard key={items._id} data={items} />;
