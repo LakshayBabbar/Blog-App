@@ -85,7 +85,7 @@ const Blogs = () => {
         <div className="w-[85%] md:w-[70%] xl:w-[55%]">
           <div className="flex justify-between">
             <span
-              className="flex gap-2 items-center underline cursor-pointer w-[fit-content]"
+              className="flex gap-2 items-center underline underline-offset-4 cursor-pointer w-[fit-content]"
               onClick={() => history(-1)}
             >
               <IoArrowBack />
@@ -105,7 +105,7 @@ const Blogs = () => {
             )}
           </div>
           <div className="flex flex-col gap-10 my-10">
-            <h1 className="text-4xl md:text-6xl font-arapey">{data.title}</h1>
+            <h1 className="text-4xl md:text-5xl font-arapey">{data.title}</h1>
             <img src={data.img.url} alt="blog image" />
             <div className="flex justify-between w-full">
               <Link

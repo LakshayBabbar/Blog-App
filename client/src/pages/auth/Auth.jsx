@@ -6,15 +6,15 @@ import { AuthContext } from "../../context/Authentication";
 const Auth = () => {
   const [searchParams] = useSearchParams();
   const redirect = useNavigate();
-  const { isAuth } = useContext(AuthContext);
+  const { isAuth, username } = useContext(AuthContext);
   useEffect(() => {
     if (searchParams.get("mode") !== ("login" || "signup")) {
       redirect("/auth?mode=signup");
     }
     if (isAuth) {
-      redirect("/");
+      redirect(`/users/${username}`);
     }
-  }, [searchParams, redirect, isAuth]);
+  }, [searchParams, redirect, isAuth, username]);
 
   return (
     <div className="flex items-center justify-center h-lvh">
@@ -61,6 +61,6 @@ export async function action({ request }) {
     }
     return resData;
   } catch (error) {
-    return { message: error.message }
+    return { message: error.message };
   }
 }
