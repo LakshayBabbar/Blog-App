@@ -5,6 +5,7 @@ import connectDB from "./config/db.js";
 import router from "./routes/router.js";
 import bodyParser from "body-parser";
 import { checkUser } from "./middleware/auth.js";
+import path from 'path';
 
 dotenv.config();
 const app = express();
@@ -13,6 +14,7 @@ connectDB();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(router);
+app.use(express.static('./public'))
 
 app.get("/", checkUser, (req, res) => {
   const username = res.locals.username;

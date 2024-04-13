@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import pkg from "validator";
+import dotenv from "dotenv";
 const { isEmail } = pkg;
+dotenv.config();
 
 const userSchema = mongoose.Schema(
   {
@@ -38,8 +40,7 @@ const userSchema = mongoose.Schema(
       },
       url: {
         type: String,
-        default:
-          "https://res.cloudinary.com/dfl8r2ylz/image/upload/v1710076946/qo4bnnmunbtain0qxinx.avif",
+        default: process.env.USER_IMAGE,
       },
     },
     bio: {

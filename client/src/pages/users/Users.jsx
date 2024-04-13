@@ -23,7 +23,7 @@ const Users = () => {
       <form className="relative w-96 xl:w-[25%]" onSubmit={handelSubmit}>
         <input
           type="search"
-          className="border border-zinc-600 w-full bg-zinc-800 h-14 px-5 rounded-full focus:outline-none"
+          className="border border-zinc-600 w-11/12 bg-zinc-800 h-14 px-5 rounded-full focus:outline-none"
           placeholder="Search User"
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -37,17 +37,15 @@ const Users = () => {
       {loading ? (
         <div className="col-span-3 animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-slate-500" />
       ) : (
-        <div className="sm:w-[90%] md:w-[80%] xl:w-[75%]">
-          <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5 justify-items-center">
-            {isError ? (
-              <h1 className="col-span-3">User not found.</h1>
-            ) : (
-              data &&
-              data.map((items) => {
-                return <UsersCard key={items._id} data={items} />;
-              })
-            )}
-          </div>
+        <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-8">
+          {isError ? (
+            <h1 className="col-span-3">User not found.</h1>
+          ) : (
+            data &&
+            data.map((items) => {
+              return <UsersCard key={items._id} data={items} />;
+            })
+          )}
         </div>
       )}
     </div>

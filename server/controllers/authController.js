@@ -39,6 +39,7 @@ export const registerController = async (req, res) => {
       lastname,
       email,
       password,
+      bio: `Hey I'am ${firstname}`,
     });
     res.status(201).json({
       success: "true",

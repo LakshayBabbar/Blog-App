@@ -49,7 +49,7 @@ const Home = () => {
           <Input
             type="text"
             placeholder="Search Blogs"
-            className="rounded-xl h-12 bg-transparent"
+            className="rounded-xl h-12 bg-transparent backdrop-blur-sm"
             ref={search}
             onChange={searchHandler}
             onFocus={() => setIsFocused(true)}
@@ -92,13 +92,13 @@ const Home = () => {
       </div>
       <div className="space-y-10 w-[80%] md:w-[52rem] xl:w-[80rem]" id="blogs">
         <h1 className="text-4xl">Categories</h1>
-        <ul className="flex gap-4 flex-wrap">
+        <ul className="flex gap-4 flex-wrap leading-loose">
           {categories.map((items, index) => {
             return (
               <li key={index}>
                 <Link
                   to={`/?category=${items}`}
-                  className={`p-4 py-1 shadow-md rounded-full cursor-pointer ${
+                  className={`px-4 py-2 shadow-md rounded-full cursor-pointer ${
                     category === items
                       ? "bg-white text-black"
                       : "text-white bg-zinc-800"

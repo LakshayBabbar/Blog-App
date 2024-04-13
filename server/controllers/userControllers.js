@@ -62,18 +62,12 @@ export const updateUser = async (req, res) => {
     bio: req.body.bio,
   };
   if (req.file) {
-    const outDatedData = await userModel.findOne({ _id: userId });
-    const oldProfileImg = outDatedData.profileImg.public_id;
-    if (oldProfileImg !== "qo4bnnmunbtain0qxinx") {
-      const deleteImg = await deleteOnCloudinary(oldProfileImg);
-      console.log(deleteImg);
-    }
     const newImg = await uploadOnCloudinary(req.file.path);
     data.profileImg = {
       public_id: newImg.public_id,
       url: newImg.secure_url,
     };
-    fs.unlinkSync(req.file.path);
+    await fs.unlinkSync(req.file.path);
   }
   await userModel.findOneAndUpdate(userId, data);
 };

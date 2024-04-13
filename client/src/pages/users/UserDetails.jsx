@@ -27,9 +27,9 @@ const UserDetails = () => {
               className="size-32 sm:size-36 rounded-full object-cover"
             />
             <div className="flex flex-col gap-2 sm:flex-row sm:gap-10">
-              <div className="space-y-1 sm:space-y-3">
+              <div className="space-y-1 sm:space-y-1">
                 <h1 className="text-xl font-[500]">{data.username}</h1>
-                <h2 className="flex items-center gap-2">
+                <h2 className="flex items-center gap-2 text-sm text-slate-400">
                   <FaRegCalendarAlt />
                   Date joined: {data.createdAt.substring(0, 10)}
                 </h2>

@@ -8,6 +8,8 @@ import {
 } from "react-router-dom";
 import { AuthContext } from "../../context/Authentication";
 import Button from "../ui/Button";
+import { Input } from "../ui/input";
+import { MdOutlineLogin } from "react-icons/md";
 
 const AuthForm = () => {
   const [searchParams] = useSearchParams();
@@ -16,7 +18,6 @@ const AuthForm = () => {
   const { setIsAuth, setUserName } = useContext(AuthContext);
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
-  const handleTitle = isLogin ? "Login" : "Sign Up";
 
   // checking if token is recieved and then change the authentication state to true
   useEffect(() => {
@@ -26,34 +27,33 @@ const AuthForm = () => {
     }
   }, [data, setIsAuth, setUserName]);
 
-  const inputStyle =
-    "w-full border h-12 bg-zinc-800 rounded-md px-5 border-zinc-600 selection:bg-purple-300";
+  const inputStyle = "h-12 text-md";
   return (
-    <div className="w-[90%] sm:w-[fit-content] p-8 gap-4 border border-zinc-700 rounded-2xl flex flex-col items-center">
-      <div>
-        <h1 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
-          Welcome to Blog-Tech
-        </h1>
-        <h1 className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
-          {isLogin
-            ? "Login to manage your profile or create blogs."
-            : "Sign Up to join our community."}
-        </h1>
-      </div>
+    <div className="w-[90%] sm:w-[fit-content] gap-4 rounded-2xl flex flex-col items-center">
       <Form
         method="post"
-        className="flex flex-col gap-5 mt-4 items-center w-[72vw] sm:w-[25rem]"
+        className="flex flex-col gap-5 mt-4 w-11/12 sm:w-[25rem]"
       >
+        <div>
+          <h1 className="font-bold text-3xl text-neutral-800 dark:text-neutral-200">
+            {isLogin ? "Log in to Blog Tech" : "Sign Up in to Blog Tech"}
+          </h1>
+          <p className="text-sm max-w-sm mt-2 text-slate-200">
+            {isLogin
+              ? "Log in to manage your profile or blogs."
+              : "Sign Up to join our community."}
+          </p>
+        </div>
         {!isLogin && (
           <>
             <div className="flex gap-3">
-              <input
+              <Input
                 type="text"
                 name="firstname"
                 className={inputStyle}
                 placeholder="First Name"
               />
-              <input
+              <Input
                 type="text"
                 name="lastname"
                 className={inputStyle}
@@ -62,32 +62,38 @@ const AuthForm = () => {
             </div>
           </>
         )}
-        <input
+        <Input
           type="email"
           name="email"
           className={inputStyle}
-          placeholder="Email"
+          placeholder="Email Address"
         />
-        <input
+        <Input
           type="password"
           name="password"
           className={inputStyle}
           placeholder="Password"
         />
-        <Button type="submit" disabled={isSubmitting} className="w-full">
-          {isSubmitting ? "Submitting..." : handleTitle}
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full h-12 text-md gap-2"
+        >
+          <MdOutlineLogin />
+          {isSubmitting ? "Submitting..." : isLogin ? "Login" : "Sign Up"}
         </Button>
         {data && <p className="text-red-600">{data.message}</p>}
       </Form>
-      {isLogin ? (
-        <p>
-          Need an account? <Link to="?mode=signup">Sign Up </Link>
-        </p>
-      ) : (
-        <p>
-          Already have an account? <Link to="?mode=login">Login</Link>
-        </p>
-      )}
+      <div className="w-full">
+        <Link
+          to={`?mode=${isLogin ? "signup" : "login"}`}
+          className="text-blue-500 hover:underline underline-offset-4"
+        >
+          {isLogin
+            ? "Need an account? Sign Up"
+            : "Already have an account? Login"}
+        </Link>
+      </div>
     </div>
   );
 };
