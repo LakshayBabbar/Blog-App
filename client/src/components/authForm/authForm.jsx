@@ -10,6 +10,7 @@ import { AuthContext } from "../../context/Authentication";
 import Button from "../ui/Button";
 import { Input } from "../ui/input";
 import { MdOutlineLogin } from "react-icons/md";
+import { useToast } from "../ui/use-toast";
 
 const AuthForm = () => {
   const [searchParams] = useSearchParams();
@@ -18,6 +19,7 @@ const AuthForm = () => {
   const { setIsAuth, setUserName } = useContext(AuthContext);
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
+  const { toast } = useToast();
 
   // checking if token is recieved and then change the authentication state to true
   useEffect(() => {
@@ -25,7 +27,14 @@ const AuthForm = () => {
       setIsAuth(true);
       setUserName(data.username);
     }
-  }, [data, setIsAuth, setUserName]);
+    if (data) {
+      const date = new Date();
+      toast({
+        title: data.message,
+        description: date.toString(),
+      });
+    }
+  }, [data, setIsAuth, setUserName, toast]);
 
   const inputStyle = "h-12 text-md";
   return (
@@ -83,17 +92,17 @@ const AuthForm = () => {
           {isSubmitting ? "Submitting..." : isLogin ? "Login" : "Sign Up"}
         </Button>
         {data && <p className="text-red-600">{data.message}</p>}
+        <div className="w-full">
+          <Link
+            to={`?mode=${isLogin ? "signup" : "login"}`}
+            className="text-blue-500 hover:underline underline-offset-4"
+          >
+            {isLogin
+              ? "Need an account? Sign Up"
+              : "Already have an account? Login"}
+          </Link>
+        </div>
       </Form>
-      <div className="w-full">
-        <Link
-          to={`?mode=${isLogin ? "signup" : "login"}`}
-          className="text-blue-500 hover:underline underline-offset-4"
-        >
-          {isLogin
-            ? "Need an account? Sign Up"
-            : "Already have an account? Login"}
-        </Link>
-      </div>
     </div>
   );
 };

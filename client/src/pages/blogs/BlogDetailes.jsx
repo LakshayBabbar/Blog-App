@@ -10,6 +10,8 @@ import useSend from "../../hooks/useSend";
 import Footer from "../../components/Footer";
 import { motion, useScroll } from "framer-motion";
 import { useToast } from "@/components/ui/use-toast";
+import { GradientButton } from "@/components/ui/GradientButton";
+import { Helmet } from "react-helmet";
 
 const Blogs = () => {
   const params = useParams();
@@ -66,6 +68,13 @@ const Blogs = () => {
 
   return (
     <div className="flex flex-col items-center mt-28">
+      <Helmet>
+        <title>{data ? data.title : "Blog Not Found"}</title>
+        <meta
+          name="description"
+          content={data ? data.description.substring(0, 200) : "Blog Not Found"}
+        />
+      </Helmet>
       <motion.div
         style={{ scaleX: scrollYProgress }}
         className="h-1 w-full fixed left-0 right-0 top-0 bg-slate-300 transform origin-left"
@@ -124,17 +133,15 @@ const Blogs = () => {
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
                 />
-                <button
-                  type="submit"
-                  className="absolute right-0 px-4 py-1 rounded-md disabled:brightness-50"
-                  disabled={loading}
-                >
-                  Add
-                </button>
+                <div className="absolute right-0">
+                  <GradientButton type="submit" disabled={loading}>
+                    Add
+                  </GradientButton>
+                </div>
               </form>
               {commentData && commentData.length > 0 ? (
                 commentData.map((item) => (
-                  <div key={item._id} className="text-lg">
+                  <div key={item._id} className="text-sm text-slate-300">
                     <div className="flex justify-between">
                       <Link
                         to={`/users/${item.username}`}
@@ -142,7 +149,7 @@ const Blogs = () => {
                       >
                         @{item.username}
                       </Link>
-                      <div className="flex items-center gap-1">
+                      <div className="flex items-center gap-1 ">
                         <span>{item.createdAt.substring(0, 10)}</span>
                         {item.isUser && (
                           <button
@@ -157,7 +164,7 @@ const Blogs = () => {
                         )}
                       </div>
                     </div>
-                    <p>{item.description}</p>
+                    <p className="text-slate-100">{item.description}</p>
                   </div>
                 ))
               ) : (

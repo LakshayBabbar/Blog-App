@@ -34,18 +34,20 @@ const Home = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center" id="home">
+    <div className="flex flex-col items-center justify-center">
       <div className="absolute inset-0 -z-10 h-full w-full bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem] opacity-[0.05]" />
       <div className="absolute size-96 bg-neutral-700 top-0 rounded-full blur-[150px] -z-50" />
-      <div className="w-full h-lvh flex flex-col gap-10 items-center justify-center md:text-center">
-        <h1
-          id="heading"
-          className="text-5xl md:w-[70%] md:text-6xl xl:text-7xl md:tracking-widest font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50 leading-tight px-4 md:px-0"
-        >
-          Elevating Insights: Journeys Through Words and Wonder
+      <div className="my-44 sm:my-52 flex flex-col gap-14 items-center justify-center text-center">
+        <h1 className="text-5xl md:w-[75%] md:text-6xl xl:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50 leading-tight px-4 md:px-0">
+          Start Sharing Your Voice Today!
         </h1>
-
-        <div className="w-11/12 md:w-[47%] relative">
+        <p className="w-11/12 md:w-[55%] sm:text-xl text-slate-400">
+          Ignite your passion for writing and share your voice with the world
+          through our{" "}
+          <span className="text-slate-100">intuitive blogging platform.</span>{" "}
+          Unleash your creativity and join a community of fellow bloggers today.
+        </p>
+        <div className="w-4/5 md:w-[40%] relative">
           <Input
             type="text"
             placeholder="Search Blogs"
@@ -84,21 +86,16 @@ const Home = () => {
             </motion.div>
           )}
         </div>
-        <p className="w-11/12 md:w-[50%] text-slate-300 tracking-widest w-">
-          Ignite your passion for writing and share your voice with the world
-          through our intuitive blogging platform. Unleash your creativity and
-          join a community of fellow bloggers today.
-        </p>
       </div>
-      <div className="space-y-10 w-[80%] md:w-[52rem] xl:w-[80rem]" id="blogs">
-        <h1 className="text-4xl">Categories</h1>
+      <div className="space-y-10 w-[80%] md:w-[50rem] xl:w-[80rem]" id="blogs">
+        <h1 className="text-3xl sm:text-4xl">Categories</h1>
         <ul className="flex gap-4 flex-wrap leading-loose">
           {categories.map((items, index) => {
             return (
               <li key={index}>
                 <Link
                   to={`/?category=${items}`}
-                  className={`px-4 py-2 shadow-md rounded-full cursor-pointer ${
+                  className={`px-4 py-[6px] shadow-md rounded-full cursor-pointer ${
                     category === items
                       ? "bg-white text-black"
                       : "text-white bg-zinc-800"

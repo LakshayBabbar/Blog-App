@@ -99,11 +99,6 @@
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
 }
-@media (min-width: 720px) {
-  #heading {
-    line-height: 5rem;
-  }
-}
 * {
   scrollbar-width: auto;
 }

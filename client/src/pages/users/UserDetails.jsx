@@ -3,7 +3,7 @@ import BlogsCard from "../../components/ui/BlogsCard";
 import { FaRegEdit } from "react-icons/fa";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import useFetch from "../../hooks/useFetch";
-import GradientButton from "@/components/ui/GradientButton";
+import { GradientButton } from "@/components/ui/GradientButton";
 
 const UserDetails = () => {
   const params = useParams();
@@ -24,7 +24,7 @@ const UserDetails = () => {
             <img
               src={data.profileImg.url}
               alt="Profile pic"
-              className="size-32 sm:size-36 rounded-full object-cover"
+              className="size-32 rounded-full object-cover"
             />
             <div className="flex flex-col gap-2 sm:flex-row sm:gap-10">
               <div className="space-y-1 sm:space-y-1">
@@ -41,7 +41,7 @@ const UserDetails = () => {
               <div>
                 {data.auth && (
                   <GradientButton
-                    clickEvent={() => redirect(`/users/${data.username}/edit`)}
+                    onClick={() => redirect(`/users/${data.username}/edit`)}
                   >
                     <span className="flex items-center gap-2">
                       <FaRegEdit /> Edit

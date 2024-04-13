@@ -2,6 +2,7 @@ import { useState } from "react";
 import UsersCard from "../../components/ui/UsersCard";
 import { BiSearchAlt } from "react-icons/bi";
 import useFetch from "../../hooks/useFetch";
+import { Input } from "@/components/ui/input";
 
 const Users = () => {
   const [input, setInput] = useState("all");
@@ -19,17 +20,19 @@ const Users = () => {
   };
 
   return (
-    <div className="my-24 sm:my-36 flex flex-col gap-14 items-center">
-      <form className="relative w-96 xl:w-[25%]" onSubmit={handelSubmit}>
-        <input
-          type="search"
-          className="border border-zinc-600 w-11/12 bg-zinc-800 h-14 px-5 rounded-full focus:outline-none"
+    <div className="my-24 sm:my-36 flex flex-col gap-10 items-center">
+      <div className="absolute top-0 z-[-2] h-screen w-screen bg-[radial-gradient(#ffffff33_1px,#010816_1px)] bg-[size:20px_20px] opacity-[0.6]" />
+      <h1 className="text-4xl font-[500] w-4/5 text-slate-100 sm:w-[65%] text-center">Discover and Connect with Talented Content Creators!</h1>
+      <form className="relative w-4/5 xl:w-[25%]" onSubmit={handelSubmit}>
+        <Input
+          type="text"
           placeholder="Search User"
+          className="h-12"
           onChange={(e) => setSearch(e.target.value)}
         />
         <button
           type="submit"
-          className="h-12 px-5 text-xl absolute top-1 right-1"
+          className="h-12 px-5 text-xl absolute top-0 right-1"
         >
           <BiSearchAlt />
         </button>
