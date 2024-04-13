@@ -1,9 +1,10 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import BlogsCard from "../../components/ui/BlogsCard";
 import { FaRegEdit } from "react-icons/fa";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import useFetch from "../../hooks/useFetch";
 import { GradientButton } from "@/components/ui/GradientButton";
+import Button from "@/components/ui/Button";
 
 const UserDetails = () => {
   const params = useParams();
@@ -52,7 +53,18 @@ const UserDetails = () => {
             </div>
           </div>
           <hr className="w-full border-zinc-600" />
-          <h1 className="text-3xl">Blogs</h1>
+          <div
+            className={`flex justify-${
+              data.auth ? "between" : "center"
+            } w-4/5 md:w-full`}
+          >
+            <h1 className="text-3xl font-[500]">Blogs</h1>
+            {data.auth && (
+              <Button variant="outline">
+                <Link to="/blogs/create-blog">New Blog</Link>
+              </Button>
+            )}
+          </div>
           {data.blogs.length > 0 ? (
             <div className="grid md:grid-cols-2 xl:grid-cols-3 justify-items-center gap-8">
               {data.blogs.map((items) => {

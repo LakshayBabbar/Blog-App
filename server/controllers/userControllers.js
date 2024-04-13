@@ -55,21 +55,26 @@ export const getAllUsers = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
-  const userId = res.locals.user._id;
-  const data = {
-    firstname: req.body.firstname,
-    lastname: req.body.lastname,
-    bio: req.body.bio,
-  };
-  if (req.file) {
-    const newImg = await uploadOnCloudinary(req.file.path);
-    data.profileImg = {
-      public_id: newImg.public_id,
-      url: newImg.secure_url,
+  try {
+    const userId = res.locals.user._id;
+    const data = {
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      bio: req.body.bio,
     };
-    await fs.unlinkSync(req.file.path);
+    if (req.file) {
+      const newImg = await uploadOnCloudinary(req.file.path);
+      data.profileImg = {
+        public_id: newImg.public_id,
+        url: newImg.secure_url,
+      };
+      await fs.unlinkSync(req.file.path);
+    }
+    await userModel.findOneAndUpdate(userId, data);
+    return res.status(200).json({ message: "Profile Updated!" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
   }
-  await userModel.findOneAndUpdate(userId, data);
 };
 
 export const deleteUser = async (req, res) => {

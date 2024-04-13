@@ -4,6 +4,7 @@ import { RiMenu4Fill } from "react-icons/ri";
 import { MdClose } from "react-icons/md";
 import { AuthContext } from "../context/Authentication";
 import { GradientButton } from "./ui/GradientButton";
+import { useToast } from "./ui/use-toast";
 
 const Navbar = () => {
   const { isAuth, setIsAuth, username } = useContext(AuthContext);
@@ -13,11 +14,16 @@ const Navbar = () => {
   const menuHandler = () => {
     active === pre ? setActive(post) : setActive(pre);
   };
+  const { toast } = useToast();
 
   function logoutHandler() {
     setIsAuth(false);
     localStorage.removeItem("authToken");
     localStorage.removeItem("username");
+    toast({
+      title: "Logout Successfully!",
+      description: "Log in to manage your profile or blogs.",
+    });
   }
 
   const linkStyle = "rounded-xl transition-all";

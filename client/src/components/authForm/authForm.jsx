@@ -88,8 +88,8 @@ const AuthForm = () => {
           disabled={isSubmitting}
           className="w-full h-12 text-md gap-2"
         >
-          <MdOutlineLogin />
           {isSubmitting ? "Submitting..." : isLogin ? "Login" : "Sign Up"}
+          <MdOutlineLogin />
         </Button>
         {data && <p className="text-red-600">{data.message}</p>}
         <div className="w-full">

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const useFetch = () => {
+const useSend = () => {
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -37,7 +37,7 @@ const useFetch = () => {
       if (!res.ok) {
         setIsError(true);
         const errorData = await res.json();
-        setError(errorData.message)
+        setError(errorData.message);
         throw new Error(errorData.message || "Error while fetching data.");
       }
 
@@ -45,7 +45,7 @@ const useFetch = () => {
       setLoading(false);
       return resData;
     } catch (error) {
-      console.log(error)
+      console.log(error);
       setLoading(false);
     }
   };
@@ -53,4 +53,4 @@ const useFetch = () => {
   return { fetchData, isError, error, loading };
 };
 
-export default useFetch;
+export default useSend;

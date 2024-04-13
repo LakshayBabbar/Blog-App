@@ -6,6 +6,7 @@ import useSend from "../../hooks/useSend";
 import useFetch from "../../hooks/useFetch";
 import { Input } from "@/components/ui/input";
 import Button from "../../components/ui/Button";
+import { useToast } from "@/components/ui/use-toast";
 
 const EditUser = () => {
   const params = useParams();
@@ -13,8 +14,10 @@ const EditUser = () => {
   const { setIsAuth } = useContext(AuthContext);
   const [img, setImg] = useState(null);
   const { fetchData, loading } = useSend();
+  const { fetchData: deleteData, loading: loading2 } = useSend();
   const { data: fd } = useFetch(`users/${params.username}`, params.username);
   const [data, setData] = useState();
+  const { toast } = useToast();
   useEffect(() => setData(fd), [fd]);
 
   const handelData = (e) => {
@@ -26,17 +29,22 @@ const EditUser = () => {
       };
     });
   };
-
+  const formData = new FormData();
   const submitHandler = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
     formData.append("firstname", data.firstname);
     formData.append("lastname", data.lastname);
     formData.append("bio", data.bio);
     if (img) {
       formData.append("img", img);
     }
-    await fetchData("update-user", "PUT", formData);
+    const res = await fetchData("update-user", "PUT", formData);
+    const date = new Date();
+    res &&
+      toast({
+        title: res.message,
+        description: date.toString(),
+      });
     formData.delete("firstname");
     formData.delete("lastname");
     formData.delete("bio");
@@ -47,10 +55,16 @@ const EditUser = () => {
   const accountCloseHandler = async () => {
     const isSure = confirm("Are you sure to close your account?");
     if (isSure) {
-      await fetchData("delete-user", "DELETE");
+      const res = await deleteData("delete-user", "DELETE");
       setIsAuth(false);
       localStorage.removeItem("authToken");
       localStorage.removeItem("username");
+      const date = new Date();
+      res &&
+        toast({
+          title: res.message,
+          description: date.toString(),
+        });
       return history("/", { replace: true });
     }
   };
@@ -140,7 +154,11 @@ const EditUser = () => {
         </form>
       )}
       <div className="w-[80%] md:w-[60%] xl:w-[40%]">
-        <Button variant="destructive" onClick={accountCloseHandler}>
+        <Button
+          variant="destructive"
+          onClick={accountCloseHandler}
+          disabled={loading2}
+        >
           Close Account
         </Button>
       </div>
