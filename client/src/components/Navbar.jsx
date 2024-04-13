@@ -23,7 +23,7 @@ const Navbar = () => {
   const linkStyle = "rounded-xl transition-all";
   return (
     <div className="fixed top-0 sm:top-5 left-0 w-full h-16 flex justify-center items-center z-50">
-      <div className="backdrop-blur-md border-b sm:bg-gradient-to-b from-neutral-900 to-slate-900 sm:border gap-4 flex items-center justify-between sm:justify-normal sm:rounded-full px-6 w-full sm:w-auto h-16 sm:h-14">
+      <div className="backdrop-blur-lg border-b sm:bg-gradient-to-b from-neutral-900 to-slate-900 sm:border gap-4 flex items-center justify-between sm:justify-normal sm:rounded-full px-6 w-full sm:w-auto h-16 sm:h-14">
         <div className="sm:hidden">
           <h1>Blog Tech</h1>
         </div>

@@ -14,7 +14,7 @@ connectDB();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(router);
-app.use(express.static('./public'))
+app.use(express.static('./uploads'))
 
 app.get("/", checkUser, (req, res) => {
   const username = res.locals.username;
