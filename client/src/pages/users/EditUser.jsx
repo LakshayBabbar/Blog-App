@@ -7,6 +7,7 @@ import useFetch from "../../hooks/useFetch";
 import { Input } from "@/components/ui/input";
 import Button from "../../components/ui/Button";
 import { useToast } from "@/components/ui/use-toast";
+import AlertButton from "@/components/ui/AlertButton";
 
 const EditUser = () => {
   const params = useParams();
@@ -53,20 +54,17 @@ const EditUser = () => {
   };
 
   const accountCloseHandler = async () => {
-    const isSure = confirm("Are you sure to close your account?");
-    if (isSure) {
-      const res = await deleteData("delete-user", "DELETE");
-      setIsAuth(false);
-      localStorage.removeItem("authToken");
-      localStorage.removeItem("username");
-      const date = new Date();
-      res &&
-        toast({
-          title: res.message,
-          description: date.toString(),
-        });
-      return history("/", { replace: true });
-    }
+    const res = await deleteData("delete-user", "DELETE");
+    setIsAuth(false);
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("username");
+    const date = new Date();
+    res &&
+      toast({
+        title: res.message,
+        description: date.toString(),
+      });
+    return history("/", { replace: true });
   };
 
   return (
@@ -154,13 +152,13 @@ const EditUser = () => {
         </form>
       )}
       <div className="w-[80%] md:w-[60%] xl:w-[40%]">
-        <Button
+        <AlertButton
           variant="destructive"
           onClick={accountCloseHandler}
           disabled={loading2}
         >
           Close Account
-        </Button>
+        </AlertButton>
       </div>
     </div>
   );

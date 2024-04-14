@@ -49,10 +49,10 @@ export async function action({ request }) {
       response.status === 401 ||
       response.status === 404
     ) {
-      return resData;
+      return {error: resData.message};
     }
     if (!response.ok) {
-      return { message: "Could not authenticate user." };
+      return { error: "Could not authenticate user." };
     }
     if ("authToken" in resData) {
       localStorage.setItem("authToken", "Bearer " + resData.authToken);
@@ -61,6 +61,6 @@ export async function action({ request }) {
     }
     return resData;
   } catch (error) {
-    return { message: error.message };
+    return { error: error.message };
   }
 }

@@ -27,7 +27,7 @@ const AuthForm = () => {
       setIsAuth(true);
       setUserName(data.username);
     }
-    if (data) {
+    if (data && "message" in data) {
       const date = new Date();
       toast({
         title: data.message,
@@ -91,7 +91,7 @@ const AuthForm = () => {
           {isSubmitting ? "Submitting..." : isLogin ? "Login" : "Sign Up"}
           <MdOutlineLogin />
         </Button>
-        {data && <p className="text-red-600">{data.message}</p>}
+        {data && <p className="text-red-600">{data.error}</p>}
         <div className="w-full">
           <Link
             to={`?mode=${isLogin ? "signup" : "login"}`}

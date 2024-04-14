@@ -12,6 +12,7 @@ import { motion, useScroll } from "framer-motion";
 import { useToast } from "@/components/ui/use-toast";
 import { GradientButton } from "@/components/ui/GradientButton";
 import { Helmet } from "react-helmet";
+import AlertButton from "@/components/ui/AlertButton";
 
 const Blogs = () => {
   const params = useParams();
@@ -29,20 +30,13 @@ const Blogs = () => {
   const { toast } = useToast();
 
   const deleteBlogHandler = async () => {
-    const isSure = window.confirm("Are you sure to delete?");
-    if (isSure) {
-      const response = await fetchData(
-        `delete-blog/${params.blogId}`,
-        "DELETE"
-      );
-      console.log(response);
-      const date = new Date();
-      toast({
-        title: isError ? error : response.message,
-        description: !isError && date.toString(),
-      });
-      history(-1);
-    }
+    const response = await fetchData(`delete-blog/${params.blogId}`, "DELETE");
+    const date = new Date();
+    toast({
+      title: isError ? error : response.message,
+      description: !isError && date.toString(),
+    });
+    history(-1);
   };
 
   const handleComment = async (e) => {
@@ -93,10 +87,13 @@ const Blogs = () => {
             </span>
             {data.auth && (
               <div className="flex gap-2 text-xl cursor-pointer">
-                <MdDelete
-                  className="text-red-500"
+                <AlertButton
                   onClick={deleteBlogHandler}
-                />
+                  className="p-0 h-auto"
+                  description="This action cannot be undone. This will permanently delete your blog and remove your data from our servers."
+                >
+                  <MdDelete className="text-xl text-red-500" />
+                </AlertButton>
                 <FaEdit
                   className="text-green-600"
                   onClick={() => history(`/blogs/${params.blogId}/edit`)}
