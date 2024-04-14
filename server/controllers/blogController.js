@@ -3,7 +3,6 @@ import {
   uploadOnCloudinary,
   deleteOnCloudinary,
 } from "../config/cloudinary.js";
-import fs from "node:fs";
 import mongoose from "mongoose";
 
 export const getAllBlogs = async (req, res) => {
@@ -53,25 +52,22 @@ export const createBlog = async (req, res) => {
 
   try {
     // Upload image to Cloudinary
-    const imgUrl = await uploadOnCloudinary(req.file.path);
-
-    if (!imgUrl) {
+    const cloudinaryRes = await uploadOnCloudinary(req.file);
+    if (!cloudinaryRes) {
       throw new Error("Failed to upload image to Cloudinary");
     }
-
     // Create blog entry
     const newBlog = new blogs({
       title,
       description,
       category,
       img: {
-        public_id: imgUrl.public_id,
-        url: imgUrl.secure_url,
+        public_id: cloudinaryRes.public_id,
+        url: cloudinaryRes.url,
       },
       author: user.username,
     });
     const createdBlog = await newBlog.save();
-    await fs.unlinkSync(req.file.path);
     res.status(201).json(createdBlog);
   } catch (error) {
     console.error("Error creating blog:", error);
@@ -91,16 +87,15 @@ export const updateBlog = async (req, res) => {
     if (req.file) {
       const oldBlogData = await blogs.findOne({ _id: blogId });
       const outDatedImg = oldBlogData.img.public_id;
-      const deleteImg = await deleteOnCloudinary(outDatedImg);
-      const newImg = await uploadOnCloudinary(req.file.path);
+      await deleteOnCloudinary(outDatedImg);
+      const newImg = await uploadOnCloudinary(req.file);
       UpdatedData.img = {
         public_id: newImg.public_id,
-        url: newImg.secure_url,
+        url: newImg.url,
       };
       if (!newImg) {
         throw new Error("Failed to upload image to Cloudinary");
       }
-      fs.unlinkSync(req.file.path);
     }
     const updatedBlog = await blogs.findOneAndUpdate(
       { _id: blogId, author: user },

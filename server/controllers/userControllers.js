@@ -4,7 +4,6 @@ import {
   uploadOnCloudinary,
   deleteOnCloudinary,
 } from "../config/cloudinary.js";
-import fs from "node:fs";
 
 export const getUserDetails = async (req, res) => {
   try {
@@ -63,12 +62,11 @@ export const updateUser = async (req, res) => {
       bio: req.body.bio,
     };
     if (req.file) {
-      const newImg = await uploadOnCloudinary(req.file.path);
+      const newImg = await uploadOnCloudinary(req.file);
       data.profileImg = {
         public_id: newImg.public_id,
-        url: newImg.secure_url,
+        url: newImg.url,
       };
-      await fs.unlinkSync(req.file.path);
     }
     await userModel.findOneAndUpdate(userId, data);
     return res.status(200).json({ message: "Profile Updated!" });

@@ -1,5 +1,5 @@
 import express from "express";
-import upload from "../middleware/multer.js";
+import multer from "multer";
 import { authentication, checkUser } from "../middleware/auth.js";
 import {
   registerController,
@@ -26,6 +26,8 @@ import {
 } from "../controllers/commentController.js";
 
 const router = express.Router();
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 // Authentication Routes
 router.post("/signup", registerController);
