@@ -138,7 +138,7 @@ const Blogs = () => {
               </form>
               {commentData && commentData.length > 0 ? (
                 commentData.map((item) => (
-                  <div key={item._id} className="text-sm text-slate-300">
+                  <div key={item._id} className="text-slate-300">
                     <div className="flex justify-between">
                       <Link
                         to={`/users/${item.username}`}

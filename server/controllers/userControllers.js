@@ -1,4 +1,5 @@
 import blogs from "../models/blogModel.js";
+import commentModel from "../models/commentModel.js";
 import userModel from "../models/userModel.js";
 import {
   uploadOnCloudinary,
@@ -89,6 +90,8 @@ export const deleteUser = async (req, res) => {
     if (allBlogs.length > 0) {
       const imageUrls = allBlogs.map((blog) => blog.img.public_id);
       await deleteBlogImages(imageUrls);
+      const blogsId = allBlogs.map((item) => item._id);
+      await commentModel.deleteMany({ blogId: { $in: blogsId } });
       await blogs.deleteMany({ author: username });
     }
 

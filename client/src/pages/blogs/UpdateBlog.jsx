@@ -6,6 +6,7 @@ import useFetch from "../../hooks/useFetch";
 import useSend from "../../hooks/useSend";
 import ReactQuill from "react-quill";
 import Button from "../../components/ui/Button";
+import { Input } from "@/components/ui/input";
 import "react-quill/dist/quill.snow.css";
 
 const UpdateBlog = () => {
@@ -44,9 +45,9 @@ const UpdateBlog = () => {
           className="w-[85%] xl:w-[50rem] flex flex-col gap-10 items-center"
           onSubmit={handleSubmit}
         >
-          <input
+          <Input
             type="text"
-            className="w-full border h-12 bg-zinc-800 rounded-md px-5 border-zinc-600 selection:bg-purple-300"
+            className="w-full h-12"
             value={data.title}
             onChange={(e) =>
               setData((prev) => {

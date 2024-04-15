@@ -70,6 +70,7 @@ const Navbar = () => {
           className="sm:hidden"
           onClick={menuHandler}
           onBlur={menuHandler}
+          aria-label="Navigation Menu"
         >
           {active === pre ? (
             <RiMenu4Fill className="text-xl cursor-pointer" />

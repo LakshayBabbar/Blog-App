@@ -3,6 +3,7 @@ import {
   uploadOnCloudinary,
   deleteOnCloudinary,
 } from "../config/cloudinary.js";
+import commentModel from "../models/commentModel.js";
 import mongoose from "mongoose";
 
 export const getAllBlogs = async (req, res) => {
@@ -130,6 +131,7 @@ export const deleteBlog = async (req, res) => {
 
     const BlogImg = blogData.img.public_id;
     await deleteOnCloudinary(BlogImg);
+    await commentModel.deleteMany({ blogId: blogId });
     await blogs.findOneAndDelete({
       _id: blogId,
       author: user,
