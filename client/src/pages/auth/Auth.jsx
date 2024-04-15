@@ -36,7 +36,7 @@ export async function action({ request }) {
       email: data.get("email"),
       password: data.get("password"),
     };
-    const response = await fetch(import.meta.env.VITE_BASE_URL + mode, {
+    const response = await fetch(import.meta.env.VITE_BASE_URL + `/${mode}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -49,7 +49,7 @@ export async function action({ request }) {
       response.status === 401 ||
       response.status === 404
     ) {
-      return {error: resData.message};
+      return { error: resData.message };
     }
     if (!response.ok) {
       return { error: "Could not authenticate user." };

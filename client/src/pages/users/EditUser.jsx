@@ -16,7 +16,7 @@ const EditUser = () => {
   const [img, setImg] = useState(null);
   const { fetchData, loading } = useSend();
   const { fetchData: deleteData, loading: loading2 } = useSend();
-  const { data: fd } = useFetch(`users/${params.username}`, params.username);
+  const { data: fd } = useFetch(`/users/${params.username}`, params.username);
   const [data, setData] = useState();
   const { toast } = useToast();
   useEffect(() => setData(fd), [fd]);
@@ -39,7 +39,7 @@ const EditUser = () => {
     if (img) {
       formData.append("img", img);
     }
-    const res = await fetchData("update-user", "PUT", formData);
+    const res = await fetchData("/update-user", "PUT", formData);
     const date = new Date();
     res &&
       toast({
@@ -54,7 +54,7 @@ const EditUser = () => {
   };
 
   const accountCloseHandler = async () => {
-    const res = await deleteData("delete-user", "DELETE");
+    const res = await deleteData("/delete-user", "DELETE");
     setIsAuth(false);
     localStorage.removeItem("authToken");
     localStorage.removeItem("username");

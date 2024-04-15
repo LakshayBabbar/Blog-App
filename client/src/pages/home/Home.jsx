@@ -16,13 +16,13 @@ const Home = () => {
   const [searchRes, setSearchRes] = useState([]);
   const [isFocused, setIsFocused] = useState(false);
   const { data, loading } = useFetch(
-    `get-blogs/?category=${category}`,
+    `/get-blogs/?category=${category}`,
     `home/${category}`
   );
   const { fetchData } = useSend();
 
   const searchHandler = async () => {
-    const res = await fetchData(`search/${search.current.value}`);
+    const res = await fetchData(`/search/${search.current.value}`);
     setSearchRes(res);
     res && res.length > 0 && setIsFocused(true);
   };

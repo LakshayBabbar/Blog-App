@@ -17,12 +17,12 @@ import AlertButton from "@/components/ui/AlertButton";
 const Blogs = () => {
   const params = useParams();
   const { data, loading: loadingBlog } = useFetch(
-    `get-blog/${params.blogId}`,
+    `/get-blog/${params.blogId}`,
     params.blogId
   );
   const [comment, setComment] = useState("");
   const { data: commentData, refetch } = useFetch(
-    `get-comments/${params.blogId}`,
+    `/get-comments/${params.blogId}`,
     `comments-${params.blogId}`
   );
   const { fetchData, loading, isError, error } = useSend();
@@ -30,7 +30,7 @@ const Blogs = () => {
   const { toast } = useToast();
 
   const deleteBlogHandler = async () => {
-    const response = await fetchData(`delete-blog/${params.blogId}`, "DELETE");
+    const response = await fetchData(`/delete-blog/${params.blogId}`, "DELETE");
     const date = new Date();
     toast({
       title: isError ? error : response.message,
@@ -42,7 +42,7 @@ const Blogs = () => {
   const handleComment = async (e) => {
     e.preventDefault();
     const response = await fetchData(
-      `create-comment/${params.blogId}`,
+      `/create-comment/${params.blogId}`,
       "POST",
       {
         description: comment,
@@ -54,7 +54,7 @@ const Blogs = () => {
   };
 
   const deleteComment = async (id) => {
-    await fetchData(`delete-comment/${id}`, "DELETE");
+    await fetchData(`/delete-comment/${id}`, "DELETE");
     return refetch();
   };
 

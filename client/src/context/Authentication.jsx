@@ -5,7 +5,7 @@ import useFetch from "../hooks/useFetch";
 
 const Authentication = ({ children }) => {
   const [isAuth, setIsAuth] = useState(false);
-  const { data } = useFetch("", "auth");
+  const { data } = useFetch("/", "auth");
   const [username, setUserName] = useState("");
 
   useEffect(() => {

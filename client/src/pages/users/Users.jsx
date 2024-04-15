@@ -8,7 +8,7 @@ const Users = () => {
   const [input, setInput] = useState("all");
   const [search, setSearch] = useState(null);
   const { data, isError, loading } = useFetch(
-    `get-users/${input}`,
+    `/get-users/${input}`,
     `users/${input}`
   );
   const handelSubmit = (e) => {
@@ -22,7 +22,9 @@ const Users = () => {
   return (
     <div className="my-24 sm:my-36 flex flex-col gap-10 items-center">
       <div className="absolute top-0 z-[-2] h-screen w-screen bg-[radial-gradient(#ffffff33_1px,#010816_1px)] bg-[size:20px_20px] opacity-[0.6]" />
-      <h1 className="text-4xl font-[500] w-4/5 text-slate-100 sm:w-[65%] text-center">Discover and Connect with Talented Content Creators!</h1>
+      <h1 className="text-4xl font-[500] w-4/5 text-slate-100 sm:w-[65%] text-center">
+        Discover and Connect with Talented Content Creators!
+      </h1>
       <form className="relative w-4/5 xl:w-[25%]" onSubmit={handelSubmit}>
         <Input
           type="text"

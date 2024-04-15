@@ -9,7 +9,7 @@ import Button from "@/components/ui/Button";
 const UserDetails = () => {
   const params = useParams();
   const { data, loading, isError } = useFetch(
-    `users/${params.username}`,
+    `/users/${params.username}`,
     params.username
   );
   const redirect = useNavigate();

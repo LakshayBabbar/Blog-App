@@ -5,12 +5,12 @@ import { useNavigate } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
 import useSend from "../../hooks/useSend";
 import ReactQuill from "react-quill";
-import  Button  from "../../components/ui/Button";
+import Button from "../../components/ui/Button";
 import "react-quill/dist/quill.snow.css";
 
 const UpdateBlog = () => {
   const params = useParams();
-  const { data: fd } = useFetch(`get-blog/${params.blogId}`, params.blogId);
+  const { data: fd } = useFetch(`/get-blog/${params.blogId}`, params.blogId);
   const [data, setData] = useState("");
   const [desc, setDesc] = useState("");
   const [img, setImg] = useState(null);
@@ -30,7 +30,7 @@ const UpdateBlog = () => {
     if (img) {
       formData.append("img", img);
     }
-    await fetchData(`update-blog/${params.blogId}`, "PUT", formData);
+    await fetchData(`/update-blog/${params.blogId}`, "PUT", formData);
     formData.delete("title");
     formData.delete("description");
     formData.delete("img");
