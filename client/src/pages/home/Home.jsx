@@ -8,6 +8,7 @@ import Footer from "../../components/Footer";
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Home = () => {
   const [searchParams] = useSearchParams();
@@ -110,13 +111,32 @@ const Home = () => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 justify-items-center mt-20">
         {loading ? (
-          <div className="col-span-3 animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-slate-500" />
+          Array.from({ length: 9 }).map((items, index) => {
+            return (
+              <div
+                className="flex flex-col space-y-3 w-[80vw] md:w-[25rem]"
+                key={index}
+              >
+                <Skeleton className="h-[12rem] md:h-[14rem] w-full rounded-xl" />
+                <div className="space-y-2">
+                  <Skeleton className="h-5 w-4/5" />
+                  <div className="flex gap-2">
+                    <Skeleton className="size-10 rounded-full" />
+                    <div className="w-3/5 space-y-2">
+                      <Skeleton className="w-3/5 h-3 " />
+                      <Skeleton className="w-2/5 h-3   " />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })
         ) : data && data.length > 0 ? (
           data.map((items) => {
             return <BlogsCard key={items._id} data={items} />;
           })
         ) : (
-          <div className="xl:col-span-3 flex justify-center items-center">
+          <div className="col-span-3 flex justify-center items-center">
             <h1>Cannot find any blog.</h1>
           </div>
         )}
