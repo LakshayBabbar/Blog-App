@@ -73,26 +73,34 @@ export const createBlog = async (req, res) => {
   const user = res.locals.user;
 
   try {
-    const cloudinaryRes = await uploadOnCloudinary(req.file);
-    if (!cloudinaryRes) {
-      throw new Error("Failed to upload image to Cloudinary");
+    if (req.file) {
+      const cloudinaryRes = await uploadOnCloudinary(req.file);
+      if (!cloudinaryRes) {
+        throw new Error("Failed to upload image to Cloudinary");
+      }
+      const newBlog = new blogs({
+        title,
+        description,
+        category,
+        img: {
+          public_id: cloudinaryRes.public_id,
+          url: cloudinaryRes.url,
+        },
+        author: user.username,
+      });
+      const createdBlog = await newBlog.save();
+      return res.status(201).json({
+        ...createdBlog._doc,
+        message: "Blog created successfully!",
+        success: true,
+      });
+    } else {
+      return res.status(400).json({
+        message: "Image is required",
+      });
     }
-    // Create blog entry
-    const newBlog = new blogs({
-      title,
-      description,
-      category,
-      img: {
-        public_id: cloudinaryRes.public_id,
-        url: cloudinaryRes.url,
-      },
-      author: user.username,
-    });
-    const createdBlog = await newBlog.save();
-    res.status(201).json(createdBlog);
   } catch (error) {
-    console.error("Error creating blog:", error);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -125,13 +133,15 @@ export const updateBlog = async (req, res) => {
     );
 
     if (!updatedBlog) {
-      return res.status(404).json({ error: "Blog not found" });
+      return res
+        .status(404)
+        .json({ message: "Blog not found", success: false });
     }
 
-    res.status(200).json(updatedBlog);
+    return res.status(200).json({ ...updatedBlog, success: true });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ message: "Internal Server Error", success: false });
   }
 };
 

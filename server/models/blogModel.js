@@ -34,6 +34,7 @@ const schema = mongoose.Schema(
     },
     usersLiked: {
       type: [String],
+      default: [],
     },
   },
   { timestamps: true }

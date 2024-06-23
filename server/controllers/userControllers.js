@@ -9,8 +9,7 @@ import {
 export const getUserDetails = async (req, res) => {
   try {
     const user = req.params["id"];
-    const checkUser = res.locals.user;
-    const username = user && user.username;
+    const auth = res.locals.user;
     const userDetails = await userModel.findOne({ username: user }).lean();
 
     if (!userDetails) {
@@ -19,11 +18,15 @@ export const getUserDetails = async (req, res) => {
       });
     }
     const userBlogs = await blogs.find({ author: user });
-    return res.status(200).json({
+    const response = {
       ...userDetails,
       blogs: userBlogs,
-      auth: user === username ? true : false,
-    });
+      auth: false,
+    };
+    if (auth && user === auth.username) {
+      response.auth = true;
+    }
+    return res.status(200).json(response);
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({ message: "Internal Server Error" });
@@ -57,13 +60,14 @@ export const getAllUsers = async (req, res) => {
 
 export const updateUser = async (req, res) => {
   try {
-    const userId = res.locals.user._id;
+    const { _id: userId, profileImg } = res.locals.user;
     const data = {
       firstname: req.body.firstname,
       lastname: req.body.lastname,
       bio: req.body.bio,
     };
     if (req.file) {
+      await deleteOnCloudinary(profileImg.public_id);
       const newImg = await uploadOnCloudinary(req.file);
       data.profileImg = {
         public_id: newImg.public_id,
@@ -71,9 +75,9 @@ export const updateUser = async (req, res) => {
       };
     }
     await userModel.findOneAndUpdate(userId, data);
-    return res.status(200).json({ message: "Profile Updated!" });
+    return res.status(200).json({ message: "Profile Updated!", success: true });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message, success: false });
   }
 };
 

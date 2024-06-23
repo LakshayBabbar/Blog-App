@@ -21,13 +21,13 @@ const CreateBlog = () => {
   const [desc, setDesc] = useState("");
   const [img, setImg] = useState(null);
   const [category, setCategory] = useState("all");
-  const formData = new FormData();
   const redirect = useNavigate();
   const { fetchData, loading, error } = useSend();
   const { toast } = useToast();
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
     formData.append("title", title);
     formData.append("description", desc);
     formData.append("category", category || "all");
@@ -35,20 +35,20 @@ const CreateBlog = () => {
       formData.append("img", img);
     }
     const response = await fetchData("/create-blog", "POST", formData);
-    if (!response) {
-      return null;
-    }
     const date = new Date();
     toast({
-      title: "Blog Created Sucessfully!",
+      title: response.message,
       description: date.toString(),
     });
+    console.log(response);
     setImg(null);
     formData.delete("img");
     formData.delete("title");
     formData.delete("category");
     formData.delete("description");
-    return redirect(`/blogs/${response._id}`);
+    if (response && response.success) {
+      return redirect(`/blogs/${response._id}`);
+    }
   };
 
   return (
@@ -106,7 +106,6 @@ const CreateBlog = () => {
               className="hidden"
               id="input-file"
               accept="image/*"
-              required
             />
           </div>
           {img && (
@@ -123,9 +122,7 @@ const CreateBlog = () => {
             {loading && "Processing...Please Wait."}
           </h1>
           {!loading && error && (
-            <h1 className="text-red-500 text-center">
-              Error while creating blog.
-            </h1>
+            <h1 className="text-red-500 text-center">{error}</h1>
           )}
         </form>
       </div>

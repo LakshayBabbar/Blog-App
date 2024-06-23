@@ -5,17 +5,20 @@ import useFetch from "../../hooks/useFetch";
 import useSend from "../../hooks/useSend";
 import { BiSearchAlt } from "react-icons/bi";
 import Footer from "../../components/Footer";
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import useDebouncedSearch from "../../hooks/useDebouncedSearch";
+import { Helmet } from "react-helmet";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [searchParams] = useSearchParams();
   const category = searchParams.get("category") || "all";
-  const [pageNo, setPageNo] = useState(1);
+  const pageNo = Number(searchParams.get("page")) || 1;
   const { fetchData } = useSend();
+  const navigate = useNavigate();
 
   const {
     searchTerm,
@@ -32,11 +35,21 @@ const Home = () => {
   );
 
   useEffect(() => {
+    if ((data && pageNo > data.totalPages) || pageNo < 1) {
+      navigate("/");
+    }
     refetch();
-  }, [pageNo, refetch]);
+  }, [pageNo, refetch, navigate, data]);
 
   return (
     <div className="flex flex-col items-center justify-center">
+      <Helmet>
+        <title>Blog-Tech</title>
+        <meta
+          name="description"
+          content="Ignite your passion for writing and share your voice with the world through our intuitive blogging platform. Unleash your creativity and join a community of fellow bloggers today."
+        />
+      </Helmet>
       <div className="absolute inset-0 -z-10 h-full w-full bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem] opacity-[0.05]" />
       <div className="absolute size-96 bg-neutral-700 top-0 rounded-full blur-[150px] -z-50" />
       <div className="my-44 sm:my-52 flex flex-col gap-14 items-center justify-center text-center">
@@ -96,7 +109,7 @@ const Home = () => {
             return (
               <li key={index}>
                 <Link
-                  to={`/?category=${items}`}
+                  to={`/?category=${items}&page=${pageNo}`}
                   className={`px-4 py-[6px] shadow-md rounded-full cursor-pointer ${
                     category === items
                       ? "bg-white text-black"
@@ -143,23 +156,26 @@ const Home = () => {
         )}
       </div>
       <section className="flex mt-20 gap-4 items-center">
-        <button
-          disabled={pageNo === 1}
-          onClick={() => setPageNo((prev) => prev - 1)}
-          className="py-2 px-4 bg-secondary rounded-md text-sm disabled:opacity-[0.7] disabled:cursor-not-allowed"
-        >
-          Prev
-        </button>
+        {pageNo > 1 && (
+          <Link
+            to={`/?category=${category}&page=${Number(pageNo) - 1}`}
+            className="py-2 px-4 bg-secondary rounded-md text-sm disabled:opacity-[0.7] disabled:cursor-not-allowed"
+          >
+            Prev
+          </Link>
+        )}
         <p className="text-slate-200 text-sm">
           {pageNo} of {data && data.totalPages}
         </p>
-        <button
-          onClick={() => setPageNo((prev) => prev + 1)}
-          disabled={data && pageNo >= data.totalPages}
-          className="py-2 px-4 bg-secondary rounded-md text-sm disabled:opacity-[0.7] disabled:cursor-not-allowed"
-        >
-          Next
-        </button>
+        {data && pageNo < data.totalPages && (
+          <Link
+            to={`/?category=${category}&page=${Number(pageNo) + 1}`}
+            disabled={data && pageNo >= data.totalPages}
+            className="py-2 px-4 bg-secondary rounded-md text-sm disabled:opacity-[0.7] disabled:cursor-not-allowed"
+          >
+            Next
+          </Link>
+        )}
       </section>
       <Footer />
     </div>

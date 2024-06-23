@@ -5,6 +5,7 @@ import { FaRegCalendarAlt } from "react-icons/fa";
 import useFetch from "../../hooks/useFetch";
 import { GradientButton } from "@/components/ui/GradientButton";
 import Button from "@/components/ui/Button";
+import { Helmet } from "react-helmet";
 
 const UserDetails = () => {
   const params = useParams();
@@ -19,6 +20,15 @@ const UserDetails = () => {
     </div>
   ) : (
     <div className="flex items-center justify-center my-24 sm:my-36">
+      <Helmet>
+        <title>
+          {data ? `${data.username} | Blog-Tech` : "User Not Found"}
+        </title>
+        <meta
+          name="description"
+          content={data ? data.bio.substring(0, 200) : "User Not Found"}
+        />
+      </Helmet>
       {data && !isError ? (
         <div className="w-[fit-content] flex flex-col gap-10 items-center">
           <div className="flex px-5 sm:px-0 sm:items-start gap-5 sm:gap-14">

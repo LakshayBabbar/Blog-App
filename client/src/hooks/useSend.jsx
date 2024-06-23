@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 const useSend = () => {
   const [isError, setIsError] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useState(null);
   useEffect(() => {
@@ -14,6 +14,7 @@ const useSend = () => {
 
   const fetchData = async (url, method, body) => {
     setLoading(true);
+    setError("");
     try {
       const options = {
         method: method,
@@ -33,19 +34,17 @@ const useSend = () => {
         }
       }
 
-      const res = await fetch(import.meta.env.VITE_BASE_URL + url, options);
-      if (!res.ok) {
+      const req = await fetch(import.meta.env.VITE_BASE_URL + url, options);
+      const res = await req.json();
+      if (!req.ok) {
         setIsError(true);
-        const errorData = await res.json();
-        setError(errorData.message);
-        throw new Error(errorData.message || "Error while fetching data.");
+        setError(res.message);
       }
-
-      const resData = await res.json();
       setLoading(false);
-      return resData;
+      return res;
     } catch (error) {
-      console.log(error);
+      setIsError(true);
+      setError(error.message);
       setLoading(false);
     }
   };

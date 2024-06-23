@@ -15,7 +15,7 @@ const UpdateBlog = () => {
   const [data, setData] = useState("");
   const [desc, setDesc] = useState("");
   const [img, setImg] = useState(null);
-  const { fetchData, loading } = useSend();
+  const { fetchData, loading, error } = useSend();
   const history = useNavigate();
 
   useEffect(() => {
@@ -31,11 +31,17 @@ const UpdateBlog = () => {
     if (img) {
       formData.append("img", img);
     }
-    await fetchData(`/update-blog/${params.blogId}`, "PUT", formData);
-    formData.delete("title");
-    formData.delete("description");
-    formData.delete("img");
-    history(-1);
+    const res = await fetchData(
+      `/update-blog/${params.blogId}`,
+      "PUT",
+      formData
+    );
+    if (res.success) {
+      formData.delete("title");
+      formData.delete("description");
+      formData.delete("img");
+      history(-1);
+    }
   };
 
   return (
@@ -82,6 +88,7 @@ const UpdateBlog = () => {
               Update
             </Button>
           </div>
+          <p className="text-red-500">{error}</p>
         </form>
       )}
     </div>

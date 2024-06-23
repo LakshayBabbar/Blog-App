@@ -50,7 +50,7 @@ const EditUser = () => {
     formData.delete("lastname");
     formData.delete("bio");
     formData.delete("img");
-    history(-1);
+    res.success && history(-1);
   };
 
   const accountCloseHandler = async () => {
