@@ -5,7 +5,6 @@ import {
   uploadOnCloudinary,
   deleteOnCloudinary,
 } from "../config/cloudinary.js";
-import commentModel from "../models/commentModel.js";
 
 export const getUserDetails = async (req, res) => {
   try {
