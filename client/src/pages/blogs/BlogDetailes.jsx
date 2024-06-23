@@ -54,16 +54,18 @@ const Blogs = () => {
 
   const handleComment = async (e) => {
     e.preventDefault();
-    const response = await fetchData(
+if(isAuth){
+    await fetchData(
       `/create-comment/${params.blogId}`,
       "POST",
       {
         description: comment,
       }
     );
-    !response && alert("Login to add a comment.");
-    setComment("");
     return refetch();
+}else{
+history("/auth?mode=login");
+}
   };
 
   const deleteComment = async (id) => {
@@ -77,7 +79,6 @@ const Blogs = () => {
       !isError && setLike(res.liked);
       refetchBlog();
     } else {
-      console.log("first");
       history("/auth?mode=login");
     }
   };
