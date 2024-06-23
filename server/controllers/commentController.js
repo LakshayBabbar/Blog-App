@@ -40,7 +40,8 @@ export const createComment = async (req, res) => {
 
 export const getAllComments = async (req, res) => {
   const blogId = req.params["blogId"];
-  const username = res.locals.username;
+  const user = res.locals.user;
+  const username = user && user.username;
   try {
     const comments = await commentModel.find({ blogId }).lean();
     const sortedComments = comments.map((item) => {

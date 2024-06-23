@@ -50,9 +50,14 @@ export const checkUser = (req, res, next) => {
       process.env.ACCESS_SECRET_KEY,
       async (err, decodedToken) => {
         if (err) {
-          res.locals.username = null;
+          res.locals.user = null;
         } else {
-          res.locals.username = decodedToken.username;
+          const user = await userModel.findById(decodedToken.id);
+          if (!user) {
+            throw new Error("User not found.");
+          }
+
+          res.locals.user = user;
         }
         next();
       }

@@ -8,19 +8,27 @@ import mongoose from "mongoose";
 
 export const getAllBlogs = async (req, res) => {
   const category = req.query.category;
-  if (category === "" || category === "all" || !category) {
-    const blogData = await blogs.find({});
+  let blogData;
+
+  try {
+    if (category === "" || category === "all" || !category) {
+      blogData = await blogs.find({}).sort({ likes: -1 });
+    } else {
+      blogData = await blogs.find({ category: category }).sort({ likes: -1 });
+    }
+
     res.status(200).json(blogData);
-  } else {
-    const blogData = await blogs.find({ category: category });
-    res.status(200).json(blogData);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching blogs", error });
   }
 };
+
 
 export const getBlogById = async (req, res) => {
   try {
     const blogId = req.params["blogId"];
-    const author = res.locals.username;
+    const user = res.locals.user;
+    const author = user && user.username || null;
     if (!mongoose.isValidObjectId(blogId)) {
       return res.status(400).json({
         message: "Invalid blog ID.",
@@ -34,11 +42,14 @@ export const getBlogById = async (req, res) => {
         message: "Blog not found.",
       });
     }
-
-    res.status(200).json({
+    const response = {
       ...blogData,
       auth: blogData.author === author ? true : false,
-    });
+    };
+    if (user) {
+      response.isLiked = blogData.usersLiked.includes(user._id.toString());
+    }
+    res.status(200).json(response);
   } catch (error) {
     console.error("Error fetching blog:", error);
     res.status(500).json({
@@ -52,7 +63,6 @@ export const createBlog = async (req, res) => {
   const user = res.locals.user;
 
   try {
-    // Upload image to Cloudinary
     const cloudinaryRes = await uploadOnCloudinary(req.file);
     if (!cloudinaryRes) {
       throw new Error("Failed to upload image to Cloudinary");
@@ -164,5 +174,37 @@ export const searchBlog = async (req, res) => {
     res.status(200).json(blogData);
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const likesController = async (req, res) => {
+  const userId = res.locals.user._id;
+  const blogId = req.params["id"];
+  console.log("Request trigger")
+  try {
+    const blog = await blogs.findById(blogId);
+    if (blog.usersLiked.includes(userId)) {
+      await blogs.updateOne(
+        { _id: blogId },
+        { $inc: { likes: -1 }, $pull: { usersLiked: userId } }
+      );
+      return res.json({
+        messgae: "post unliked successfully",
+        liked: false,
+      });
+    } else {
+      await blogs.updateOne(
+        { _id: blogId },
+        { $inc: { likes: 1 }, $push: { usersLiked: userId } }
+      );
+      return res.json({
+        messgae: "post liked successfully",
+        liked: true,
+      });
+    }
+  } catch (error) {
+    res.json({
+      error: error.message,
+    });
   }
 };

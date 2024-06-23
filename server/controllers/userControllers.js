@@ -9,7 +9,8 @@ import {
 export const getUserDetails = async (req, res) => {
   try {
     const user = req.params["id"];
-    const username = res.locals.username;
+    const checkUser = res.locals.user;
+    const username = user && user.username;
     const userDetails = await userModel.findOne({ username: user }).lean();
 
     if (!userDetails) {

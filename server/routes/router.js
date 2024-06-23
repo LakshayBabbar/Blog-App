@@ -18,6 +18,7 @@ import {
   updateBlog,
   deleteBlog,
   searchBlog,
+  likesController,
 } from "../controllers/blogController.js";
 import {
   createComment,
@@ -49,6 +50,7 @@ router.put(
   upload.single("img"),
   updateBlog
 );
+router.put("/likes/:id", authentication, likesController);
 router.delete("/delete-blog/:id", authentication, deleteBlog);
 
 // Comments routes

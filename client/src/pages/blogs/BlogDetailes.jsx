@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { IoArrowBack } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
@@ -13,13 +13,22 @@ import { useToast } from "@/components/ui/use-toast";
 import { GradientButton } from "@/components/ui/GradientButton";
 import { Helmet } from "react-helmet";
 import AlertButton from "@/components/ui/AlertButton";
+import { BiLike } from "react-icons/bi";
+import { BiSolidLike } from "react-icons/bi";
+import { BiCommentDots } from "react-icons/bi";
+import { LuShare2 } from "react-icons/lu";
+import { RWebShare } from "react-web-share";
+import { AuthContext } from "@/context/Authentication";
+import { useContext } from "react";
 
 const Blogs = () => {
   const params = useParams();
-  const { data, loading: loadingBlog } = useFetch(
-    `/get-blog/${params.blogId}`,
-    params.blogId
-  );
+  const { isAuth } = useContext(AuthContext);
+  const {
+    data,
+    loading: loadingBlog,
+    refetch: refetchBlog,
+  } = useFetch(`/get-blog/${params.blogId}`, params.blogId);
   const [comment, setComment] = useState("");
   const { data: commentData, refetch } = useFetch(
     `/get-comments/${params.blogId}`,
@@ -28,6 +37,10 @@ const Blogs = () => {
   const { fetchData, loading, isError, error } = useSend();
   const history = useNavigate();
   const { toast } = useToast();
+  const [like, setLike] = useState(false);
+  useEffect(() => {
+    setLike(data && data.isLiked);
+  }, [data]);
 
   const deleteBlogHandler = async () => {
     const response = await fetchData(`/delete-blog/${params.blogId}`, "DELETE");
@@ -56,6 +69,17 @@ const Blogs = () => {
   const deleteComment = async (id) => {
     await fetchData(`/delete-comment/${id}`, "DELETE");
     return refetch();
+  };
+
+  const likeHandler = async () => {
+    if (isAuth) {
+      const res = await fetchData(`/likes/${params.blogId}`, "PUT", {});
+      !isError && setLike(res.liked);
+      refetchBlog();
+    } else {
+      console.log("first");
+      history("/auth?mode=login");
+    }
   };
 
   const { scrollYProgress } = useScroll();
@@ -113,10 +137,42 @@ const Blogs = () => {
               </Link>
               <span>Created on: {data.createdAt.substring(0, 10)}</span>
             </div>
+            <section className="flex justify-center">
+              <div className="flex gap-3 items-center">
+                <div>
+                  <button
+                    onClick={likeHandler}
+                    disabled={loading}
+                    aria-label="like"
+                  >
+                    {!like ? (
+                      <BiLike className="text-2xl" />
+                    ) : (
+                      <BiSolidLike className="text-blue-500 text-2xl" />
+                    )}
+                  </button>
+                  <span>{data.likes}</span>
+                </div>
+                <a href="#comments">
+                  <BiCommentDots className="text-2xl text-slate-300" />
+                </a>
+                <RWebShare
+                  data={{
+                    url: `https://blog-tech-delta.vercel.app/blogs/${params.blogId}`,
+                    title: "Share Blog",
+                  }}
+                  onClick={() => console.log("shared successfully!")}
+                >
+                  <button>
+                    <LuShare2 className="text-2xl text-slate-300" />
+                  </button>
+                </RWebShare>
+              </div>
+            </section>
             <article className="prose-neutral prose-lg lg:prose-xl text-gray-300">
               {parse(data.description)}
             </article>
-            <div className="space-y-4">
+            <div className="space-y-4" id="comments">
               <form
                 action="POST"
                 onSubmit={handleComment}

@@ -15,13 +15,13 @@ app.use(router);
 app.use(express.static("./uploads"));
 
 app.get("/", checkUser, (req, res) => {
-  const username = res.locals.username;
+  const user = res.locals.user;
   const response = {
     message: "Welcome to Blog-Tech!",
-    isLogedin: username ? true : false,
+    isLogedin: user ? true : false,
   };
-  if (username) {
-    response.username = username;
+  if (user) {
+    response.username = user.username;
   }
   res.status(200).json(response);
 });
