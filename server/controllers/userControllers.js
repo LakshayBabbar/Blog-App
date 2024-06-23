@@ -5,6 +5,7 @@ import {
   uploadOnCloudinary,
   deleteOnCloudinary,
 } from "../config/cloudinary.js";
+import commentModel from "../models/commentModel.js";
 
 export const getUserDetails = async (req, res) => {
   try {
@@ -90,7 +91,7 @@ export const deleteUser = async (req, res) => {
     // Delete user document
     await deleteOnCloudinary(profileImg);
     await userModel.findOneAndDelete({ _id: userId });
-
+    await commentModel.deleteMany({userId});
     const allBlogs = await blogs.find({ author: username });
     if (allBlogs.length > 0) {
       const imageUrls = allBlogs.map((blog) => blog.img.public_id);
