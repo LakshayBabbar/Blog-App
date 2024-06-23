@@ -8,27 +8,37 @@ import mongoose from "mongoose";
 
 export const getAllBlogs = async (req, res) => {
   const category = req.query.category;
-  let blogData;
+  const page = Math.max(1, Number(req.query.page) || 1);
+  const limit = Math.max(1, Number(req.query.limit) || 10);
+  const skip = (page - 1) * limit;
 
   try {
-    if (category === "" || category === "all" || !category) {
-      blogData = await blogs.find({}).sort({ likes: -1 });
-    } else {
-      blogData = await blogs.find({ category: category }).sort({ likes: -1 });
+    let filter = {};
+    if (category && category !== "all") {
+      filter.category = category;
     }
 
-    res.status(200).json(blogData);
+    const countDocuments = await blogs.countDocuments(filter);
+    const blogData = await blogs
+      .find(filter)
+      .sort({ likes: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    res.status(200).json({
+      blogs: blogData,
+      totalPages: Math.ceil(countDocuments / limit),
+    });
   } catch (error) {
     res.status(500).json({ message: "Error fetching blogs", error });
   }
 };
 
-
 export const getBlogById = async (req, res) => {
   try {
     const blogId = req.params["blogId"];
     const user = res.locals.user;
-    const author = user && user.username || null;
+    const author = (user && user.username) || null;
     if (!mongoose.isValidObjectId(blogId)) {
       return res.status(400).json({
         message: "Invalid blog ID.",
@@ -180,7 +190,6 @@ export const searchBlog = async (req, res) => {
 export const likesController = async (req, res) => {
   const userId = res.locals.user._id;
   const blogId = req.params["id"];
-  console.log("Request trigger")
   try {
     const blog = await blogs.findById(blogId);
     if (blog.usersLiked.includes(userId)) {

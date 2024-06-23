@@ -5,34 +5,35 @@ import useFetch from "../../hooks/useFetch";
 import useSend from "../../hooks/useSend";
 import { BiSearchAlt } from "react-icons/bi";
 import Footer from "../../components/Footer";
-import { useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
+import useDebouncedSearch from "../../hooks/useDebouncedSearch";
 
 const Home = () => {
   const [searchParams] = useSearchParams();
   const category = searchParams.get("category") || "all";
-  const search = useRef("");
-  const [searchRes, setSearchRes] = useState([]);
-  const [isFocused, setIsFocused] = useState(false);
-  const { data, loading } = useFetch(
-    `/get-blogs/?category=${category}`,
-    `home/${category}`
-  );
+  const [pageNo, setPageNo] = useState(1);
   const { fetchData } = useSend();
 
-  const searchHandler = async () => {
-    const res = await fetchData(`/search/${search.current.value}`);
-    setSearchRes(res);
-    res && res.length > 0 && setIsFocused(true);
-  };
+  const {
+    searchTerm,
+    searchResults,
+    isFocused,
+    setIsFocused,
+    handleChange,
+    handleInputBlur,
+  } = useDebouncedSearch(fetchData);
 
-  const handleInputBlur = () => {
-    setTimeout(() => {
-      setIsFocused(false);
-    }, 200);
-  };
+  const { data, loading, refetch } = useFetch(
+    `/get-blogs/?category=${category}&page=${pageNo}&limit=9`,
+    `home/${category}`
+  );
+
+  useEffect(() => {
+    refetch();
+  }, [pageNo, refetch]);
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -53,13 +54,13 @@ const Home = () => {
             type="text"
             placeholder="Search Blogs"
             className="rounded-xl h-12 bg-transparent backdrop-blur-sm"
-            ref={search}
-            onChange={searchHandler}
+            value={searchTerm}
+            onChange={handleChange}
             onFocus={() => setIsFocused(true)}
             onBlur={handleInputBlur}
           />
           <BiSearchAlt className="absolute h-11 top-1 right-5 text-xl" />
-          {searchRes && searchRes.length > 0 && isFocused && (
+          {searchResults && searchResults.length > 0 && isFocused && (
             <motion.div
               className="absolute backdrop-blur-xl bg-slate-950 mt-5 p-5 rounded-xl max-h-80 overflow-y-scroll"
               initial={{ y: -20, opacity: 0 }}
@@ -67,7 +68,7 @@ const Home = () => {
               transition={{ type: "spring", stiffness: 200, damping: 10 }}
             >
               <ul className="w-[30rem] flex flex-col gap-2 items-start">
-                {searchRes.map((blogs) => {
+                {searchResults.map((blogs) => {
                   return (
                     <li
                       key={blogs._id}
@@ -131,8 +132,8 @@ const Home = () => {
               </div>
             );
           })
-        ) : data && data.length > 0 ? (
-          data.map((items) => {
+        ) : data && data.blogs.length > 0 ? (
+          data.blogs.map((items) => {
             return <BlogsCard key={items._id} data={items} />;
           })
         ) : (
@@ -141,6 +142,25 @@ const Home = () => {
           </div>
         )}
       </div>
+      <section className="flex mt-20 gap-4 items-center">
+        <button
+          disabled={pageNo === 1}
+          onClick={() => setPageNo((prev) => prev - 1)}
+          className="py-2 px-4 bg-secondary rounded-md text-sm disabled:opacity-[0.7] disabled:cursor-not-allowed"
+        >
+          Prev
+        </button>
+        <p className="text-slate-200 text-sm">
+          {pageNo} of {data && data.totalPages}
+        </p>
+        <button
+          onClick={() => setPageNo((prev) => prev + 1)}
+          disabled={data && pageNo >= data.totalPages}
+          className="py-2 px-4 bg-secondary rounded-md text-sm disabled:opacity-[0.7] disabled:cursor-not-allowed"
+        >
+          Next
+        </button>
+      </section>
       <Footer />
     </div>
   );

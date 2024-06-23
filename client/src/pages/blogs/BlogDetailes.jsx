@@ -95,7 +95,7 @@ const Blogs = () => {
       </Helmet>
       <motion.div
         style={{ scaleX: scrollYProgress }}
-        className="h-1 w-full fixed left-0 right-0 top-0 bg-slate-300 transform origin-left"
+        className="h-[2px] sm:h-1 w-full fixed left-0 right-0 top-0 bg-slate-300 transform origin-left z-[999]"
       />
       {loadingBlog ? (
         <div className="col-span-3 animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-slate-500" />
