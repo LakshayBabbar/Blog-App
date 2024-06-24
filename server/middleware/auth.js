@@ -3,11 +3,9 @@ import userModel from "../models/userModel.js";
 import dotenv from "dotenv";
 dotenv.config();
 
-export const authentication = (req, res, next) => {
+export const authentication = async (req, res, next) => {
   try {
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[1];
-
+    const token = await req.cookies.authToken;
     if (!token) {
       throw new Error("No token provided.");
     }
@@ -41,10 +39,14 @@ export const authentication = (req, res, next) => {
 };
 
 // check current user
-export const checkUser = (req, res, next) => {
+export const checkUser = async (req, res, next) => {
   try {
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[1];
+    const token = req.cookies?.authToken;
+    if (!token) {
+      res.locals.user = null;
+      return next();
+    }
+
     jwt.verify(
       token,
       process.env.ACCESS_SECRET_KEY,
@@ -54,15 +56,16 @@ export const checkUser = (req, res, next) => {
         } else {
           const user = await userModel.findById(decodedToken.id);
           if (!user) {
-            throw new Error("User not found.");
+            res.locals.user = null;
+          } else {
+            res.locals.user = user;
           }
-
-          res.locals.user = user;
         }
         next();
       }
     );
   } catch (error) {
+    console.error("Check user error:", error.message);
     return res.status(500).json({
       message: "Internal server error.",
     });

@@ -5,6 +5,7 @@ import router from "./routes/router.js";
 import bodyParser from "body-parser";
 import { checkUser } from "./middleware/auth.js";
 import mongoose from "mongoose";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 const app = express();
@@ -20,10 +21,10 @@ const corsOptions = {
   },
   credentials: true,
 };
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
+app.use(cookieParser());
 app.use(router);
-app.use(express.static("./uploads"));
 
 app.get("/", checkUser, (req, res) => {
   const user = res.locals.user;

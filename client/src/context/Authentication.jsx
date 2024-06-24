@@ -5,18 +5,18 @@ import useFetch from "../hooks/useFetch";
 
 const Authentication = ({ children }) => {
   const [isAuth, setIsAuth] = useState(false);
-  const { data } = useFetch("/", "auth");
+  const { data, refetch } = useFetch("/", "auth");
   const [username, setUserName] = useState("");
 
   useEffect(() => {
     if (data && data.isLogedin) {
       setIsAuth(true);
       setUserName(data.username);
+      refetch();
     } else {
       setIsAuth(false);
     }
-  }, [data]);
-
+  }, [data, refetch]);
   return (
     <AuthContext.Provider value={{ isAuth, setIsAuth, username, setUserName }}>
       {children}

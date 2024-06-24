@@ -4,6 +4,7 @@ import { authentication, checkUser } from "../middleware/auth.js";
 import {
   registerController,
   loginController,
+  logoutController,
 } from "../controllers/authController.js";
 import {
   getAllUsers,
@@ -28,7 +29,10 @@ import {
 
 const router = express.Router();
 const storage = multer.memoryStorage();
-const upload = multer({ storage: storage, limits: { fileSize: 1 * 1024 * 1024 } });
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 1 * 1024 * 1024 },
+});
 
 const handleUpload = (req, res, next) => {
   upload.single("img")(req, res, (err) => {
@@ -49,6 +53,7 @@ const handleUpload = (req, res, next) => {
 // Authentication Routes
 router.post("/signup", registerController);
 router.post("/login", loginController);
+router.get("/logout", logoutController);
 
 // Users Routes
 router.get("/users/:id", checkUser, getUserDetails);

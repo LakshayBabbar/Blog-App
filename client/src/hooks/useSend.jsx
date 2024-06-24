@@ -1,16 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const useSend = () => {
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [token, setToken] = useState(null);
-  useEffect(() => {
-    const isToken = localStorage.getItem("authToken");
-    if (isToken) {
-      setToken(isToken);
-    }
-  }, []);
 
   const fetchData = async (url, method, body) => {
     setLoading(true);
@@ -19,11 +12,8 @@ const useSend = () => {
       const options = {
         method: method,
         headers: {},
+        credentials: "include",
       };
-
-      if (token) {
-        options.headers.Authorization = token;
-      }
 
       if (method === "POST" || method === "PUT") {
         if (body instanceof FormData) {

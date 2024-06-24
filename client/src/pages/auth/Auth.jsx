@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { redirect, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import AuthForm from "../../components/authForm/authForm";
 import { AuthContext } from "../../context/Authentication";
 
@@ -36,31 +36,17 @@ export async function action({ request }) {
       email: data.get("email"),
       password: data.get("password"),
     };
-    const response = await fetch(import.meta.env.VITE_BASE_URL + `/${mode}`, {
+    const req = await fetch(import.meta.env.VITE_BASE_URL + `/${mode}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(authData),
+      credentials: "include",
     });
-    const resData = await response.json();
-    if (
-      response.status === 400 ||
-      response.status === 401 ||
-      response.status === 404
-    ) {
-      return { error: resData.message };
-    }
-    if (!response.ok) {
-      return { error: "Could not authenticate user." };
-    }
-    if ("authToken" in resData) {
-      localStorage.setItem("authToken", "Bearer " + resData.authToken);
-    } else {
-      return redirect("/auth?mode=login");
-    }
+    const resData = await req.json();
     return resData;
   } catch (error) {
-    return { error: error.message };
+    return { message: error.message };
   }
 }

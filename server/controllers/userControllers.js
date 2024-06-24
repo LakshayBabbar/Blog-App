@@ -90,13 +90,11 @@ export const deleteUser = async (req, res) => {
     // Delete user document
     await deleteOnCloudinary(profileImg);
     await userModel.findOneAndDelete({ _id: userId });
-    await commentModel.deleteMany({userId});
+    await commentModel.deleteMany({ userId });
     const allBlogs = await blogs.find({ author: username });
     if (allBlogs.length > 0) {
       const imageUrls = allBlogs.map((blog) => blog.img.public_id);
       await deleteBlogImages(imageUrls);
-      const blogsId = allBlogs.map((item) => item._id);
-      await commentModel.deleteMany({ blogId: { $in: blogsId } });
       await blogs.deleteMany({ author: username });
     }
 

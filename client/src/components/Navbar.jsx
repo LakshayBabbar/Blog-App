@@ -5,6 +5,7 @@ import { MdClose } from "react-icons/md";
 import { AuthContext } from "../context/Authentication";
 import { GradientButton } from "./ui/GradientButton";
 import { useToast } from "./ui/use-toast";
+import useSend from "@/hooks/useSend";
 
 const Navbar = () => {
   const { isAuth, setIsAuth, username } = useContext(AuthContext);
@@ -15,15 +16,16 @@ const Navbar = () => {
     active === pre ? setActive(post) : setActive(pre);
   };
   const { toast } = useToast();
+  const { fetchData } = useSend();
 
-  function logoutHandler() {
-    setIsAuth(false);
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("username");
+  async function logoutHandler() {
+    const res = await fetchData("/logout", "GET");
+    const date = new Date().toString();
     toast({
-      title: "Logout Successfully!",
-      description: "Log in to manage your profile or blogs.",
+      title: res?.message,
+      description: date,
     });
+    setIsAuth(false);
   }
 
   const linkStyle = "rounded-xl transition-all";

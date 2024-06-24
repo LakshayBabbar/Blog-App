@@ -1,8 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
 const useFetch = (url, queryKey) => {
-  const token = localStorage.getItem("authToken");
-
   const { isPending, error, isError, data, refetch } = useQuery({
     queryKey: [queryKey],
     queryFn: async ({ signal }) => {
@@ -10,9 +8,9 @@ const useFetch = (url, queryKey) => {
         const response = await fetch(import.meta.env.VITE_BASE_URL + url, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: token,
           },
           signal,
+          credentials: "include",
         });
 
         if (!response.ok) {
