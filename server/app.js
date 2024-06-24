@@ -10,7 +10,10 @@ import cookieParser from "cookie-parser";
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8000;
-const allowedOrigins = [process.env.ORIGIN];
+const allowedOrigins = [
+  process.env.ORIGIN,
+  "https://blog-tech-delta.vercel.app",
+];
 const corsOptions = {
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {

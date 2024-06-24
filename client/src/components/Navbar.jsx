@@ -17,7 +17,7 @@ const Navbar = () => {
   const { toast } = useToast();
 
   async function logoutHandler() {
-    const res = await fetch(import.meta.env.VITE_BASE_URL + "/logout", {
+    const req = await fetch(import.meta.env.VITE_BASE_URL + "/logout", {
       method: "GET",
       headers: {
         "content-type": "application/json",
@@ -25,6 +25,7 @@ const Navbar = () => {
       credentials: "include",
     });
     const date = new Date().toString();
+    const res = await req.json();
     toast({
       title: res?.message,
       description: date,
