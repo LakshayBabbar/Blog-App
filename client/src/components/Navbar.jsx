@@ -5,7 +5,6 @@ import { MdClose } from "react-icons/md";
 import { AuthContext } from "../context/Authentication";
 import { GradientButton } from "./ui/GradientButton";
 import { useToast } from "./ui/use-toast";
-import useSend from "@/hooks/useSend";
 
 const Navbar = () => {
   const { isAuth, setIsAuth, username } = useContext(AuthContext);
@@ -16,10 +15,15 @@ const Navbar = () => {
     active === pre ? setActive(post) : setActive(pre);
   };
   const { toast } = useToast();
-  const { fetchData } = useSend();
 
   async function logoutHandler() {
-    const res = await fetchData("/logout", "GET");
+    const res = await fetch(import.meta.env.VITE_BASE_URL + "/logout", {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+      credentials: "include",
+    });
     const date = new Date().toString();
     toast({
       title: res?.message,
