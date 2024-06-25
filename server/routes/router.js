@@ -51,29 +51,29 @@ const handleUpload = (req, res, next) => {
 };
 
 // Authentication Routes
-router.post("/signup", registerController);
-router.post("/login", loginController);
-router.get("/logout", logoutController);
+router.post("/api/auth/signup", registerController);
+router.post("/api/auth/login", loginController);
+router.get("/api/auth/logout", logoutController);
 
 // Users Routes
-router.get("/users/:id", checkUser, getUserDetails);
-router.get("/get-users/:username", getAllUsers);
-router.put("/update-user/", authentication, handleUpload, updateUser);
-router.delete("/delete-user", authentication, deleteUser);
+router.get("/api/users", getAllUsers);
+router.get("/api/users/:id", checkUser, getUserDetails);
+router.put("/api/users/edit", authentication, handleUpload, updateUser);
+router.delete("/api/users/delete", authentication, deleteUser);
 
 // Blogs Routes
-router.get("/get-blogs", getAllBlogs);
-router.get("/get-blog/:blogId", checkUser, getBlogById);
-router.post("/create-blog", authentication, handleUpload, createBlog);
-router.put("/update-blog/:id", authentication, handleUpload, updateBlog);
-router.put("/likes/:id", authentication, likesController);
-router.delete("/delete-blog/:id", authentication, deleteBlog);
+router.get("/api/blogs", getAllBlogs);
+router.post("/api/blogs", authentication, handleUpload, createBlog);
+router.get("/api/blogs/:id", checkUser, getBlogById);
+router.put("/api/blogs/:id", authentication, handleUpload, updateBlog);
+router.delete("/api/blogs/:id", authentication, deleteBlog);
+router.put("/api/blogs/:id/likes", authentication, likesController);
+router.get("/api/blogs/search/:id", searchBlog);
 
 // Comments routes
-router.post("/create-comment/:blogId", authentication, createComment);
-router.get("/get-comments/:blogId", checkUser, getAllComments);
-router.delete("/delete-comment/:commentId", authentication, deleteComment);
+router.post("/api/comments/:blogId", authentication, createComment);
+router.get("/api/comments/:blogId", checkUser, getAllComments);
+router.delete("/api/comments/:commentId", authentication, deleteComment);
 
-router.get("/search/:id", searchBlog);
 
 export default router;

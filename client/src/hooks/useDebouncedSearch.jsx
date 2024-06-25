@@ -14,7 +14,7 @@ const useDebouncedSearch = (fetchData, delay = 500) => {
   };
 
   const handleSearch = async (query) => {
-    const res = await fetchData(`/search/${query}`);
+    const res = await fetchData(`/api/blogs/search/${query}`);
     setSearchResults(res);
     res && res.length > 0 && setIsFocused(true);
   };

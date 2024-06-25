@@ -34,7 +34,7 @@ const CreateBlog = () => {
     if (img) {
       formData.append("img", img);
     }
-    const response = await fetchData("/create-blog", "POST", formData);
+    const response = await fetchData("/api/blogs", "POST", formData);
     const date = new Date();
     toast({
       title: response.message,

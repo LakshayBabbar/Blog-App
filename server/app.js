@@ -25,8 +25,8 @@ const corsOptions = {
   credentials: true,
 };
 app.use(cors(corsOptions));
-app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(bodyParser.json());
 app.use(router);
 
 app.get("/", checkUser, (req, res) => {

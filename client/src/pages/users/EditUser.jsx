@@ -39,7 +39,7 @@ const EditUser = () => {
     if (img) {
       formData.append("img", img);
     }
-    const res = await fetchData("/update-user", "PUT", formData);
+    const res = await fetchData("/api/users/edit", "PUT", formData);
     const date = new Date();
     res &&
       toast({
@@ -54,7 +54,7 @@ const EditUser = () => {
   };
 
   const accountCloseHandler = async () => {
-    const res = await deleteData("/delete-user", "DELETE");
+    const res = await deleteData("/api/users/delete", "DELETE");
     setIsAuth(false);
     localStorage.removeItem("authToken");
     localStorage.removeItem("username");

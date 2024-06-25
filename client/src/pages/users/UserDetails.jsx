@@ -10,7 +10,7 @@ import { Helmet } from "react-helmet";
 const UserDetails = () => {
   const params = useParams();
   const { data, loading, isError } = useFetch(
-    `/users/${params.username}`,
+    `/api/users/${params.username}`,
     params.username
   );
   const redirect = useNavigate();

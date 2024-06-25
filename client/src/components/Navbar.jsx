@@ -17,15 +17,18 @@ const Navbar = () => {
   const { toast } = useToast();
 
   async function logoutHandler() {
-    const req = await fetch(import.meta.env.VITE_BASE_URL + "/logout", {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-      },
-      credentials: "include",
-    });
-    const date = new Date().toString();
+    const req = await fetch(
+      import.meta.env.VITE_BASE_URL + "/api/auth/logout",
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
     const res = await req.json();
+    const date = new Date().toString();
     toast({
       title: res?.message,
       description: date,

@@ -17,7 +17,7 @@ export const getUserDetails = async (req, res) => {
         message: "User not found.",
       });
     }
-    const userBlogs = await blogs.find({ author: user });
+    const userBlogs = await blogs.find({ author: user }).sort({ likes: -1 });
     const response = {
       ...userDetails,
       blogs: userBlogs,
@@ -34,7 +34,7 @@ export const getUserDetails = async (req, res) => {
 };
 
 export const getAllUsers = async (req, res) => {
-  const ref = req.params["username"].toLowerCase();
+  const ref = req.query["search"].toLowerCase() || "all";
   if (ref === "all" || !ref) {
     const users = await userModel.find({});
     res.status(200).json(users);

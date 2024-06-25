@@ -28,7 +28,7 @@ const Blogs = () => {
     data,
     loading: loadingBlog,
     refetch: refetchBlog,
-  } = useFetch(`/get-blog/${params.blogId}`, params.blogId);
+  } = useFetch(`/api/blogs/${params.blogId}`, params.blogId);
   const [comment, setComment] = useState("");
   const { data: commentData, refetch } = useFetch(
     `/get-comments/${params.blogId}`,
@@ -43,7 +43,7 @@ const Blogs = () => {
   }, [data]);
 
   const deleteBlogHandler = async () => {
-    const response = await fetchData(`/delete-blog/${params.blogId}`, "DELETE");
+    const response = await fetchData(`/api/blogs/${params.blogId}`, "DELETE");
     const date = new Date();
     toast({
       title: isError ? error : response.message,
@@ -75,7 +75,7 @@ history("/auth?mode=login");
 
   const likeHandler = async () => {
     if (isAuth) {
-      const res = await fetchData(`/likes/${params.blogId}`, "PUT", {});
+      const res = await fetchData(`/api/blogs/${params.blogId}/likes`, "PUT", {});
       !isError && setLike(res.liked);
       refetchBlog();
     } else {

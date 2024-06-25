@@ -11,7 +11,7 @@ import "react-quill/dist/quill.snow.css";
 
 const UpdateBlog = () => {
   const params = useParams();
-  const { data: fd } = useFetch(`/get-blog/${params.blogId}`, params.blogId);
+  const { data: fd } = useFetch(`/api/blogs/${params.blogId}`, params.blogId);
   const [data, setData] = useState("");
   const [desc, setDesc] = useState("");
   const [img, setImg] = useState(null);
@@ -32,7 +32,7 @@ const UpdateBlog = () => {
       formData.append("img", img);
     }
     const res = await fetchData(
-      `/update-blog/${params.blogId}`,
+      `/api/blogs/${params.blogId}`,
       "PUT",
       formData
     );

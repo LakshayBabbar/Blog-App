@@ -36,7 +36,7 @@ export const getAllBlogs = async (req, res) => {
 
 export const getBlogById = async (req, res) => {
   try {
-    const blogId = req.params["blogId"];
+    const blogId = req.params["id"];
     const user = res.locals.user;
     const author = (user && user.username) || null;
     if (!mongoose.isValidObjectId(blogId)) {

@@ -36,7 +36,7 @@ export async function action({ request }) {
       email: data.get("email"),
       password: data.get("password"),
     };
-    const req = await fetch(import.meta.env.VITE_BASE_URL + `/${mode}`, {
+    const req = await fetch(import.meta.env.VITE_BASE_URL + `/api/auth/${mode}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

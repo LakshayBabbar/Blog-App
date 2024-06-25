@@ -8,7 +8,7 @@ const Users = () => {
   const [input, setInput] = useState("all");
   const [search, setSearch] = useState(null);
   const { data, isError, loading } = useFetch(
-    `/get-users/${input}`,
+    `/api/users?search=${input}`,
     `users/${input}`
   );
   const handelSubmit = (e) => {

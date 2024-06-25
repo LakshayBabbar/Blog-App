@@ -30,7 +30,7 @@ const Home = () => {
   } = useDebouncedSearch(fetchData);
 
   const { data, loading, refetch } = useFetch(
-    `/get-blogs/?category=${category}&page=${pageNo}&limit=9`,
+    `/api/blogs?category=${category}&page=${pageNo}&limit=9`,
     `home/${category}`
   );
 
