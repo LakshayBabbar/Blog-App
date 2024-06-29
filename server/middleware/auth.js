@@ -54,11 +54,18 @@ export const checkUser = async (req, res, next) => {
         if (err) {
           res.locals.user = null;
         } else {
-          const user = await userModel.findById(decodedToken.id);
-          if (!user) {
-            res.locals.user = null;
-          } else {
-            res.locals.user = user;
+          try {
+            const user = await userModel.findById(decodedToken.id);
+            if (!user) {
+              res.locals.user = null;
+            } else {
+              res.locals.user = user;
+            }
+          } catch (error) {
+            console.error("MongoDB error:", error.message);
+            return res.status(500).json({
+              message: "Internal server error.",
+            });
           }
         }
         next();

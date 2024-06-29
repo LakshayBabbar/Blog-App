@@ -11,15 +11,22 @@ import AlertButton from "@/components/ui/AlertButton";
 
 const EditUser = () => {
   const params = useParams();
+  const { data: fd } = useFetch(`/users/${params.username}`, params.username);
   const history = useNavigate();
   const { setIsAuth } = useContext(AuthContext);
-  const [img, setImg] = useState(null);
   const { fetchData, loading } = useSend();
   const { fetchData: deleteData, loading: loading2 } = useSend();
-  const { data: fd } = useFetch(`/users/${params.username}`, params.username);
   const [data, setData] = useState();
   const { toast } = useToast();
-  useEffect(() => setData(fd), [fd]);
+  useEffect(() => {
+    console.log(fd);
+    setData({
+      firstname: fd.firstname,
+      lastname: fd.lastname,
+      bio: fd.bio,
+      profileImg: fd.profileImg,
+    });
+  }, [fd]);
 
   const handelData = (e) => {
     const { name, value } = e.target;
@@ -30,34 +37,21 @@ const EditUser = () => {
       };
     });
   };
-  const formData = new FormData();
   const submitHandler = async (e) => {
     e.preventDefault();
-    formData.append("firstname", data.firstname);
-    formData.append("lastname", data.lastname);
-    formData.append("bio", data.bio);
-    if (img) {
-      formData.append("img", img);
-    }
-    const res = await fetchData("/api/users/edit", "PUT", formData);
+    const res = await fetchData("/api/users/edit", "PUT", data);
     const date = new Date();
     res &&
       toast({
         title: res.message,
         description: date.toString(),
       });
-    formData.delete("firstname");
-    formData.delete("lastname");
-    formData.delete("bio");
-    formData.delete("img");
     res.success && history(-1);
   };
 
   const accountCloseHandler = async () => {
     const res = await deleteData("/api/users/delete", "DELETE");
     setIsAuth(false);
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("username");
     const date = new Date();
     res &&
       toast({
@@ -75,19 +69,10 @@ const EditUser = () => {
           encType="multipart/form-data"
           onSubmit={submitHandler}
         >
-          <label htmlFor="img">
-            <img
-              src={img ? URL.createObjectURL(img) : data.profileImg.url}
-              alt="Profile pic"
-              className="rounded-full w-48 sm:w-64 hover:brightness-75 aspect-square object-cover cursor-pointer"
-            />
-          </label>
-          <input
-            type="file"
-            id="img"
-            onChange={(e) => setImg(e.target.files[0])}
-            className="hidden"
-            accept="image/*"
+          <img
+            src={data.profileImg || "/user.jpeg"}
+            alt="Profile pic"
+            className="rounded-full w-48 sm:w-64 hover:brightness-75 aspect-square object-cover cursor-pointer"
           />
           <div className="w-full space-y-2">
             <label htmlFor="username">Username</label>
@@ -95,7 +80,7 @@ const EditUser = () => {
               type="text"
               name="username"
               id="username"
-              value={data.username}
+              value={params.username}
               onChange={() => alert("Username cannot be changed.")}
               className="h-12"
             />

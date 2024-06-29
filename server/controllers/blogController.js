@@ -87,6 +87,7 @@ export const createBlog = async (req, res) => {
           url: cloudinaryRes.url,
         },
         author: user.username,
+        userId: user._id,
       });
       const createdBlog = await newBlog.save();
       return res.status(201).json({

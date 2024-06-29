@@ -7,7 +7,7 @@ const UsersCard = ({ data }) => {
     <div className="flex flex-col border w-80 h-32 rounded-md items-center justify-center backdrop-blur-sm">
       <div className="flex gap-4">
         <img
-          src={data.profileImg.url}
+          src={data.profileImg}
           alt="profile pic"
           className="size-8 rounded-full aspect-square object-cover"
         />

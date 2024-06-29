@@ -28,7 +28,8 @@ To start with this project, follow these steps:
 4. **Configure Environment Variables:**
 
    - **Frontend:**
-     - `VITE_BASE_URL`: Backend server link
+
+     - `VITE_API_URL`: Backend server link
 
    - **Backend:**
      - `PORT`: Port number for the server
@@ -36,10 +37,12 @@ To start with this project, follow these steps:
      - `CLOUD_NAME`: Cloudinary Cloud name
      - `CLOUD_API`: Cloudinary API
      - `CLOUD_API_SECRET`: Cloudinary API secret
-     - `USER_IMAGE`: User image directory (Frontend link + `/user.jpeg`)
      - `URI`: MongoDB URI address
+     - `ORIGIN`: FrontEnd Link
+     - `GOOGLE_CLIENT_ID`: Google auth client id
+     - `GOOGLE_CLIENT_SECRET`: Google auth client secret
 
-5. **Run Backend Server:** Execute `npm run dev` in the `/server` directory.
+5. **Run Backend Server:** Execute `npm run server` in the `/server` directory.
 6. **Run Frontend Development Server:** Execute `npm run dev` in the `/client` directory.
 7. **Access Application:** Open your browser and go to `http://localhost:5173`.
 

@@ -2,11 +2,6 @@ import express from "express";
 import multer from "multer";
 import { authentication, checkUser } from "../middleware/auth.js";
 import {
-  registerController,
-  loginController,
-  logoutController,
-} from "../controllers/authController.js";
-import {
   getAllUsers,
   getUserDetails,
   updateUser,
@@ -26,6 +21,8 @@ import {
   deleteComment,
   getAllComments,
 } from "../controllers/commentController.js";
+import passport from "passport";
+import { googleAuth, logoutController } from "../controllers/authController.js";
 
 const router = express.Router();
 const storage = multer.memoryStorage();
@@ -51,9 +48,28 @@ const handleUpload = (req, res, next) => {
 };
 
 // Authentication Routes
-router.post("/api/auth/signup", registerController);
-router.post("/api/auth/login", loginController);
-router.get("/api/auth/logout", logoutController);
+router.get(
+  "/auth/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+    failureRedirect: "/login/failure",
+  })
+);
+router.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    successRedirect: "/login/success/",
+    failureRedirect: "/login/failure",
+  })
+);
+router.get("/login/failure", (req, res) => {
+  return res.status(401).json({
+    message: "Login failed",
+    success: false,
+  });
+});
+router.get("/login/success", googleAuth);
+router.get("/logout", logoutController);
 
 // Users Routes
 router.get("/api/users", getAllUsers);
@@ -74,6 +90,5 @@ router.get("/api/blogs/search/:id", searchBlog);
 router.post("/api/comments/:blogId", authentication, createComment);
 router.get("/api/comments/:blogId", checkUser, getAllComments);
 router.delete("/api/comments/:commentId", authentication, deleteComment);
-
 
 export default router;

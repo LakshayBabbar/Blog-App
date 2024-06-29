@@ -5,7 +5,7 @@ const useFetch = (url, queryKey) => {
     queryKey: [queryKey],
     queryFn: async ({ signal }) => {
       try {
-        const response = await fetch(import.meta.env.VITE_BASE_URL + url, {
+        const response = await fetch(import.meta.env.VITE_API_URL + url, {
           headers: {
             "Content-Type": "application/json",
           },

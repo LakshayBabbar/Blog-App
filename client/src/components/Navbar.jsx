@@ -17,16 +17,13 @@ const Navbar = () => {
   const { toast } = useToast();
 
   async function logoutHandler() {
-    const req = await fetch(
-      import.meta.env.VITE_BASE_URL + "/api/auth/logout",
-      {
-        method: "GET",
-        headers: {
-          "content-type": "application/json",
-        },
-        credentials: "include",
-      }
-    );
+    const req = await fetch(import.meta.env.VITE_API_URL + "/logout", {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+      credentials: "include",
+    });
     const res = await req.json();
     const date = new Date().toString();
     toast({
@@ -35,13 +32,19 @@ const Navbar = () => {
     });
     setIsAuth(false);
   }
+  const loginHandler = () => {
+    window.open(
+      import.meta.env.VITE_API_URL + "/auth/google/callback",
+      "_self"
+    );
+  };
 
   const linkStyle = "rounded-xl transition-all";
   return (
     <div className="fixed top-0 sm:top-5 left-0 w-full h-16 flex justify-center items-center z-50">
       <div className="backdrop-blur-lg border-b sm:bg-gradient-to-b from-neutral-900 to-slate-900 sm:border gap-4 flex items-center justify-between sm:justify-normal sm:rounded-full px-6 w-full sm:w-auto h-16 sm:h-14">
         <div className="sm:hidden">
-          <h1>Blog Tech</h1>
+          <h1>LegitBlogs</h1>
         </div>
         <div
           className={`absolute rounded-2xl sm:relative ${active} sm:top-0 sm:right-0 sm:shadow-none transition-all duration-300 w-36 sm:w-auto`}
@@ -60,19 +63,14 @@ const Navbar = () => {
               <Link to="/blogs/create-blog">Create</Link>
             </li>
             <li className={linkStyle}>
-              <Link to={!isAuth ? "/auth?mode=login" : `/users/${username}`}>
-                {!isAuth ? "Login" : "Profile"}
+              <Link to={isAuth && `/users/${username}`}>
+                {isAuth && "Profile"}
               </Link>
             </li>
             <li>
-              <Link
-                to={!isAuth ? "/auth/?mode=signup" : "/auth/?mode=signup"}
-                onClick={isAuth && logoutHandler}
-              >
-                <GradientButton>
-                  {!isAuth ? "Sign Up" : "Logout"}
-                </GradientButton>
-              </Link>
+              <GradientButton onClick={isAuth ? logoutHandler : loginHandler}>
+                {!isAuth ? "Login" : "Logout"}
+              </GradientButton>
             </li>
           </ul>
         </div>

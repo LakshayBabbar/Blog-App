@@ -24,7 +24,7 @@ const useSend = () => {
         }
       }
 
-      const req = await fetch(import.meta.env.VITE_BASE_URL + url, options);
+      const req = await fetch(import.meta.env.VITE_API_URL + url, options);
       const res = await req.json();
       if (!req.ok) {
         setIsError(true);

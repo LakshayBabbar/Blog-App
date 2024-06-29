@@ -33,7 +33,7 @@ const UserDetails = () => {
         <div className="w-[fit-content] flex flex-col gap-10 items-center">
           <div className="flex px-5 sm:px-0 sm:items-start gap-5 sm:gap-14">
             <img
-              src={data.profileImg.url}
+              src={data.profileImg}
               alt="Profile pic"
               className="size-32 rounded-full object-cover"
             />

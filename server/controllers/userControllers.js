@@ -1,10 +1,7 @@
 import blogs from "../models/blogModel.js";
 import commentModel from "../models/commentModel.js";
 import userModel from "../models/userModel.js";
-import {
-  uploadOnCloudinary,
-  deleteOnCloudinary,
-} from "../config/cloudinary.js";
+import { deleteOnCloudinary } from "../config/cloudinary.js";
 
 export const getUserDetails = async (req, res) => {
   try {
@@ -60,20 +57,12 @@ export const getAllUsers = async (req, res) => {
 
 export const updateUser = async (req, res) => {
   try {
-    const { _id: userId, profileImg } = res.locals.user;
+    const { _id: userId } = res.locals.user;
     const data = {
       firstname: req.body.firstname,
       lastname: req.body.lastname,
       bio: req.body.bio,
     };
-    if (req.file) {
-      await deleteOnCloudinary(profileImg.public_id);
-      const newImg = await uploadOnCloudinary(req.file);
-      data.profileImg = {
-        public_id: newImg.public_id,
-        url: newImg.url,
-      };
-    }
     await userModel.findOneAndUpdate(userId, data);
     return res.status(200).json({ message: "Profile Updated!", success: true });
   } catch (error) {
@@ -83,12 +72,8 @@ export const updateUser = async (req, res) => {
 
 export const deleteUser = async (req, res) => {
   try {
-    const userId = res.locals.user._id;
-    const username = res.locals.user.username;
-    const profileImg = res.locals.user.profileImg.public_id;
-
+    const { _id: userId, username } = res.locals.user;
     // Delete user document
-    await deleteOnCloudinary(profileImg);
     await userModel.findOneAndDelete({ _id: userId });
     await commentModel.deleteMany({ userId });
     const allBlogs = await blogs.find({ author: username });
