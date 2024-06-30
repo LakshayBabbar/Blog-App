@@ -36,17 +36,9 @@ export const getAllBlogs = async (req, res) => {
 
 export const getBlogById = async (req, res) => {
   try {
-    const blogId = req.params["id"];
-    const user = res.locals.user;
-    const author = (user && user.username) || null;
-    if (!mongoose.isValidObjectId(blogId)) {
-      return res.status(400).json({
-        message: "Invalid blog ID.",
-      });
-    }
-
-    const blogData = await blogs.findById(blogId).lean();
-
+    const blogRef = req.params["ref"];
+    const userId = res.locals.user?._id || undefined;
+    const blogData = await blogs.findOne({ url: blogRef }).lean();
     if (!blogData) {
       return res.status(404).json({
         message: "Blog not found.",
@@ -54,10 +46,11 @@ export const getBlogById = async (req, res) => {
     }
     const response = {
       ...blogData,
-      auth: blogData.author === author ? true : false,
+      auth: false,
     };
-    if (user) {
-      response.isLiked = blogData.usersLiked.includes(user._id.toString());
+    if (userId) {
+      response.isLiked = blogData.usersLiked.includes(userId.toString());
+      response.auth = blogData.userId === userId.toString() ? true : false;
     }
     res.status(200).json(response);
   } catch (error) {
@@ -107,7 +100,7 @@ export const createBlog = async (req, res) => {
 
 export const updateBlog = async (req, res) => {
   const blogId = req.params["id"];
-  const user = res.locals.user.username;
+  const userId = res.locals.user._id;
   const UpdatedData = {
     title: req.body.title,
     description: req.body.description,
@@ -128,7 +121,7 @@ export const updateBlog = async (req, res) => {
       }
     }
     const updatedBlog = await blogs.findOneAndUpdate(
-      { _id: blogId, author: user },
+      { _id: blogId, userId },
       UpdatedData,
       { new: true }
     );

@@ -41,16 +41,15 @@ export const createComment = async (req, res) => {
 export const getAllComments = async (req, res) => {
   const blogId = req.params["blogId"];
   const user = res.locals.user;
-  const username = user && user.username;
   try {
     const comments = await commentModel.find({ blogId }).lean();
     const sortedComments = comments.map((item) => {
-      return { ...item, isUser: item.username === username };
+      return { ...item, isUser: item.userId === user._id.toString() };
     });
     res.status(200).json(sortedComments);
   } catch (error) {
     res.status(500).json({
-      message: error.name,
+      message: error.message,
     });
   }
 };
@@ -63,20 +62,24 @@ export const deleteComment = async (req, res) => {
     if (!comment) {
       return res.status(404).json({
         message: "Comment not found.",
+        success: false,
       });
     }
     if (userId.toString() !== comment.userId.toString()) {
       return res.status(401).json({
         message: "User is not authorised.",
+        success: false,
       });
     }
     await commentModel.findByIdAndDelete(commentId);
     return res.status(200).json({
       message: "Comment deleted successfully.",
+      success: true,
     });
   } catch (error) {
     res.status(500).json({
-      message: error.name,
+      message: error.message,
+      success: false,
     });
   }
 };

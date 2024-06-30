@@ -22,7 +22,7 @@ const UserDetails = () => {
     <div className="flex items-center justify-center my-24 sm:my-36">
       <Helmet>
         <title>
-          {data ? `${data.username} | Blog-Tech` : "User Not Found"}
+          {data ? `${data.username} | Legit-Blogs` : "User Not Found"}
         </title>
         <meta
           name="description"

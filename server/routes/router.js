@@ -73,14 +73,14 @@ router.get("/logout", logoutController);
 
 // Users Routes
 router.get("/api/users", getAllUsers);
-router.get("/api/users/:id", checkUser, getUserDetails);
+router.get("/api/users/:username", checkUser, getUserDetails);
 router.put("/api/users/edit", authentication, handleUpload, updateUser);
 router.delete("/api/users/delete", authentication, deleteUser);
 
 // Blogs Routes
 router.get("/api/blogs", getAllBlogs);
 router.post("/api/blogs", authentication, handleUpload, createBlog);
-router.get("/api/blogs/:id", checkUser, getBlogById);
+router.get("/api/blogs/:ref", checkUser, getBlogById);
 router.put("/api/blogs/:id", authentication, handleUpload, updateBlog);
 router.delete("/api/blogs/:id", authentication, deleteBlog);
 router.put("/api/blogs/:id/likes", authentication, likesController);

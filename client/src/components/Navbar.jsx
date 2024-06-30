@@ -62,11 +62,11 @@ const Navbar = () => {
             <li className={linkStyle}>
               <Link to="/blogs/create-blog">Create</Link>
             </li>
-            <li className={linkStyle}>
-              <Link to={isAuth && `/users/${username}`}>
-                {isAuth && "Profile"}
-              </Link>
-            </li>
+            {isAuth && (
+              <li className={linkStyle}>
+                <Link to={`/users/${username}`}>Profile</Link>
+              </li>
+            )}
             <li>
               <GradientButton onClick={isAuth ? logoutHandler : loginHandler}>
                 {!isAuth ? "Login" : "Logout"}

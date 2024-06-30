@@ -11,7 +11,7 @@ cloudinary.config({
 export const uploadOnCloudinary = (file) => {
   return new Promise((resolve, reject) => {
     cloudinary.uploader
-      .upload_stream({ resource_type: "image" }, (error, result) => {
+      .upload_stream({ resource_type: "image", folder: "legit-blogs" }, (error, result) => {
         if (error) {
           console.error("Error uploading image:", error);
           reject("Failed to upload image");

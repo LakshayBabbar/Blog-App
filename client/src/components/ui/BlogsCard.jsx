@@ -16,7 +16,7 @@ const BlogsCard = ({ data }) => {
         src={data.img.url}
         alt="thubmnail"
         className="aspect-video rounded-md cursor-pointer"
-        onClick={() => redirect(`/blogs/${data._id}`)}
+        onClick={() => redirect(`/blogs/${data.url}`)}
       />
       <div className="flex flex-col gap-2 py-6 px-5">
         <span className="py-1 px-4 bg-zinc-800 w-[fit-content] rounded-full text-white text-sm">
@@ -24,7 +24,7 @@ const BlogsCard = ({ data }) => {
         </span>
         <h1
           className="text-2xl hover:underline cursor-pointer line-clamp-2"
-          onClick={() => redirect(`/blogs/${data._id}`)}
+          onClick={() => redirect(`/blogs/${data.url}`)}
         >
           {data.title}
         </h1>

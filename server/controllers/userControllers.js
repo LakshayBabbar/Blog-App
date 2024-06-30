@@ -5,23 +5,25 @@ import { deleteOnCloudinary } from "../config/cloudinary.js";
 
 export const getUserDetails = async (req, res) => {
   try {
-    const user = req.params["id"];
+    const username = req.params["username"];
     const auth = res.locals.user;
-    const userDetails = await userModel.findOne({ username: user }).lean();
+    const userDetails = await userModel.findOne({ username }).lean();
 
     if (!userDetails) {
       return res.status(404).json({
         message: "User not found.",
       });
     }
-    const userBlogs = await blogs.find({ author: user }).sort({ likes: -1 });
+    const userBlogs = await blogs
+      .find({ userId: userDetails._id })
+      .sort({ likes: -1 });
     const response = {
       ...userDetails,
       blogs: userBlogs,
       auth: false,
     };
-    if (auth && user === auth.username) {
-      response.auth = true;
+    if (auth) {
+      response.auth = username === auth.username;
     }
     return res.status(200).json(response);
   } catch (error) {

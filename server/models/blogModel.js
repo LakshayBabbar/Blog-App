@@ -32,6 +32,10 @@ const schema = mongoose.Schema(
       type: String,
       required: true,
     },
+    url: {
+      type: String,
+      unique: true,
+    },
     likes: {
       type: Number,
       default: 0,
@@ -43,6 +47,12 @@ const schema = mongoose.Schema(
   },
   { timestamps: true }
 );
-
+schema.pre("save", function (next) {
+  this.url = this.title
+    .toLowerCase()
+    .replace(/ /g, "-")
+    .replace(/[^\w-]+/g, "");
+  next();
+});
 const blogs = mongoose.model("blogs", schema);
 export default blogs;

@@ -44,7 +44,7 @@ const Home = () => {
   return (
     <div className="flex flex-col items-center justify-center">
       <Helmet>
-        <title>Blog-Tech</title>
+        <title>Legit-Blogs</title>
         <meta
           name="description"
           content="Ignite your passion for writing and share your voice with the world through our intuitive blogging platform. Unleash your creativity and join a community of fellow bloggers today."

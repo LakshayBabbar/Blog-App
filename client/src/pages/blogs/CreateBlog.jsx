@@ -47,7 +47,7 @@ const CreateBlog = () => {
     formData.delete("category");
     formData.delete("description");
     if (response && response.success) {
-      return redirect(`/blogs/${response._id}`);
+      return redirect(`/blogs/${response.url}`);
     }
   };
 

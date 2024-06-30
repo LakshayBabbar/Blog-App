@@ -28,11 +28,12 @@ const Blogs = () => {
     data,
     loading: loadingBlog,
     refetch: refetchBlog,
-  } = useFetch(`/api/blogs/${params.blogId}`, params.blogId);
+  } = useFetch(`/api/blogs/${params.blogRef}`, params.blogRef);
+  const [blogId, setBlogId] = useState("");
   const [comment, setComment] = useState("");
   const { data: commentData, refetch } = useFetch(
-    `/get-comments/${params.blogId}`,
-    `comments-${params.blogId}`
+    `/api/comments/${blogId}`,
+    `comments-${blogId}`
   );
   const { fetchData, loading, isError, error } = useSend();
   const history = useNavigate();
@@ -40,10 +41,11 @@ const Blogs = () => {
   const [like, setLike] = useState(false);
   useEffect(() => {
     setLike(data && data.isLiked);
+    setBlogId(data && data._id);
   }, [data]);
 
   const deleteBlogHandler = async () => {
-    const response = await fetchData(`/api/blogs/${params.blogId}`, "DELETE");
+    const response = await fetchData(`/api/blogs/${blogId}`, "DELETE");
     const date = new Date();
     toast({
       title: isError ? error : response.message,
@@ -51,31 +53,33 @@ const Blogs = () => {
     });
     history(-1);
   };
-
   const handleComment = async (e) => {
     e.preventDefault();
-if(isAuth){
-    await fetchData(
-      `/create-comment/${params.blogId}`,
-      "POST",
-      {
+    if (isAuth) {
+      await fetchData(`/api/comments/${blogId}`, "POST", {
         description: comment,
-      }
-    );
-    return refetch();
-}else{
-history("/auth?mode=login");
-}
+      });
+      return refetch();
+    } else {
+      toast({
+        title: "Please login to add a comment.",
+        description: "You need to be logged in to add a comment.",
+      });
+    }
   };
 
   const deleteComment = async (id) => {
-    await fetchData(`/delete-comment/${id}`, "DELETE");
-    return refetch();
+    const res = await fetchData(`/api/comments/${id}`, "DELETE");
+    res.success && refetch();
+    toast({
+      title: res.message,
+      description: new Date().toString(),
+    });
   };
 
   const likeHandler = async () => {
     if (isAuth) {
-      const res = await fetchData(`/api/blogs/${params.blogId}/likes`, "PUT", {});
+      const res = await fetchData(`/api/blogs/${blogId}/likes`, "PUT", {});
       !isError && setLike(res.liked);
       refetchBlog();
     } else {
@@ -121,7 +125,7 @@ history("/auth?mode=login");
                 </AlertButton>
                 <FaEdit
                   className="text-green-600"
-                  onClick={() => history(`/blogs/${params.blogId}/edit`)}
+                  onClick={() => history(`/blogs/${params.blogRef}/edit`)}
                 />
               </div>
             )}
@@ -159,7 +163,7 @@ history("/auth?mode=login");
                 </a>
                 <RWebShare
                   data={{
-                    url: `https://blog-tech-delta.vercel.app/blogs/${params.blogId}`,
+                    url: `https://Legit-Blogs-delta.vercel.app/blogs/${blogId}`,
                     title: "Share Blog",
                   }}
                   onClick={() => console.log("shared successfully!")}
@@ -174,11 +178,7 @@ history("/auth?mode=login");
               {parse(data.description)}
             </article>
             <div className="space-y-4" id="comments">
-              <form
-                action="POST"
-                onSubmit={handleComment}
-                className="flex relative"
-              >
+              <form onSubmit={handleComment} className="flex relative">
                 <input
                   type="text"
                   required

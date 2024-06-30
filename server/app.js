@@ -16,7 +16,7 @@ const app = express();
 const PORT = process.env.PORT || 8000;
 const allowedOrigins = [
   process.env.ORIGIN,
-  "https://blog-tech-delta.vercel.app",
+  "https://Legit-Blogs-delta.vercel.app",
 ];
 const corsOptions = {
   origin: (origin, callback) => {
@@ -82,7 +82,7 @@ app.use(router);
 app.get("/", checkUser, (req, res) => {
   const user = res.locals.user;
   const response = {
-    message: "Welcome to Blog-Tech!",
+    message: "Welcome to Legit-Blogs API",
     isLogedin: user ? true : false,
   };
   if (user) {
