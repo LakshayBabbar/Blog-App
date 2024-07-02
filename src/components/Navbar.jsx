@@ -32,6 +32,7 @@ const Navbar = () => {
       description: date,
     });
     setIsAuth(false);
+    setActive(pre);
   }
   const loginHandler = () => {
     window.open(
@@ -51,20 +52,20 @@ const Navbar = () => {
           className={`absolute rounded-2xl sm:relative ${active} sm:top-0 sm:right-0 sm:shadow-none transition-all duration-300 w-36 sm:w-auto`}
         >
           <ul className="w-28 py-5 pl-5 text-sm flex flex-col gap-4 sm:flex-row sm:w-[fit-content] sm:p-0 sm:items-center">
-            <li className={linkStyle}>
+            <li className={linkStyle} onClick={menuHandler}>
               <Link href="/#home">Home</Link>
             </li>
-            <li className={linkStyle}>
+            <li className={linkStyle} onClick={menuHandler}>
               <a href="/#blogs">Blogs</a>
             </li>
-            <li className={linkStyle}>
+            <li className={linkStyle} onClick={menuHandler}>
               <Link to="/users">Creators</Link>
             </li>
-            <li className={linkStyle}>
+            <li className={linkStyle} onClick={menuHandler}>
               <Link to="/blogs/create-blog">Create</Link>
             </li>
             {isAuth && (
-              <li className={linkStyle}>
+              <li className={linkStyle} onClick={menuHandler}>
                 <Link to={`/users/${username}`}>Profile</Link>
               </li>
             )}
@@ -78,7 +79,6 @@ const Navbar = () => {
         <button
           className="sm:hidden"
           onClick={menuHandler}
-          onBlur={menuHandler}
           aria-label="Navigation Menu"
         >
           {active === pre ? (

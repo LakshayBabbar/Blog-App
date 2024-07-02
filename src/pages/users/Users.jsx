@@ -33,7 +33,7 @@ const Users = () => {
       <h1 className="text-4xl font-[500] w-4/5 text-slate-100 sm:w-[65%] text-center">
         Discover and Connect with Talented Content Creators!
       </h1>
-      <form className="relative w-4/5 xl:w-[25%]" onSubmit={handelSubmit}>
+      <form className="relative w-4/5 md:w-1/2 xl:w-[30%]" onSubmit={handelSubmit}>
         <Input
           type="text"
           placeholder="Search User"

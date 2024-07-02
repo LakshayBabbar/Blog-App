@@ -41,7 +41,6 @@ const CreateBlog = () => {
       title: response.message,
       description: date.toString(),
     });
-    console.log(response);
     setImg(null);
     formData.delete("img");
     formData.delete("title");

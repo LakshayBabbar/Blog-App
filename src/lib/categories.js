@@ -10,6 +10,7 @@ const categories = [
   "nature",
   "travel",
   "sports",
+  "shopping",
   "fitness",
   "lifestyle",
   "finance",

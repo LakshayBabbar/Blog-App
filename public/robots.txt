@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 Disallow: /admin/
+Disallow: /unauthorized/
 Sitemap: https://www.legitblogs.me/sitemap.xml

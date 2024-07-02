@@ -1,13 +1,13 @@
 const Unauthorized = () => {
   return (
-    <div className="h-screen w-full flex flex-col gap-3 items-center justify-center">
-      <h1 className="text-slate-200 text-2xl text-center py-2">
-        Unauthorised!
+    <div className="h-screen w-full flex flex-col gap-3 items-center justify-center text-center">
+      <h1 className="text-red-300 text-3xl font-bold py-2">
+        Access Denied
       </h1>
       <p className="text-slate-200">
-        Something went wrong while authenticating
+        We&apos;re sorry, but you do not have permission to access this page.
       </p>
-      <p className="text-slate-200">Please try again later.</p>
+      <p className="text-slate-200">Please login to continue</p>
     </div>
   );
 };
