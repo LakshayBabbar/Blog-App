@@ -20,7 +20,7 @@ export const generateMetadata = async ({ params }) => {
     },
     openGraph: {
       title: data.title,
-      description: data.description.substring(0, 160),
+      description: data.description.substring(0, 200),
       url: "https://www.legitblogs.me/blogs/" + params.slug,
       siteName: "Legit Blogs",
       images: [

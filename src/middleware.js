@@ -12,7 +12,6 @@ export async function middleware(request) {
     if (token) {
       if (
         url.pathname.startsWith("/api/blogs/create") ||
-        url.pathname.startsWith("/blogs/create") ||
         url.pathname.startsWith("/api/users/:slug/edit") ||
         url.pathname.startsWith("/api/comments/delete") ||
         url.pathname.startsWith("/api/comments/create") ||
@@ -46,7 +45,6 @@ export const config = {
     "/api/users/:slug/edit",
     "/api/comments/create",
     "/api/comments/delete",
-    "/blogs/create",
     "/blogs/:slug/edit",
     "/login",
   ],
