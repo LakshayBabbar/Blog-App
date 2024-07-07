@@ -5,7 +5,7 @@ const useSend = () => {
   const [err, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const fetchData = async (url, method, body) => {
+  const fetchData = async (url, method = "GET", body = {}) => {
     setLoading(true);
     setError("");
     try {
@@ -15,7 +15,7 @@ const useSend = () => {
         credentials: "include",
       };
 
-      if (method === "POST" || method === "PUT") {
+      if (method !== "GET") {
         if (body instanceof FormData) {
           options.body = body;
         } else {
@@ -24,7 +24,7 @@ const useSend = () => {
         }
       }
 
-      const req = await fetch(import.meta.env.VITE_API_URL + url, options);
+      const req = await fetch(process.env.NEXT_PUBLIC_API_URL + url, options);
       const res = await req.json();
       if (!req.ok) {
         setIsError(true);

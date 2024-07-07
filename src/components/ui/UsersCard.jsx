@@ -1,20 +1,23 @@
 /* eslint-disable react/prop-types */
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { FaRegCalendarAlt } from "react-icons/fa";
+import Image from "next/image";
 
 const UsersCard = ({ data }) => {
   return (
     <div className="flex flex-col border w-80 h-32 rounded-md items-center justify-center backdrop-blur-sm">
       <div className="flex gap-4">
-        <img
+        <Image
           src={data.profileImg}
           alt="profile pic"
-          className="size-8 rounded-full aspect-square object-cover"
+          width={32}
+          height={32}
+          className="rounded-full aspect-square object-fill size-8"
         />
         <div className="w-48 space-y-1">
           <Link
             className="hover:underline underline-offset-4"
-            to={`/users/${data.username}`}
+            href={`/users/${data.username}`}
           >
             @{data.username}
           </Link>

@@ -4,7 +4,7 @@ const useFetch = (url, queryKey) => {
   const { data, error, isError, isLoading, refetch } = useQuery({
     queryKey: [queryKey],
     queryFn: async ({ signal }) => {
-      const response = await fetch(import.meta.env.VITE_API_URL + url, {
+      const response = await fetch(process.env.NEXT_PUBLIC_API_URL + url, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -19,6 +19,7 @@ const useFetch = (url, queryKey) => {
 
       return response.json();
     },
+    retry: false,
   });
 
   return { data, isError, error, isLoading, refetch };

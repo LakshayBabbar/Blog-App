@@ -1,48 +1,54 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"> 
-<url>
-	<loc>https://www.legitblogs.me/</loc>
-	<lastmod>2024-07-01T11:22:53+01:00</lastmod>
-	<priority>0.8</priority>
-</url>
-<url>
-	<loc>https://www.legitblogs.me/users</loc>
-	<lastmod>2024-07-01T11:22:53+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://www.legitblogs.me/blogs/create-blog</loc>
-	<lastmod>2024-07-01T11:22:53+01:00</lastmod>
-	<priority>0.8</priority>
-</url>
-<url>
-	<loc>https://www.legitblogs.me/blogs/exploring-nextjs-15-rc-a-leap-forward-with-react-19-rc-enhanced-caching-and-more</loc>
-	<lastmod>2024-07-01T11:22:53+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://www.legitblogs.me/blogs/unlocking-the-power-of-the-gym-transform-your-body-and-mind</loc>
-	<lastmod>2024-07-01T11:22:53+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://www.legitblogs.me/blogs/exploring-tailwind-css-v4-a-comprehensive-overview</loc>
-	<lastmod>2024-07-01T11:22:53+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://www.legitblogs.me/blogs/react-19-whats-new-and-exciting</loc>
-	<lastmod>2024-07-01T11:22:53+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://www.legitblogs.me/blogs/window-ai-everything-about-the-new-chrome-ai-feature</loc>
-	<lastmod>2024-07-01T11:22:53+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://www.legitblogs.me/blogs/exploring-aceternity-ui-a-new-frontier-in-user-interface-design</loc>
-	<lastmod>2024-07-01T11:22:53+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://www.legitblogs.me</loc>
+        <lastmod>2024-07-06T17:04:47.245Z</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1</priority>
+    </url>
+    <url>
+        <loc>https://www.legitblogs.me/users</loc>
+        <lastmod>2024-07-06T17:04:47.245Z</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>
+            https://www.legitblogs.me/blogs/exploring-nextjs-15-rc-a-leap-forward-with-react-19-rc-enhanced-caching-and-more</loc>
+        <lastmod>2024-07-03T17:44:22.092Z</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>
+            https://www.legitblogs.me/blogs/unlocking-the-power-of-the-gym-transform-your-body-and-mind</loc>
+        <lastmod>2024-07-02T17:25:48.559Z</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.legitblogs.me/blogs/exploring-tailwind-css-v4-a-comprehensive-overview</loc>
+        <lastmod>2024-07-01T08:44:14.170Z</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.legitblogs.me/blogs/window-ai-everything-about-the-new-chrome-ai-feature</loc>
+        <lastmod>2024-07-01T08:43:53.715Z</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>
+            https://www.legitblogs.me/blogs/exploring-aceternity-ui-a-new-frontier-in-user-interface-design</loc>
+        <lastmod>2024-07-01T08:44:23.107Z</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>
+            https://www.legitblogs.me/blogs/warning-each-child-in-a-list-should-have-a-unique-key-prop</loc>
+        <lastmod>2024-07-02T08:52:50.943Z</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
 </urlset>

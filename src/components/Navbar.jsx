@@ -1,52 +1,35 @@
-import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+"use client";
+import { useState } from "react";
+import Link from "next/link";
 import { RiMenu4Fill } from "react-icons/ri";
 import { MdClose } from "react-icons/md";
-import { AuthContext } from "../context/Authentication";
 import { GradientButton } from "./ui/GradientButton";
-import { useToast } from "./ui/use-toast";
-import logo from "/logo.png";
+import Image from "next/image";
+import logo from "../../public/logo.png";
+import { useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 
 const Navbar = () => {
-  const { isAuth, setIsAuth, username } = useContext(AuthContext);
   const pre = "top-[-22rem] right-[-5rem]";
   const post = "right-[1.5rem] top-20 shadow-xl bg-gray-900";
   const [active, setActive] = useState(pre);
   const menuHandler = () => {
     active === pre ? setActive(post) : setActive(pre);
   };
-  const { toast } = useToast();
-
-  async function logoutHandler() {
-    const req = await fetch(import.meta.env.VITE_API_URL + "/logout", {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-      },
-      credentials: "include",
-    });
-    const res = await req.json();
-    const date = new Date().toString();
-    toast({
-      title: res?.message,
-      description: date,
-    });
-    setIsAuth(false);
-    setActive(pre);
-  }
-  const loginHandler = () => {
-    window.open(
-      import.meta.env.VITE_API_URL + "/auth/google/callback",
-      "_self"
-    );
-  };
+  const { status, data } = useSession();
 
   const linkStyle = "rounded-xl transition-all";
   return (
     <div className="fixed top-0 sm:top-5 left-0 w-full h-16 flex justify-center items-center z-50">
       <div className="backdrop-blur-lg border-b sm:bg-gradient-to-b from-neutral-900 to-slate-900 sm:border gap-4 flex items-center justify-between sm:justify-normal sm:rounded-full px-6 w-full sm:w-auto h-16 sm:h-14">
         <div className="sm:hidden">
-          <img src={logo} alt="logo" className="w-24" />
+          <Image
+            src={logo}
+            alt="logo"
+            width={100}
+            height={80}
+            className="w-24 h-auto"
+          />
         </div>
         <div
           className={`absolute rounded-2xl sm:relative ${active} sm:top-0 sm:right-0 sm:shadow-none transition-all duration-300 w-36 sm:w-auto`}
@@ -59,21 +42,28 @@ const Navbar = () => {
               <a href="/#blogs">Blogs</a>
             </li>
             <li className={linkStyle} onClick={menuHandler}>
-              <Link to="/users">Creators</Link>
+              <Link href="/users">Creators</Link>
             </li>
             <li className={linkStyle} onClick={menuHandler}>
-              <Link to="/blogs/create-blog">Create</Link>
+              <Link href="/blogs/create">Create</Link>
             </li>
-            {isAuth && (
+            {status === "unauthenticated" && (
               <li className={linkStyle} onClick={menuHandler}>
-                <Link to={`/users/${username}`}>Profile</Link>
+                <Link href={`/login`}>Login</Link>
               </li>
             )}
-            <li>
-              <GradientButton onClick={isAuth ? logoutHandler : loginHandler}>
-                {!isAuth ? "Login" : "Logout"}
-              </GradientButton>
-            </li>
+            {status === "authenticated" && (
+              <>
+                <li className={linkStyle} onClick={menuHandler}>
+                  <Link href={`/users/${data?.user.username}`}>Profile</Link>
+                </li>
+                <li>
+                  <GradientButton onClick={() => signOut()}>
+                    Logout
+                  </GradientButton>
+                </li>
+              </>
+            )}
           </ul>
         </div>
         <button
