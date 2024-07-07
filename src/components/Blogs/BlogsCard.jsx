@@ -7,17 +7,18 @@ const BlogsCard = ({ data }) => {
 
   return (
     <div className="w-4/5 md:w-[20rem] xl:w-[25rem] flex flex-col rounded-xl bg-[rgba(46,46,46,0.48)] shadow-md hover:scale-105 transition-all ease-in-out duration-300">
-      <Link href={`/blogs/${data.url}`} aria-label={data.title}>
+      <div className="relative w-full aspect-video">
         <Image
           src={data.img.url}
           alt={data.title}
-          width={500}
-          height={300}
-          className="aspect-video rounded-md cursor-pointer w-full h-auto"
+          fill={true}
+          style={{ objectFit: "cover" }}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="rounded-t-xl"
         />
-      </Link>
+      </div>
       <div className="flex flex-col gap-2 py-6 px-5">
-        <span className="py-1 px-4 bg-zinc-800 w-[fit-content] rounded-full text-white text-sm">
+        <span className="py-1 px-4 bg-zinc-800 w-fit rounded-full text-white text-sm">
           {data.category.toUpperCase()}
         </span>
         <Link

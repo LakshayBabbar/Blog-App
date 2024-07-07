@@ -16,7 +16,7 @@ export const generateMetadata = async ({ params }) => {
     description: data.description.substring(0, 160),
     creator: data.author,
     alternates: {
-      canonical: `https://legitblogs.me/blogs/${params.slug}`,
+      canonical: `https://www.legitblogs.me/blogs/${params.slug}`,
     },
     openGraph: {
       title: data.title,
@@ -32,6 +32,12 @@ export const generateMetadata = async ({ params }) => {
       ],
       locale: "en_US",
       type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: data.title,
+      description: data.description.substring(0, 160),
+      images: [data.img.url],
     },
   };
 };
@@ -58,18 +64,22 @@ const Blog = async ({ params }) => {
             <Image
               src={data.img.url}
               alt={data.title}
-              width={500}
-              height={380}
+              width={800}
+              height={600}
               className="w-full h-auto"
+              priority
             />
             <div className="flex justify-between w-full">
               <Link
                 href={`/users/${data.author}`}
                 className="cursor-pointer hover:underline"
+                aria-label={`Author: ${data.author}`}
               >
                 By {data.author}
               </Link>
-              <span>Created on: {data.createdAt.substring(0, 10)}</span>
+              <span>
+                Created on: {new Date(data.createdAt).toLocaleDateString()}
+              </span>
             </div>
             <article className="prose-neutral prose-lg lg:prose-xl text-gray-300">
               {parse(data.description)}

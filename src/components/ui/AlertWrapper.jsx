@@ -21,6 +21,7 @@ export default function AlertWrapper({ children, ...props }) {
           type={props.type}
           disable={props.disabled}
           className={props.className}
+          aria-label={props["aria-label"]}
         >
           {children}
         </Button>

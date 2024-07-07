@@ -39,6 +39,7 @@ const BlogCustomization = ({ slug, blogId, userId }) => {
       <AlertWrapper
         className="text-xl w-fit p-0 h-fit"
         onClick={deleteBlogHandler}
+        aria-label="delete blog"
         disabled={loading}
       >
         <BsFillTrashFill />

@@ -48,7 +48,7 @@ const SearchBar = ({ type, url }) => {
         />
         <button
           type="submit"
-          className="absolute h-11 top-1 right-5 text-xl"
+          className="absolute size-10 top-1 right-0 text-xl"
           aria-label="submit search"
         >
           <BiSearchAlt />

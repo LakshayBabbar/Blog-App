@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import "react-quill/dist/quill.snow.css";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import dynamic from "next/dynamic";
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 const UpdateBlog = ({ params }) => {
