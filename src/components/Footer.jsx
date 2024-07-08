@@ -17,8 +17,7 @@ const Footer = () => {
           />
           <div className="flex flex-col gap-4 sm:flex-row">
             <Link href="/">Home</Link>
-            <Link href="/auth?mode=signup">Sign Up</Link>
-            <Link href="/auth?mode=login">Login</Link>
+            <Link href="/login">Login</Link>
             <Link href="/users">Creators</Link>
             <Link href="/blogs/create-blog">Create</Link>
           </div>
