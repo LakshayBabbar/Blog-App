@@ -31,6 +31,10 @@ const userSchema = mongoose.Schema(
       type: String,
       default: "Bio.",
     },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

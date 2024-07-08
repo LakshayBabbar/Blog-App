@@ -32,11 +32,14 @@ export const authOptions = {
               email: user.email,
               username: user.email.split("@")[0],
               profileImg: user.image,
+              isAdmin: false,
             });
             const savedUser = await newUser.save();
             token.id = savedUser._id;
+            token.isAdmin = false;
           } else {
             token.id = userExist._id;
+            token.isAdmin = userExist.isAdmin;
           }
         }
         return token;
@@ -49,6 +52,7 @@ export const authOptions = {
       try {
         session.user.username = token.username;
         session.user.id = token.id;
+        session.user.isAdmin = token.isAdmin;
         return session;
       } catch (error) {
         console.error("Error in session callback:", error);

@@ -67,27 +67,34 @@ const Comments = ({ blogId }) => {
           </GradientButton>
         </div>
       </form>
-      {data?.map((item) => (
-        <div key={item._id} className="text-slate-300">
-          <div className="flex justify-between">
-            <Link href={`/users/${item.username}`} className="hover:underline">
-              @{item.username}
-            </Link>
-            <div className="flex items-center gap-1 ">
-              <span>{item.createdAt.substring(0, 10)}</span>
-              {item.isUser && (
-                <button disabled={loading} className="disabled:brightness-50">
-                  <MdDelete
-                    onClick={() => deleteComment(item._id)}
-                    className="cursor-pointer text-red-600"
-                  />
-                </button>
-              )}
+      {data?.length > 0 ? (
+        data.map((item) => (
+          <div key={item._id} className="text-slate-300">
+            <div className="flex justify-between">
+              <Link
+                href={`/users/${item.username}`}
+                className="hover:underline"
+              >
+                @{item.username}
+              </Link>
+              <div className="flex items-center gap-1 ">
+                <span>{item.createdAt.substring(0, 10)}</span>
+                {item.isUser && (
+                  <button disabled={loading} className="disabled:brightness-50">
+                    <MdDelete
+                      onClick={() => deleteComment(item._id)}
+                      className="cursor-pointer text-red-600"
+                    />
+                  </button>
+                )}
+              </div>
             </div>
+            <p className="text-slate-100">{item.description}</p>
           </div>
-          <p className="text-slate-100">{item.description}</p>
-        </div>
-      ))}
+        ))
+      ) : (
+        <p className="text-slate-100">No comments yet.</p>
+      )}
       {isError && <h3>{error.message}</h3>}
     </div>
   );

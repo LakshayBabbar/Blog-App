@@ -16,7 +16,6 @@ export async function middleware(request) {
         url.pathname.startsWith("/api/comments/delete") ||
         url.pathname.startsWith("/api/comments/create") ||
         url.pathname.startsWith("/api/blogs/:slug/edit") ||
-        url.pathname.startsWith("/api/blogs/create") ||
         url.pathname.startsWith("/blogs/:slug/edit")
       ) {
         return NextResponse.next();
@@ -24,6 +23,14 @@ export async function middleware(request) {
         return NextResponse.redirect(
           new URL(`/users/${token.username}`, request.url)
         );
+      } else if (url.pathname.startsWith("/admin/")) {
+        if (token.isAdmin) {
+          return NextResponse.next();
+        } else {
+          return NextResponse.redirect(
+            new URL(`/users/${token.username}`, request.url)
+          );
+        }
       }
     } else {
       if (url.pathname.startsWith("/login")) {
@@ -47,5 +54,6 @@ export const config = {
     "/api/comments/delete",
     "/blogs/:slug/edit",
     "/login",
+    "/admin/:path*",
   ],
 };

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { RiMenu4Fill } from "react-icons/ri";
 import { MdClose } from "react-icons/md";
@@ -17,6 +17,15 @@ const Navbar = () => {
     active === pre ? setActive(post) : setActive(pre);
   };
   const { status, data } = useSession();
+  const [auth, setAuth] = useState(false);
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      setAuth(true);
+    } else {
+      setAuth(false);
+    }
+  }, [status]);
 
   const linkStyle = "rounded-xl transition-all";
   return (
@@ -47,12 +56,11 @@ const Navbar = () => {
             <li className={linkStyle} onClick={menuHandler}>
               <Link href="/blogs/create">Create</Link>
             </li>
-            {status === "unauthenticated" && (
+            {!auth ? (
               <li className={linkStyle} onClick={menuHandler}>
                 <Link href={`/login`}>Login</Link>
               </li>
-            )}
-            {status === "authenticated" && (
+            ) : (
               <>
                 <li className={linkStyle} onClick={menuHandler}>
                   <Link href={`/users/${data?.user.username}`}>Profile</Link>

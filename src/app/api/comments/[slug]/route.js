@@ -12,7 +12,7 @@ export const GET = async (req, { params }) => {
   try {
     await connectDB();
     const comments = await commentModel.find({ blogId }).lean();
-    if (!comments || comments.length === 0) {
+    if (!comments) {
       return NextResponse.json(
         {
           message: "This blog has no comments.",

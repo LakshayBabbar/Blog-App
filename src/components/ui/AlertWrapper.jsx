@@ -19,7 +19,7 @@ export default function AlertWrapper({ children, ...props }) {
         <Button
           variant={props.variant || "ghost"}
           type={props.type}
-          disable={props.disabled}
+          disabled={props.disabled}
           className={props.className}
           aria-label={props["aria-label"]}
         >

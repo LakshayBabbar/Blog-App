@@ -9,9 +9,9 @@ import Script from "next/script";
 
 export async function generateMetadata() {
   return {
-    title: "Legit Blogs - Share Your Voice with the World",
+    title: "Discover Engaging and Insightful Blogs",
     description:
-      "Ignite your passion for writing and share your voice with the world through Legit Blogs. Unleash your creativity and join a community of fellow bloggers today.",
+      "Explore a wide range of captivating blogs on Legit Blogs. Join our community of readers today.",
     metadatabase: new URL("https://www.legitblogs.me"),
     alternates: {
       canonical: `https://www.legitblogs.me`,
@@ -54,14 +54,12 @@ const Home = async ({ searchParams }) => {
       <header>
         <div className="my-44 sm:my-52 flex flex-col gap-14 items-center justify-center text-center">
           <h1 className="text-5xl md:w-[75%] md:text-6xl xl:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50 leading-tight px-4 md:px-0">
-            Start Sharing Your Voice Today!
+            Discover Engaging and Insightful Blogs
           </h1>
           <p className="w-11/12 md:w-[55%] sm:text-xl text-slate-400">
-            Ignite your passion for writing and share your voice with the world
-            through our{" "}
-            <span className="text-slate-100">intuitive blogging platform.</span>{" "}
-            Unleash your creativity and join a community of fellow bloggers
-            today.
+            Explore a wide range of captivating blogs through our{" "}
+            <span className="text-slate-100">intuitive platform.</span> Join our
+            community of avid readers today.
           </p>
           <SearchBar type="Blogs" url="/api/blogs/search?term=" />
           <div className="absolute inset-0 -z-10 h-full w-full bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem] opacity-[0.05]" />
