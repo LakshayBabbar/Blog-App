@@ -76,7 +76,7 @@ const Home = async ({ searchParams }) => {
             {categories.map((items, index) => (
               <li key={index}>
                 <Link
-                  href={`/?category=${items}&page=${pageNo}#blogs`}
+                  href={`/?category=${items}&page=1&limit=9#blogs`}
                   className={`px-4 py-[6px] shadow-md rounded-full cursor-pointer ${
                     category === items
                       ? "bg-white text-black"

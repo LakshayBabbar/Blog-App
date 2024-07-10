@@ -18,7 +18,7 @@ export const GET = async (request) => {
     const countDocuments = await blogs.countDocuments(filter);
     const blogData = await blogs
       .find(filter)
-      .sort({ likes: -1 })
+      .sort({ updatedAt: -1 })
       .skip(skip)
       .limit(limit)
       .select("title url img author createdAt category");

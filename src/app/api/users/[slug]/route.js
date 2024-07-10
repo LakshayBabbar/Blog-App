@@ -19,7 +19,7 @@ export const GET = async (req, { params }) => {
     }
     const userBlogs = await blogs
       .find({ userId: userDetails._id })
-      .sort({ likes: -1 });
+      .sort({ updatedAt: -1 });
 
     return NextResponse.json(
       {
