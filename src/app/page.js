@@ -28,29 +28,6 @@ const Home = async ({ searchParams }) => {
 
   return (
     <div>
-      {process.env.ENV === "production" && (
-        <>
-          <Script
-            src={`https://www.googletagmanager.com/gtag/js?id=G-R3CVRC1C6P`}
-            strategy="afterInteractive"
-          />
-
-          <Script
-            id="google-analytics"
-            strategy="afterInteractive"
-            dangerouslySetInnerHTML={{
-              __html: `
-          window.dataLayer = window.dataLayer || [];
-          function gtag() {
-              dataLayer.push(arguments);
-          }
-          gtag("js", new Date());
-          gtag("config", "G-R3CVRC1C6P");
-          `,
-            }}
-          />
-        </>
-      )}
       <header>
         <div className="my-44 sm:my-52 flex flex-col gap-14 items-center justify-center text-center">
           <h1 className="text-5xl md:w-[75%] md:text-6xl xl:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50 leading-tight px-4 md:px-0">
