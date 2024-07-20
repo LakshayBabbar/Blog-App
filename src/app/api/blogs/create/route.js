@@ -16,6 +16,15 @@ export const POST = async (req) => {
   const user = session?.user;
 
   try {
+    if (!user.isAdmin) {
+      return NextResponse.json(
+        {
+          message: "You are not authorized to create a blog",
+        },
+        { status: 403 }
+      );
+    }
+
     if (!img) {
       return NextResponse.json(
         {
