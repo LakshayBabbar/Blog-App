@@ -11,10 +11,8 @@ export async function middleware(request) {
 
     if (token) {
       if (
-        url.pathname.startsWith("/api/blogs/create") ||
         url.pathname.startsWith("/api/users/:slug/edit") ||
         url.pathname.startsWith("/api/comments/delete") ||
-        url.pathname.startsWith("/api/comments/create") ||
         url.pathname.startsWith("/api/blogs/:slug/edit") ||
         url.pathname.startsWith("/blogs/:slug/edit")
       ) {
@@ -47,7 +45,6 @@ export async function middleware(request) {
 
 export const config = {
   matcher: [
-    "/api/blogs/create",
     "/api/blogs/:slug/edit",
     "/api/users/:slug/edit",
     "/api/comments/create",

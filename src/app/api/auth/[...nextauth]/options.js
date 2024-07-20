@@ -22,24 +22,36 @@ export const authOptions = {
     async jwt({ token, user }) {
       try {
         if (user) {
-          token.username = user.email.split("@")[0];
           await connectDB();
           const userExist = await userModel.findOne({ email: user.email });
 
           if (!userExist) {
+            let username = user.email.split("@")[0];
+            let existingUser = await userModel.findOne({ username });
+            let suffix = 1;
+
+            while (existingUser) {
+              username = `${user.email.split("@")[0]}${suffix}`;
+              existingUser = await userModel.findOne({ username });
+              suffix++;
+            }
+
             const newUser = new userModel({
               displayName: user.name,
               email: user.email,
-              username: user.email.split("@")[0],
+              username,
               profileImg: user.image,
               isAdmin: false,
             });
+
             const savedUser = await newUser.save();
             token.id = savedUser._id;
             token.isAdmin = false;
+            token.username = username;
           } else {
             token.id = userExist._id;
             token.isAdmin = userExist.isAdmin;
+            token.username = userExist.username;
           }
         }
         return token;

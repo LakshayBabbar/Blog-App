@@ -50,12 +50,11 @@ const Navbar = () => {
             <li className={linkStyle} onClick={menuHandler}>
               <a href="/#blogs">Blogs</a>
             </li>
-            <li className={linkStyle} onClick={menuHandler}>
-              <Link href="/users">Creators</Link>
-            </li>
-            <li className={linkStyle} onClick={menuHandler}>
-              <Link href="/blogs/create">Create</Link>
-            </li>
+            {data?.user?.isAdmin && (
+              <li className={linkStyle} onClick={menuHandler}>
+                <Link href="/admin/create">Create</Link>
+              </li>
+            )}
             {!auth ? (
               <li className={linkStyle} onClick={menuHandler}>
                 <Link href={`/login`}>Login</Link>
