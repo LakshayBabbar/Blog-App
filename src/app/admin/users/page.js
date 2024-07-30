@@ -4,7 +4,10 @@ import SearchBar from "@/components/SearchBar";
 
 const page = async () => {
   const users = await getData("/api/users", true);
-  if (!users) return <div>No users found</div>;
+  if (!users) return <div className="mt-28 text-center">No users found</div>;
+  if (users.error)
+    return <div className="mt-28 text-center">{users.error}</div>;
+  
   return (
     <div className="mt-32 space-y-10">
       <section className="w-full flex justify-center">
