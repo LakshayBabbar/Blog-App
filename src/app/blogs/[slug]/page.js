@@ -1,26 +1,28 @@
-import parse from "html-react-parser";
 import Footer from "@/components/Footer";
 import { getData } from "@/lib/helpers";
 import Image from "next/image";
 import Link from "next/link";
 import Comments from "@/components/Blogs/Comments";
 import BlogCustomization from "@/components/Blogs/BlogCustomization";
+import Markdown from "markdown-to-jsx";
+import Code from "@/components/Code/Code";
 
 export const generateMetadata = async ({ params }) => {
   const data = await getData(`/api/blogs/${params.slug}`);
   if ("error" in data) {
     return { title: "Blog Not Found", description: "Blog Not Found" };
   }
+  const desc = data.description || data.content;
   return {
     title: data.title,
-    description: data.description.substring(0, 160),
+    description: desc.substring(0, 160),
     creator: data.author,
     alternates: {
       canonical: `https://www.legitblogs.me/blogs/${params.slug}`,
     },
     openGraph: {
       title: data.title,
-      description: data.description.substring(0, 200),
+      description: desc.substring(0, 200),
       url: "https://www.legitblogs.me/blogs/" + params.slug,
       siteName: "Legit Blogs",
       images: [
@@ -36,7 +38,7 @@ export const generateMetadata = async ({ params }) => {
     twitter: {
       card: "summary_large_image",
       title: data.title,
-      description: data.description.substring(0, 160),
+      description: desc.substring(0, 160),
       images: [data.img.url],
     },
   };
@@ -44,7 +46,7 @@ export const generateMetadata = async ({ params }) => {
 
 const Blog = async ({ params }) => {
   const { slug } = params;
-  const data = await getData(`/api/blogs/${slug}`, true);
+  const data = await getData(`/api/blogs/${slug}`);
 
   return (
     <div className="flex flex-col items-center mt-20">
@@ -69,7 +71,7 @@ const Blog = async ({ params }) => {
               className="w-full h-auto"
               priority
             />
-            <div className="flex justify-between w-full">
+            <div className="flex justify-between w-full text-sm sm:text-base">
               <Link
                 href={`/users/${data.author}`}
                 className="cursor-pointer hover:underline"
@@ -82,7 +84,15 @@ const Blog = async ({ params }) => {
               </span>
             </div>
             <article className="prose-neutral prose-lg lg:prose-xl text-gray-300">
-              {parse(data.description)}
+              <Markdown
+                options={{
+                  overrides: {
+                    pre: { component: Code, props: { lan: data.language } },
+                  },
+                }}
+              >
+                {data.content}
+              </Markdown>
             </article>
             <Comments blogId={data._id} />
           </div>

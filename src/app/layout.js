@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark" suppressHydrationWarning={true}>
       <body
         className={`${inter.className} class="overflow-x-hidden dark:bg-black"`}
       >

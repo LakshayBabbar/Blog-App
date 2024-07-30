@@ -20,6 +20,10 @@ const schema = mongoose.Schema(
         required: true,
       },
     },
+    content: {
+      type: String,
+      required: true,
+    },
     author: {
       type: String,
       required: true,
@@ -31,6 +35,9 @@ const schema = mongoose.Schema(
     category: {
       type: String,
       required: true,
+    },
+    language: {
+      type: String,
     },
     url: {
       type: String,
