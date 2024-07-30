@@ -37,6 +37,7 @@ export const DELETE = async (req, { params }) => {
       userId: user?.id,
     });
     await revalidatePath("/");
+    revalidatePath(`/blogs/${blogData.url}`);
     return NextResponse.json(
       {
         message: "Blog is deleted successfully.",
@@ -58,12 +59,14 @@ export const PUT = async (req, { params }) => {
   const data = await req.formData();
   const title = data.get("title");
   const description = data.get("description");
+  const content = data.get("content");
   const img = data.get("img");
   const session = await getServerSession(authOptions);
   const user = session?.user;
   const UpdatedData = {
     title,
     description,
+    content,
   };
 
   try {

@@ -11,15 +11,18 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+import { modules } from "@/lib/quill";
+import { Textarea } from "@/components/ui/textarea";
 
 const UpdateBlog = ({ params }) => {
   const { data: blogData } = useFetch(`/api/blogs/${params.slug}`, params.slug);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
+    content: "",
     img: null,
   });
-  const [description, setDescription] = useState("");
+  const [content, setContent] = useState("");
   const { fetchData, loading, err, isErr } = useSend();
   const router = useRouter();
   const { status, data: sessionData } = useSession();
@@ -28,16 +31,18 @@ const UpdateBlog = ({ params }) => {
     setFormData({
       title: blogData?.title,
       description: blogData?.description,
+      content: blogData?.content,
       img: null,
     });
-    setDescription(blogData?.description);
+    setContent(blogData?.content);
   }, [blogData]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const updateData = new FormData();
     updateData.append("title", formData.title);
-    updateData.append("description", description);
+    updateData.append("description", formData.description);
+    updateData.append("content", content);
     if (formData.img) {
       updateData.append("img", formData.img);
     }
@@ -62,6 +67,10 @@ const UpdateBlog = ({ params }) => {
     );
   }
 
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   return (
     <div className="my-24 sm:my-36 flex justify-center">
       {blogData && (
@@ -72,10 +81,9 @@ const UpdateBlog = ({ params }) => {
           <Input
             type="text"
             className="w-full h-12"
+            name="title"
             value={formData.title}
-            onChange={(e) =>
-              setFormData({ ...formData, title: e.target.value })
-            }
+            onChange={handleChange}
           />
           <label htmlFor="img" className="relative w-full">
             <Image
@@ -104,11 +112,17 @@ const UpdateBlog = ({ params }) => {
             }
             accept="image/jpeg, image/jpg, image/png, image/webp"
           />
+          <Textarea
+            name="description"
+            value={formData?.description}
+            onChange={handleChange}
+          />
           <div className="w-full">
             <ReactQuill
               theme="snow"
-              value={description}
-              onChange={setDescription}
+              value={content}
+              onChange={setContent}
+              modules={modules}
             />
           </div>
           <div className="w-full flex gap-4 justify-end">

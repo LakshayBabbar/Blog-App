@@ -7,7 +7,7 @@ import { signOut } from "next-auth/react";
 const menuItems = [
   { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },
   { href: "/admin/create", icon: CirclePlus, label: "Create" },
-  { href: "/", icon: User, label: "Users" },
+  { href: "/admin/users", icon: User, label: "Users" },
   { href: "#", icon: LogOut, label: "Logout" },
 ];
 

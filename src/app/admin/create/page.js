@@ -18,10 +18,16 @@ import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import dynamic from "next/dynamic";
+import { modules } from "@/lib/quill";
+import { Textarea } from "@/components/ui/textarea";
 
 const CreateBlog = () => {
-  const [title, setTitle] = useState("");
-  const [desc, setDesc] = useState("");
+  const [data, setData] = useState({
+    title: "",
+    language: "",
+    description: "",
+  });
+  const [content, setContent] = useState("");
   const [img, setImg] = useState(null);
   const [category, setCategory] = useState("all");
   const redirect = useRouter();
@@ -31,8 +37,10 @@ const CreateBlog = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("title", title);
-    formData.append("description", desc);
+    formData.append("title", data.title);
+    formData.append("language", data.language);
+    formData.append("description", data.description);
+    formData.append("content", content);
     formData.append("category", category || "all");
     if (img) {
       formData.append("img", img);
@@ -47,6 +55,10 @@ const CreateBlog = () => {
     if (response?.success) {
       return redirect.push(`/blogs/${response.url}`);
     }
+  };
+
+  const handleData = (e) => {
+    setData({ ...data, [e.target.name]: e.target.value });
   };
 
   return (
@@ -69,9 +81,8 @@ const CreateBlog = () => {
             name="title"
             required
             placeholder="Title"
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={handleData}
           />
-          <ReactQuill theme="snow" value={desc} onChange={setDesc} />
           <div className="flex gap-4 flex-col sm:flex-row">
             <Select
               name="category"
@@ -106,6 +117,24 @@ const CreateBlog = () => {
               accept="image/*"
             />
           </div>
+          <Input
+            type="text"
+            name="language"
+            placeholder="Language (Optional)"
+            onChange={handleData}
+          />
+          <Textarea
+            name="description"
+            placeholder="Page Description"
+            onChange={handleData}
+            required
+          />
+          <ReactQuill
+            theme="snow"
+            value={content}
+            onChange={setContent}
+            modules={modules}
+          />
           {img && (
             <Image
               src={URL.createObjectURL(img)}
