@@ -18,8 +18,7 @@ const Footer = () => {
           <div className="flex flex-col gap-4 sm:flex-row">
             <Link href="/">Home</Link>
             <Link href="/login">Login</Link>
-            <Link href="/users">Creators</Link>
-            <Link href="/blogs/create-blog">Create</Link>
+            <Link href="/?category=tech#blogs">Tech</Link>
           </div>
         </div>
         <hr className="border-gray-600" />

@@ -10,7 +10,6 @@ export const POST = async (req) => {
   const data = await req.formData();
   const title = data.get("title");
   const description = data.get("description");
-  const language = data.get("language");
   const content = data.get("content");
   const category = data.get("category");
   const img = data.get("img");
@@ -57,7 +56,6 @@ export const POST = async (req) => {
     const newBlog = new blogs({
       title,
       description,
-      language,
       content,
       category,
       img: {

@@ -36,20 +36,9 @@ const schema = mongoose.Schema(
       type: String,
       required: true,
     },
-    language: {
-      type: String,
-    },
     url: {
       type: String,
       unique: true,
-    },
-    likes: {
-      type: Number,
-      default: 0,
-    },
-    usersLiked: {
-      type: [String],
-      default: [],
     },
   },
   { timestamps: true }

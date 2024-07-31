@@ -24,7 +24,6 @@ import { Textarea } from "@/components/ui/textarea";
 const CreateBlog = () => {
   const [data, setData] = useState({
     title: "",
-    language: "",
     description: "",
   });
   const [content, setContent] = useState("");
@@ -38,7 +37,6 @@ const CreateBlog = () => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("title", data.title);
-    formData.append("language", data.language);
     formData.append("description", data.description);
     formData.append("content", content);
     formData.append("category", category || "all");
@@ -117,12 +115,6 @@ const CreateBlog = () => {
               accept="image/*"
             />
           </div>
-          <Input
-            type="text"
-            name="language"
-            placeholder="Language (Optional)"
-            onChange={handleData}
-          />
           <Textarea
             name="description"
             placeholder="Page Description"

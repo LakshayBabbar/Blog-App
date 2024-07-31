@@ -6,22 +6,9 @@ const capitalizeFirstLetter = (str) => {
 const categories = [
   "all",
   "tech",
-  "fashion",
-  "nature",
-  "travel",
-  "sports",
+  "Learning",
   "shopping",
-  "fitness",
-  "lifestyle",
-  "finance",
-  "news",
-  "business",
   "Entertainment",
-  "crafts",
-  "music",
-  "food",
-  "marketing",
-  "photography",
   "others",
 ];
 export { categories, capitalizeFirstLetter };

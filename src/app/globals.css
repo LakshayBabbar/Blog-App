@@ -77,8 +77,9 @@
   body {
     @apply bg-background text-foreground;
   }
-  pre {
-    @apply overflow-x-scroll bg-zinc-900 scroll-mx-3
+  .prose code::after,
+  .prose code::before {
+    @apply content-none;
   }
 }
 
