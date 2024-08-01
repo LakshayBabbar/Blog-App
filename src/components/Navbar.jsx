@@ -45,10 +45,16 @@ const Navbar = () => {
         >
           <ul className="w-28 py-5 pl-5 text-sm flex flex-col gap-4 sm:flex-row sm:w-[fit-content] sm:p-0 sm:items-center">
             <li className={linkStyle} onClick={menuHandler}>
-              <Link href="/#home">Home</Link>
+              <Link href="/">Home</Link>
             </li>
             <li className={linkStyle} onClick={menuHandler}>
-              <a href="/#blogs">Blogs</a>
+              <a href="/category/tech">Tech</a>
+            </li>
+            <li className={linkStyle} onClick={menuHandler}>
+              <a href="/category/tutorial">Tutorials</a>
+            </li>
+            <li className={linkStyle} onClick={menuHandler}>
+              <a href="/category/shopping">Shopping</a>
             </li>
             {data?.user?.isAdmin && (
               <li className={linkStyle} onClick={menuHandler}>

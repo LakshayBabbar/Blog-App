@@ -13,6 +13,8 @@ import dynamic from "next/dynamic";
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import { modules } from "@/lib/quill";
 import { Textarea } from "@/components/ui/textarea";
+import { MdFavoriteBorder } from "react-icons/md";
+import { MdFavorite } from "react-icons/md";
 
 const UpdateBlog = ({ params }) => {
   const { data: blogData } = useFetch(`/api/blogs/${params.slug}`, params.slug);
@@ -26,6 +28,7 @@ const UpdateBlog = ({ params }) => {
   const { fetchData, loading, err, isErr } = useSend();
   const router = useRouter();
   const { status, data: sessionData } = useSession();
+  const [featured, setFeatured] = useState(false);
 
   useEffect(() => {
     setFormData({
@@ -34,6 +37,7 @@ const UpdateBlog = ({ params }) => {
       content: blogData?.content,
       img: null,
     });
+    setFeatured(blogData?.featured);
     setContent(blogData?.content);
   }, [blogData]);
 
@@ -43,6 +47,8 @@ const UpdateBlog = ({ params }) => {
     updateData.append("title", formData.title);
     updateData.append("description", formData.description);
     updateData.append("content", content);
+    updateData.append("featured", featured);
+    updateData.append("category", blogData.category);
     if (formData.img) {
       updateData.append("img", formData.img);
     }
@@ -78,13 +84,27 @@ const UpdateBlog = ({ params }) => {
           className="w-[85%] xl:w-[50rem] flex flex-col gap-10 items-center"
           onSubmit={handleSubmit}
         >
-          <Input
-            type="text"
-            className="w-full h-12"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-          />
+          <div className="flex gap-4 items-center justify-between w-full">
+            <Input
+              type="text"
+              className="w-full h-12"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+            />
+            <Button
+              variant="outline"
+              className="h-12"
+              type="button"
+              onClick={() => setFeatured(!featured)}
+            >
+              {featured ? (
+                <MdFavorite className="text-red-500 text-2xl" />
+              ) : (
+                <MdFavoriteBorder className="text-2xl" />
+              )}
+            </Button>
+          </div>
           <label htmlFor="img" className="relative w-full">
             <Image
               src={

@@ -20,6 +20,7 @@ import Image from "next/image";
 import dynamic from "next/dynamic";
 import { modules } from "@/lib/quill";
 import { Textarea } from "@/components/ui/textarea";
+import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 
 const CreateBlog = () => {
   const [data, setData] = useState({
@@ -29,6 +30,7 @@ const CreateBlog = () => {
   const [content, setContent] = useState("");
   const [img, setImg] = useState(null);
   const [category, setCategory] = useState("all");
+  const [featured, setFeatured] = useState(false);
   const redirect = useRouter();
   const { fetchData, loading, err, isErr } = useSend();
   const { toast } = useToast();
@@ -39,6 +41,7 @@ const CreateBlog = () => {
     formData.append("title", data.title);
     formData.append("description", data.description);
     formData.append("content", content);
+    formData.append("featured", featured);
     formData.append("category", category || "all");
     if (img) {
       formData.append("img", img);
@@ -74,13 +77,26 @@ const CreateBlog = () => {
           onSubmit={submitHandler}
           encType="multipart/form-data"
         >
-          <Input
-            type="text"
-            name="title"
-            required
-            placeholder="Title"
-            onChange={handleData}
-          />
+          <div className="flex gap-4">
+            <Input
+              type="text"
+              name="title"
+              required
+              placeholder="Title"
+              onChange={handleData}
+            />
+            <Button
+              variant="outline"
+              type="button"
+              onClick={() => setFeatured(!featured)}
+            >
+              {featured ? (
+                <MdFavorite className="text-red-500 text-2xl" />
+              ) : (
+                <MdFavoriteBorder className="text-2xl" />
+              )}
+            </Button>
+          </div>
           <div className="flex gap-4 flex-col sm:flex-row">
             <Select
               name="category"

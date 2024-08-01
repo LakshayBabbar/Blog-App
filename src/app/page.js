@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getData } from "@/lib/helpers";
 import SearchBar from "@/components/SearchBar";
-import Script from "next/script";
+import Pagination from "@/components/pagination/Pagination";
 
 export async function generateMetadata() {
   return {
@@ -20,14 +20,11 @@ export async function generateMetadata() {
 }
 
 const Home = async ({ searchParams }) => {
-  const category = searchParams.category || "all";
   const pageNo = parseInt(searchParams.page) || 1;
-  const data = await getData(
-    `/api/blogs?category=${category}&page=${pageNo}&limit=9`
-  );
+  const data = await getData(`/api/blogs?page=${pageNo}&limit=9`);
 
   return (
-    <div>
+    <>
       <header>
         <div className="my-44 sm:my-52 flex flex-col gap-14 items-center justify-center text-center">
           <h1 className="text-5xl md:w-[75%] md:text-6xl xl:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50 leading-tight px-4 md:px-0">
@@ -44,21 +41,14 @@ const Home = async ({ searchParams }) => {
         </div>
       </header>
       <main className="flex flex-col items-center justify-center">
-        <section
-          className="space-y-10 w-[80%] md:w-[45rem] xl:w-[80rem]"
-          id="blogs"
-        >
+        <section className="space-y-10 w-11/12 md:w-4/5">
           <h2 className="text-3xl sm:text-4xl">Categories</h2>
-          <ul className="flex gap-4 flex-wrap leading-loose">
+          <ul className="flex gap-4 flex-wrap">
             {categories.map((items, index) => (
               <li key={index}>
                 <Link
-                  href={`/?category=${items}&page=1&limit=9#blogs`}
-                  className={`px-4 py-[6px] shadow-md rounded-full cursor-pointer ${
-                    category === items
-                      ? "bg-white text-black"
-                      : "text-white bg-zinc-800"
-                  }`}
+                  href={`/category/${items}`}
+                  className="px-4 py-[6px] shadow-md rounded-full cursor-pointer bg-slate-800"
                 >
                   {capitalizeFirstLetter(items)}
                 </Link>
@@ -66,7 +56,7 @@ const Home = async ({ searchParams }) => {
             ))}
           </ul>
         </section>
-        <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 justify-items-center mt-20">
+        <section className="w-11/12 md:w-4/5 flex flex-wrap gap-10 mt-14">
           {!data ? (
             Array.from({ length: 9 }).map((items, index) => (
               <div
@@ -98,31 +88,10 @@ const Home = async ({ searchParams }) => {
             </div>
           )}
         </section>
-        <section className="flex mt-20 gap-4 items-center">
-          {pageNo > 1 && (
-            <Link
-              href={`/?category=${category}&page=${Number(pageNo) - 1}#blogs`}
-              className="py-2 px-4 bg-secondary rounded-md text-sm disabled:opacity-[0.7] disabled:cursor-not-allowed"
-            >
-              Prev
-            </Link>
-          )}
-          <p className="text-slate-200 text-sm">
-            Page {pageNo} of {data?.totalPages || 1}
-          </p>
-          {pageNo < data?.totalPages && (
-            <Link
-              href={`/?category=${category}&page=${Number(pageNo) + 1}#blogs`}
-              disabled={pageNo >= data?.totalPages}
-              className="py-2 px-4 bg-secondary rounded-md text-sm disabled:opacity-[0.7] disabled:cursor-not-allowed"
-            >
-              Next
-            </Link>
-          )}
-        </section>
+        <Pagination pageNo={pageNo} totalPages={data?.totalPages} url="/" />
       </main>
       <Footer />
-    </div>
+    </>
   );
 };
 

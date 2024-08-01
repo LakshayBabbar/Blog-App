@@ -12,6 +12,7 @@ export const POST = async (req) => {
   const description = data.get("description");
   const content = data.get("content");
   const category = data.get("category");
+  const featured = data.get("featured");
   const img = data.get("img");
   const session = await getServerSession(authOptions);
   const user = session?.user;
@@ -65,6 +66,13 @@ export const POST = async (req) => {
       author: user?.username,
       userId: user?.id,
     });
+    if (featured) {
+      newBlog.featured = featured;
+      await blogs.updateOne(
+        { featured: true, category },
+        { $set: { featured: false } }
+      );
+    }
     const createdBlog = await newBlog.save();
     await revalidatePath("/");
     return NextResponse.json(

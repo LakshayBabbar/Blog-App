@@ -61,6 +61,8 @@ export const PUT = async (req, { params }) => {
   const description = data.get("description");
   const content = data.get("content");
   const img = data.get("img");
+  const featured = data.get("featured");
+  const category = data.get("category");
   const session = await getServerSession(authOptions);
   const user = session?.user;
   const UpdatedData = {
@@ -92,10 +94,16 @@ export const PUT = async (req, { params }) => {
         url: newImg.secure_url,
       };
     }
+    if (featured) {
+      UpdatedData.featured = featured;
+      await blogs.updateOne(
+        { featured: true, category },
+        { $set: { featured: false } }
+      );
+    }
     const updatedBlog = await blogs.findOneAndUpdate(
       { _id: blogId, userId: user?.id },
-      UpdatedData,
-      { new: true }
+      UpdatedData
     );
 
     if (!updatedBlog) {

@@ -30,7 +30,7 @@ const SearchBar = ({ type, url }) => {
     setTimeout(() => {
       setIsFocused(false);
       setSearchResults([]);
-    }, 100); // small delay to allow click events to register
+    }, 200); // small delay to allow click events to register
   };
 
   return (

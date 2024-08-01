@@ -26,7 +26,7 @@ const SideBar = () => {
   };
 
   return (
-    <aside className="w-fit px-11 h-screen shadow-xl bg-slate-900 flex flex-col items-center">
+    <aside className="fixed top-0 left-0 w-fit px-11 h-screen shadow-xl bg-slate-900 flex flex-col items-center">
       <ul className="mt-24 space-y-2">
         {menuItems.map((item, index) => (
           <li

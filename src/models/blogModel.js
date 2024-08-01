@@ -40,6 +40,10 @@ const schema = mongoose.Schema(
       type: String,
       unique: true,
     },
+    featured: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

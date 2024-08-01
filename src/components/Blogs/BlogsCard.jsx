@@ -6,7 +6,7 @@ const BlogsCard = ({ data }) => {
   const date = data.createdAt;
 
   return (
-    <div className="w-4/5 md:w-[20rem] xl:w-[25rem] flex flex-col rounded-xl bg-[rgba(46,46,46,0.48)] shadow-md hover:scale-105 transition-all ease-in-out duration-300">
+    <div className="w-full sm:w-[20rem] md:w-[40%] xl:w-[30%] 2xl:w-[25rem] flex flex-col rounded-xl bg-[rgba(46,46,46,0.48)] shadow-md hover:scale-105 transition-all ease-in-out duration-300">
       <div className="relative w-full aspect-video">
         <Image
           src={data.img.url}
@@ -23,7 +23,7 @@ const BlogsCard = ({ data }) => {
         </span>
         <Link
           href={`/blogs/${data.url}`}
-          className="text-2xl hover:underline cursor-pointer line-clamp-2"
+          className="text-xl xl:text-2xl hover:underline cursor-pointer line-clamp-2"
         >
           {data.title}
         </Link>

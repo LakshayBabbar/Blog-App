@@ -3,12 +3,5 @@ const capitalizeFirstLetter = (str) => {
   return capitalWord;
 };
 
-const categories = [
-  "all",
-  "tech",
-  "Learning",
-  "shopping",
-  "Entertainment",
-  "others",
-];
+const categories = ["all", "tech", "tutorial", "shopping"];
 export { categories, capitalizeFirstLetter };
