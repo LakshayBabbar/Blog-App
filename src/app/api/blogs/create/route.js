@@ -12,7 +12,7 @@ export const POST = async (req) => {
   const description = data.get("description");
   const content = data.get("content");
   const category = data.get("category");
-  const featured = data.get("featured");
+  const featured = data.get("featured") === "true";
   const img = data.get("img");
   const session = await getServerSession(authOptions);
   const user = session?.user;
