@@ -33,7 +33,7 @@ const page = async ({ params, searchParams }) => {
   return (
     <div className="mt-32 flex flex-col w-full justify-center items-center gap-10">
       <div className="w-11/12 xl:w-4/5">
-        <h1 className="text-4xl font-semibold tracking-widest">{`${category.toUpperCase()} BLOGS`}</h1>
+        <h1 className="text-4xl font-semibold tracking-wider">{`${category.toUpperCase()} BLOGS`}</h1>
       </div>
       <div className="flex flex-wrap w-11/12 xl:w-4/5 gap-10 justify-center sm:justify-normal">
         {category !== "all" && <Featured blog={data?.featured} />}

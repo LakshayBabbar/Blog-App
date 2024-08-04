@@ -17,7 +17,7 @@ const Featured = ({ blog }) => {
         <h2 className="text-2xl xl:text-3xl">{blog?.title}</h2>
         <p className="md:pr-10 xl:text-xl text-slate-300">{blog?.description}</p>
         <Button>
-          <Link href={`/blogs/${blog?.url}`}>Read Full Article</Link>
+          <Link href={`/blogs/${blog?.url}`}>Read Article</Link>
         </Button>
       </div>
     </section>

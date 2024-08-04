@@ -85,7 +85,7 @@
 
 .ql-editor {
   min-height: 15rem;
-  max-height: 20rem;
+  max-height: 100%;
   background: var(--background);
   color: white;
   font-size: 1rem;
@@ -109,6 +109,14 @@
 
 *::-webkit-scrollbar {
   width: 8px;
+}
+@media screen and (max-width: 640px) {
+  *::-webkit-scrollbar {
+    height: 2px;
+  }
+}
+#divScroll {
+  scrollbar-width: 5px !important;
 }
 
 *::-webkit-scrollbar-track {

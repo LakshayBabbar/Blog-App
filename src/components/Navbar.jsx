@@ -29,9 +29,9 @@ const Navbar = () => {
 
   const linkStyle = "rounded-xl transition-all";
   return (
-    <div className="fixed top-0 sm:top-5 left-0 w-full h-16 flex justify-center items-center z-50">
-      <div className="backdrop-blur-lg border-b sm:bg-gradient-to-b from-neutral-900 to-slate-900 sm:border gap-4 flex items-center justify-between sm:justify-normal sm:rounded-full px-6 w-full sm:w-auto h-16 sm:h-14">
-        <div className="sm:hidden">
+    <div className="fixed top-0 md:top-5 left-0 w-full h-16 flex justify-center items-center z-50">
+      <div className="backdrop-blur-lg border-b md:bg-gradient-to-b from-neutral-900 to-slate-900 md:border gap-4 flex items-center justify-between md:justify-normal md:rounded-full px-6 w-full md:w-auto h-16 md:h-14">
+        <div className="md:hidden">
           <Image
             src={logo}
             alt="logo"
@@ -41,9 +41,9 @@ const Navbar = () => {
           />
         </div>
         <div
-          className={`absolute rounded-2xl sm:relative ${active} sm:top-0 sm:right-0 sm:shadow-none transition-all duration-300 w-36 sm:w-auto`}
+          className={`absolute rounded-2xl md:relative ${active} md:top-0 md:right-0 md:shadow-none transition-all duration-300 w-36 md:w-auto`}
         >
-          <ul className="w-28 py-5 pl-5 text-sm flex flex-col gap-4 sm:flex-row sm:w-[fit-content] sm:p-0 sm:items-center">
+          <ul className="w-28 py-5 pl-5 text-sm flex flex-col gap-4 md:flex-row md:w-[fit-content] md:p-0 md:items-center">
             <li className={linkStyle} onClick={menuHandler}>
               <Link href="/">Home</Link>
             </li>
@@ -80,7 +80,7 @@ const Navbar = () => {
           </ul>
         </div>
         <button
-          className="sm:hidden"
+          className="md:hidden"
           onClick={menuHandler}
           aria-label="Navigation Menu"
         >

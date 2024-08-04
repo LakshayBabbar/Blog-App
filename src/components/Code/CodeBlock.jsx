@@ -33,7 +33,10 @@ const CodeBlock = ({ children }) => {
           style={drakula}
           customStyle={{
             background: "transparent",
-            paddingTop: "0 1rem 0 0",
+            paddingTop: "5px",
+            margin: "0",
+            scrollbarWidth: "thin",
+            scrollbarColor: "#4B5563 #1F2937",
           }}
           showLineNumbers
         >

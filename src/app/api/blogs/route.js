@@ -27,7 +27,7 @@ export const GET = async (request) => {
     const countDocuments = await blogs.countDocuments(filter);
     const blogData = await blogs
       .find(filter)
-      .sort({ updatedAt: -1 })
+      .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
       .select("-content -__v -updatedAt -featured -userId");

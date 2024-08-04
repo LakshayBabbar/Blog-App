@@ -12,8 +12,8 @@ const menuItems = [
 ];
 
 const SideBar = () => {
-  const linkStyle = "flex gap-5 text-md items-center";
-  const listStyle = "rounded-md py-2 px-5";
+  const linkStyle = "flex gap-2 md:gap-5 text-md items-center";
+  const listStyle = "rounded-md md:py-2 px-5";
   const icoSize = "20px";
   const [activeIndex, setActiveIndex] = React.useState();
 
@@ -26,8 +26,11 @@ const SideBar = () => {
   };
 
   return (
-    <aside className="fixed top-0 left-0 w-fit px-11 h-screen shadow-xl bg-slate-900 flex flex-col items-center">
-      <ul className="mt-24 space-y-2">
+    <aside className="fixed top-16 md:top-0 left-0 w-full md:w-fit md:px-11 h-12 md:h-screen shadow-xl bg-slate-900 flex md:flex-col items-center">
+      <ul
+        className="md:mt-24 flex md:flex-col h-full md:gap-2 w-full overflow-x-scroll md:overflow-hidden items-center md:items-start"
+        id="divScroll"
+      >
         {menuItems.map((item, index) => (
           <li
             key={index}
