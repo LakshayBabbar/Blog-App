@@ -35,6 +35,14 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isSuper: {
+      type: Boolean,
+      default: false,
+    },
+    blocked: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

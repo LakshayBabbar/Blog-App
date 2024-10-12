@@ -1,5 +1,5 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
-import { deleteImage } from "@/config/cloudinary";
+import { deleteMultipleImages } from "@/config/cloudinary";
 import { connectDB } from "@/config/db";
 import blogs from "@/models/blogModel";
 import commentModel from "@/models/commentModel";
@@ -45,12 +45,21 @@ export const DELETE = async (req, res) => {
     const user = session?.user;
     // Delete user document
     await connectDB();
+    if (user.isAdmin) {
+      return NextResponse.json(
+        {
+          message: "Admin account can't delete.",
+          success: false,
+        },
+        { status: 400 }
+      );
+    }
     await userModel.findOneAndDelete({ _id: user?.id });
     await commentModel.deleteMany({ userId: user?.id });
     const allBlogs = await blogs.find({ userId: user?.id });
     if (allBlogs.length > 0) {
       const imageUrls = allBlogs.map((blog) => blog.img.public_id);
-      await deleteBlogImages(imageUrls);
+      await deleteMultipleImages(imageUrls);
       await blogs.deleteMany({ userId: user?.id });
     }
     revalidatePath("/");
@@ -72,15 +81,3 @@ export const DELETE = async (req, res) => {
     );
   }
 };
-async function deleteBlogImages(imageUrls) {
-  try {
-    if (imageUrls.length === 0) return;
-
-    const deletionPromises = imageUrls.map((url) => deleteImage(url));
-
-    await Promise.allSettled(deletionPromises);
-  } catch (error) {
-    console.error("Error deleting blog images:", error);
-    throw error;
-  }
-}

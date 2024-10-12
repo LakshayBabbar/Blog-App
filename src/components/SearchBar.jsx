@@ -34,7 +34,7 @@ const SearchBar = ({ type, url }) => {
   };
 
   return (
-    <div className="w-4/5 md:w-[40%] relative">
+    <div className="w-full md:w-96 relative">
       <form onSubmit={handleSubmit}>
         <Input
           type="text"

@@ -23,16 +23,16 @@ export const GET = async (request) => {
     if (featuredBlog) {
       filter._id = { $ne: featuredBlog._id };
     }
-
+    filter.approved = true;
     const countDocuments = await blogs.countDocuments(filter);
     const blogData = await blogs
       .find(filter)
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
-      .select("-content -__v -updatedAt -featured -userId");
+      .select("-content -__v -updatedAt -userId");
 
-    if (!blogData || blogData.length === 0) {
+    if (!blogData || (blogData.length === 0 && !featuredBlog)) {
       return NextResponse.json({ message: "No blogs found" }, { status: 404 });
     }
 

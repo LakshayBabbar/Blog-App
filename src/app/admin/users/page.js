@@ -1,25 +1,44 @@
+"use client";
 import UsersCard from "@/components/ui/UsersCard";
-import { getData } from "@/lib/helpers";
 import SearchBar from "@/components/SearchBar";
+import useFetch from "@/hooks/useFetch";
 
-const page = async () => {
-  const users = await getData("/api/users", true);
-  if (!users) return <div className="mt-28 text-center">No users found</div>;
-  if (users.error)
-    return <div className="mt-28 text-center">{users.error}</div>;
- 
+const Users = () => {
+  const { data, isError, error, isLoading, refetch } = useFetch(
+    "/api/admin/users",
+    "all_users"
+  );
+
+  if (isError) {
+    return (
+      <div className="mt-32 space-y-10 ml-10">
+        <h1 className="text-2xl font-semibold text-red-500">
+          {error.message || "Something went wrong!"}
+        </h1>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="mt-32 space-y-10 w-full text-center ">
+        <h1 className="text-xl font-semibold text-blue-100">Loading...</h1>
+      </div>
+    );
+  }
+
   return (
-    <div className="mt-32 space-y-10">
-      <section className="w-full flex justify-center">
-        <SearchBar type="users" url="/api/users?search=" />
+    <div className="my-24 md:mt-28 p-5 space-y-10">
+      <section className="w-full justify-center md:justify-start">
+        <SearchBar type="users" url="/api/admin/users?search=" />
       </section>
-      <section className="flex flex-wrap gap-4">
-        {users?.map((user) => (
-          <UsersCard key={user._id} data={user} />
+      <section className="flex flex-wrap gap-4 justify-center md:justify-start">
+        {data?.users?.map((user) => (
+          <UsersCard key={user._id} data={user} refetch={refetch} />
         ))}
       </section>
     </div>
   );
 };
 
-export default page;
+export default Users;

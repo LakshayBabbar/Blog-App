@@ -7,15 +7,26 @@ import Button from "@/components/ui/Button";
 import { getData } from "@/lib/helpers";
 import Image from "next/image";
 import EditUser from "@/components/users/EditUser";
+import { MdVerified } from "react-icons/md";
 
 const UserDetails = async ({ params }) => {
   const data = await getData(`/api/users/${params.userId}`, true);
-  if ("error" in data) {
+  if (data?.error) {
     return <h1 className="text-center mt-28">{data.error}</h1>;
   }
+  if (data.blocked === true) {
+    return (
+      <div className="flex h-screen w-screen items-center justify-center">
+        <h1 className="text-center text-xl">
+          This account has been suspended. <br />
+          Please contact support for more information.
+        </h1>
+      </div>
+    );
+  }
   return (
-    <div className="flex items-center justify-center my-24 sm:my-36">
-      <div className="w-[fit-content] flex flex-col gap-10 items-center">
+    <div className="flex items-center justify-center my-28 sm:my-36">
+      <div className="w-full flex flex-col gap-10 items-center">
         <div className="flex px-5 sm:px-0 sm:items-start gap-5 sm:gap-14">
           <Image
             src={data.profileImg}
@@ -26,7 +37,12 @@ const UserDetails = async ({ params }) => {
           />
           <div className="flex flex-col gap-2 sm:flex-row sm:gap-10">
             <div className="space-y-1 sm:space-y-1">
-              <h1 className="text-xl font-[500]">{data.username}</h1>
+              <div className="relative w-fit">
+                <h1 className="text-xl font-[500]">{data.username}</h1>
+                {(data?.isAdmin || data?.isSuper) && (
+                  <MdVerified className="size-5 absolute top-1 -right-6 text-blue-400" />
+                )}
+              </div>
               <h2 className="flex items-center gap-2 text-sm text-slate-400">
                 <FaRegCalendarAlt />
                 Date joined: {data.createdAt.substring(0, 10)}
@@ -50,7 +66,7 @@ const UserDetails = async ({ params }) => {
             </div>
           </div>
         </div>
-        <hr className="w-full border-zinc-600" />
+        <hr className="w-4/5 border-zinc-600" />
         <div
           className={`flex justify-${
             data.auth ? "between" : "center"
@@ -64,7 +80,7 @@ const UserDetails = async ({ params }) => {
           )}
         </div>
         {data.blogs.length > 0 ? (
-          <div className="grid md:grid-cols-2 xl:grid-cols-3 justify-items-center gap-8">
+          <div className="flex flex-wrap p-4 justify-items-center gap-8 w-full md:w-4/5">
             {data.blogs.map((items, index) => {
               return <BlogsCard key={items._id} data={items} />;
             })}

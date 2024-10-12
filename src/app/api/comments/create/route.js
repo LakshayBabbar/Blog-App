@@ -4,6 +4,7 @@ import blogs from "@/models/blogModel";
 import commentModel from "@/models/commentModel";
 import { NextResponse } from "next/server";
 import { connectDB } from "@/config/db";
+import userModel from "@/models/userModel";
 
 export const POST = async (req) => {
   const reqBody = await req.json();
@@ -13,6 +14,15 @@ export const POST = async (req) => {
 
   try {
     await connectDB();
+    const isValidUsr = await userModel.findOne({ _id: user?.id });
+    if (!isValidUsr || isValidUsr?.blocked) {
+      return NextResponse.json(
+        {
+          message: "User not found or blocked",
+        },
+        { status: 404 }
+      );
+    }
     const blog = await blogs.findOne({ _id: blogId });
     if (!blog) {
       return NextResponse.json(

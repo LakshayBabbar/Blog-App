@@ -21,6 +21,7 @@ import dynamic from "next/dynamic";
 import { modules } from "@/lib/quill";
 import { Textarea } from "@/components/ui/textarea";
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
+import { useSession } from "next-auth/react";
 
 const CreateBlog = () => {
   const [data, setData] = useState({
@@ -30,10 +31,10 @@ const CreateBlog = () => {
   const [content, setContent] = useState("");
   const [img, setImg] = useState(null);
   const [category, setCategory] = useState("all");
-  const [featured, setFeatured] = useState(false);
   const redirect = useRouter();
   const { fetchData, loading, err, isErr } = useSend();
   const { toast } = useToast();
+  const { data: sessionData } = useSession();
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -41,7 +42,6 @@ const CreateBlog = () => {
     formData.append("title", data.title);
     formData.append("description", data.description);
     formData.append("content", content);
-    formData.append("featured", featured);
     formData.append("category", category || "all");
     if (img) {
       formData.append("img", img);
@@ -62,8 +62,19 @@ const CreateBlog = () => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
+  if (sessionData?.user?.blocked) {
+    return (
+      <div className="flex h-screen w-screen items-center justify-center">
+        <h1 className="text-center text-xl">
+          This account has been suspended. <br />
+          Please contact support for more information.
+        </h1>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex justify-center w-full mt-36">
+    <div className="flex justify-center w-full mt-28 sm:mt-36">
       <div className="flex flex-col h-fit gap-10 px-5">
         <div className="space-y-2 text-sm">
           <h1 className="text-4xl font-[500]">What&#39;s on your mind?</h1>
@@ -77,26 +88,13 @@ const CreateBlog = () => {
           onSubmit={submitHandler}
           encType="multipart/form-data"
         >
-          <div className="flex gap-4">
-            <Input
-              type="text"
-              name="title"
-              required
-              placeholder="Title"
-              onChange={handleData}
-            />
-            <Button
-              variant="outline"
-              type="button"
-              onClick={() => setFeatured(!featured)}
-            >
-              {featured ? (
-                <MdFavorite className="text-red-500 text-2xl" />
-              ) : (
-                <MdFavoriteBorder className="text-2xl" />
-              )}
-            </Button>
-          </div>
+          <Input
+            type="text"
+            name="title"
+            required
+            placeholder="Title"
+            onChange={handleData}
+          />
           <div className="flex gap-4 flex-col sm:flex-row">
             <Select
               name="category"

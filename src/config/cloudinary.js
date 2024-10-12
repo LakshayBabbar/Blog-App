@@ -58,3 +58,16 @@ export const deleteImage = async (public_id) => {
     );
   }
 };
+
+export async function deleteMultipleImages(imageUrls) {
+  try {
+    if (imageUrls.length === 0) return;
+
+    const deletionPromises = imageUrls.map((url) => deleteImage(url));
+
+    await Promise.allSettled(deletionPromises);
+  } catch (error) {
+    console.error("Error deleting blog images:", error);
+    throw error;
+  }
+}

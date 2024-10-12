@@ -47,11 +47,14 @@ export const authOptions = {
             const savedUser = await newUser.save();
             token.id = savedUser._id;
             token.isAdmin = false;
+            token.isSuper = false;
             token.username = username;
           } else {
             token.id = userExist._id;
             token.isAdmin = userExist.isAdmin;
+            token.isSuper = userExist.isSuper;
             token.username = userExist.username;
+            token.blocked = userExist.blocked;
           }
         }
         return token;
@@ -65,6 +68,8 @@ export const authOptions = {
         session.user.username = token.username;
         session.user.id = token.id;
         session.user.isAdmin = token.isAdmin;
+        session.user.isSuper = token.isSuper;
+        session.user.blocked = token?.blocked;
         return session;
       } catch (error) {
         console.error("Error in session callback:", error);

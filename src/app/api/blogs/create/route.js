@@ -5,6 +5,7 @@ import { authOptions } from "../../auth/[...nextauth]/options";
 import blogs from "@/models/blogModel";
 import { connectDB } from "@/config/db";
 import { revalidatePath } from "next/cache";
+import userModel from "@/models/userModel";
 
 export const POST = async (req) => {
   const data = await req.formData();
@@ -12,18 +13,18 @@ export const POST = async (req) => {
   const description = data.get("description");
   const content = data.get("content");
   const category = data.get("category");
-  const featured = data.get("featured") === "true";
   const img = data.get("img");
   const session = await getServerSession(authOptions);
   const user = session?.user;
+  const sudoUser = await userModel.findOne({ _id: user.id });
 
   try {
-    if (!user.isAdmin) {
+    if (sudoUser.blocked === true) {
       return NextResponse.json(
         {
-          message: "You are not authorized to create a blog",
+          message: "You are blocked by admin",
         },
-        { status: 403 }
+        { status: 400 }
       );
     }
 
@@ -66,15 +67,14 @@ export const POST = async (req) => {
       author: user?.username,
       userId: user?.id,
     });
-    if (featured) {
-      newBlog.featured = featured;
-      await blogs.updateOne(
-        { featured: true, category },
-        { $set: { featured: false } }
-      );
+    if (sudoUser?.isAdmin === true || sudoUser?.isSuper === true) {
+      newBlog.approved = true;
+    } else {
+      revalidatePath("/admin/approval");
     }
     const createdBlog = await newBlog.save();
     await revalidatePath("/");
+
     return NextResponse.json(
       {
         ...createdBlog._doc,

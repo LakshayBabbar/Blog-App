@@ -73,8 +73,6 @@ export const PUT = async (req, { params }) => {
     const description = data.get("description");
     const content = data.get("content");
     const img = data.get("img");
-    const featured = data.get("featured") === "true";
-    const category = data.get("category");
 
     if (!title || !description || !content) {
       return NextResponse.json(
@@ -113,14 +111,6 @@ export const PUT = async (req, { params }) => {
         public_id: newImg.public_id,
         url: newImg.secure_url,
       };
-    }
-
-    if (featured) {
-      updatedData.featured = featured;
-      await blogs.updateOne(
-        { featured: true, category },
-        { $set: { featured: false } }
-      );
     }
 
     const updatedBlog = await blogs.findOneAndUpdate(

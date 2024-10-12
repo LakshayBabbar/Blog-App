@@ -1,3 +1,5 @@
+export const revalidate = 0;
+
 import { connectDB } from "@/config/db";
 import userModel from "@/models/userModel";
 import { NextResponse } from "next/server";
@@ -8,7 +10,7 @@ export const GET = async (req) => {
   await connectDB();
   if (searchTerm === "all") {
     const users = await userModel.find({});
-    return NextResponse.json(users, { status: 200 });
+    return NextResponse.json({ users }, { status: 200 });
   } else {
     try {
       const user = await userModel.find({
