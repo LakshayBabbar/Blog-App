@@ -27,8 +27,7 @@ const useSend = () => {
       const req = await fetch(process.env.NEXT_PUBLIC_API_URL + url, options);
       const res = await req.json();
       if (!req.ok) {
-        setIsError(true);
-        setError(res.message);
+        throw new Error(res.message || "Something went wrong");
       }
       setLoading(false);
       return res;
@@ -36,6 +35,7 @@ const useSend = () => {
       setIsError(true);
       setError(error.message);
       setLoading(false);
+      return { success: false, message: error.message };
     }
   };
 

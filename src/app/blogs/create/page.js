@@ -20,7 +20,6 @@ import Image from "next/image";
 import dynamic from "next/dynamic";
 import { modules } from "@/lib/quill";
 import { Textarea } from "@/components/ui/textarea";
-import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 import { useSession } from "next-auth/react";
 
 const CreateBlog = () => {

@@ -54,7 +54,7 @@ const UsersCard = ({ data, refetch }) => {
           data.blocked ? "bg-green-900" : "bg-red-900"
         } rounded-sm text-sm disabled:opacity-50`}
       >
-        {data.blocked ? "Unblock" : "Block"}
+        {data.blocked ? "Reactivate" : "Suspend"}
       </button>
     </div>
   );

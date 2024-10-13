@@ -56,6 +56,9 @@ const Navbar = () => {
             <li className={linkStyle} onClick={menuHandler}>
               <a href="/category/shopping">Shopping</a>
             </li>
+            <li className={linkStyle} onClick={menuHandler}>
+              <a href="/support">Support</a>
+            </li>
             {!auth ? (
               <li className={linkStyle} onClick={menuHandler}>
                 <Link href={`/login`}>Login</Link>

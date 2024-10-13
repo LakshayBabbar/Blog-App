@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import React from "react";
-import { LayoutList, LogOut, Users, Clock, Zap } from "lucide-react";
+import { LayoutList, LogOut, Users, Clock, Zap, Headset } from "lucide-react";
 import { signOut } from "next-auth/react";
 import logo from "../../public/logo.png";
 import Image from "next/image";
@@ -11,6 +11,7 @@ const menuItems = [
   { href: "/admin/approval", icon: Clock, label: "Approval" },
   { href: "/admin/users", icon: Users, label: "Users" },
   { href: "/admin/super-users", icon: Zap, label: "Super Users" },
+  { href: "/admin/support", icon: Headset, label: "Support" },
   { href: "#", icon: LogOut, label: "Logout" },
 ];
 

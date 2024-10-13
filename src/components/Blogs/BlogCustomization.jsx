@@ -16,13 +16,12 @@ const BlogCustomization = ({ slug, blogId, userId }) => {
   const deleteBlogHandler = async () => {
     const response = await fetchData(`/api/blogs/${blogId}/edit`, "DELETE");
     if (response?.success) {
-      router.push(`/blogs/${slug}`);
-    } else {
-      toast({
-        title: response?.message,
-        description: new Date().toString(),
-      });
+      router.push(`/users/${data?.user?.username}`);
     }
+    toast({
+      title: response?.message,
+      description: new Date().toString(),
+    });
   };
   if (status === "unauthenticated" || userId !== data?.user?.id) {
     return null;

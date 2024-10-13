@@ -88,7 +88,7 @@ export const PUT = async (req, res) => {
     await userModel.findOneAndUpdate({ _id: userId }, { blocked: true });
     revalidatePath("/");
     return NextResponse.json(
-      { message: "User blocked", success: true },
+      { message: "Account Suspended", success: true },
       { status: 200 }
     );
   } catch (error) {

@@ -22,7 +22,7 @@ export const PUT = async (req, res) => {
 
     await userModel.findOneAndUpdate({ _id: userId }, { blocked: false });
     return NextResponse.json(
-      { message: "User unblocked", success: true },
+      { message: "Account Reactivated", success: true },
       { status: 200 }
     );
   } catch (error) {
