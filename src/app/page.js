@@ -26,7 +26,7 @@ const Home = async ({ searchParams }) => {
   return (
     <>
       <header>
-        <div className="my-44 sm:my-52 flex flex-col gap-14 items-center justify-center text-center">
+        <div className="my-44 sm:my-52 flex flex-col gap-14 items-center justify-center text-center px-5">
           <h1 className="text-5xl md:w-[75%] md:text-6xl xl:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50 leading-tight px-4 md:px-0">
             Discover Engaging and Insightful Blogs
           </h1>
@@ -57,26 +57,7 @@ const Home = async ({ searchParams }) => {
           </ul>
         </section>
         <section className="w-11/12 md:w-4/5 flex flex-wrap gap-10 mt-14">
-          {!data ? (
-            Array.from({ length: 9 }).map((items, index) => (
-              <div
-                className="flex flex-col space-y-3 w-[80vw] md:w-[25rem]"
-                key={index}
-              >
-                <Skeleton className="h-[12rem] md:h-[14rem] w-full rounded-xl" />
-                <div className="space-y-2">
-                  <Skeleton className="h-5 w-4/5" />
-                  <div className="flex gap-2">
-                    <Skeleton className="size-10 rounded-full" />
-                    <div className="w-3/5 space-y-2">
-                      <Skeleton className="w-3/5 h-3 " />
-                      <Skeleton className="w-2/5 h-3   " />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))
-          ) : "error" in data ? (
+          {"error" in data ? (
             <h2 className="absolute text-center">{data.error}</h2>
           ) : data?.blogs.length > 0 ? (
             data.blogs.map((items, index) => (

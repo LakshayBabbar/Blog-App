@@ -1,10 +1,11 @@
 "use client";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { LayoutList, LogOut, Users, Clock, Zap, Headset } from "lucide-react";
 import { signOut } from "next-auth/react";
 import logo from "../../public/logo.png";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 const menuItems = [
   { href: "/admin", icon: LayoutList, label: "Dashboard" },
@@ -22,6 +23,7 @@ const SideBar = () => {
     "rounded-md md:rounded-l-xl py-2 px-3 text-center md:px-5 w-full";
   const icoSize = "20px";
   const [activeIndex, setActiveIndex] = React.useState(0);
+  const pathname = usePathname();
 
   const handleItemClick = (index, label) => {
     if (label === "Logout") {
@@ -30,6 +32,14 @@ const SideBar = () => {
       setActiveIndex(index);
     }
   };
+
+  useEffect(() => {
+    menuItems.forEach((item, index) => {
+      if (pathname === item.href) {
+        setActiveIndex(index);
+      }
+    });
+  }, []);
 
   return (
     <aside className="fixed bottom-0 md:bottom-auto left-0 md:top-0 z-50 w-full md:w-52 h-24 md:h-screen shadow-xl bg-black flex flex-col items-center overflow-auto">
