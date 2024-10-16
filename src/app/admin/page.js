@@ -105,7 +105,7 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="mt-24 p-5 w-full flex flex-wrap gap-5">
+    <div className="my-24 md:mt-24 p-5 w-full flex flex-wrap gap-5">
       <Card className="flex-grow w-full xl:w-[60%]">
         <CardHeader>
           <CardTitle>Registered Users</CardTitle>

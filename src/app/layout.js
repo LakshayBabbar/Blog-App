@@ -36,9 +36,10 @@ export default function RootLayout({ children }) {
               }}
             />
             <Script
+              async
               src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7436170435436020"
-              strategy="afterInteractive"
-            />
+              crossorigin="anonymous"
+            ></Script>
           </>
         )}
         <AuthProvider>

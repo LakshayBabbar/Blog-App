@@ -30,13 +30,14 @@ export const DELETE = async (req, { params }) => {
     }
 
     const BlogImg = blogData.img.public_id;
-    await deleteImage(BlogImg);
-    await commentModel.deleteMany({ blogId: blogId });
-    await blogs.findOneAndDelete({
-      _id: blogId,
-      userId: user?.id,
-    });
-    await revalidatePath("/");
+
+    await Promise.all([
+      deleteImage(BlogImg),
+      commentModel.deleteMany({ blogId: blogId }),
+      blogs.findOneAndDelete({ _id: blogId, userId: user?.id }),
+    ]);
+
+    revalidatePath("/");
     revalidatePath(`/blogs/${blogData.url}`);
     return NextResponse.json(
       {
@@ -126,7 +127,7 @@ export const PUT = async (req, { params }) => {
       );
     }
 
-    await revalidatePath(`/blogs/${updatedBlog.url}`);
+    revalidatePath(`/blogs/${updatedBlog.url}`);
 
     return NextResponse.json(
       { blog: updatedBlog, success: true },

@@ -2,7 +2,6 @@ import Link from "next/link";
 import BlogsCard from "@/components/Blogs/BlogsCard";
 import { categories, capitalizeFirstLetter } from "@/lib/categories";
 import Footer from "@/components/Footer";
-import { Skeleton } from "@/components/ui/skeleton";
 import { getData } from "@/lib/helpers";
 import SearchBar from "@/components/SearchBar";
 import Pagination from "@/components/pagination/Pagination";
@@ -21,7 +20,7 @@ export async function generateMetadata() {
 
 const Home = async ({ searchParams }) => {
   const pageNo = parseInt(searchParams.page) || 1;
-  const data = await getData(`/api/blogs?page=${pageNo}&limit=9`);
+  const data = await getData(`/api/blogs?page=${pageNo}&limit=20`);
 
   return (
     <>

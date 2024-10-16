@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const Pagination = ({ pageNo, totalPages, limit = 9, url }) => {
+const Pagination = ({ pageNo, totalPages, limit = 20, url }) => {
   return (
     <section className="flex mt-20 gap-4 items-center">
       {pageNo > 1 && (

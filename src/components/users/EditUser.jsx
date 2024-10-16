@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 const EditUserModal = ({ isOpen, setIsOpen, data, slug }) => {
   const [formData, setFormData] = useState(data);
   const { fetchData, isErr, err, loading } = useSend();
+  const [isUpdate, setIsUpdate] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
 
@@ -22,6 +23,7 @@ const EditUserModal = ({ isOpen, setIsOpen, data, slug }) => {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
+    setIsUpdate(true);
     const res = await fetchData(`/api/users/${slug}/edit`, "PUT", formData);
     if (res?.success) {
       toast({
@@ -33,6 +35,7 @@ const EditUserModal = ({ isOpen, setIsOpen, data, slug }) => {
   };
 
   const accountCloseHandler = async () => {
+    setIsUpdate(false);
     const res = await fetchData(`/api/users/${slug}/edit`, "DELETE");
     if (res?.success) {
       toast({
@@ -69,7 +72,7 @@ const EditUserModal = ({ isOpen, setIsOpen, data, slug }) => {
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={loading}>
+            <Button type="submit" disabled={loading && isUpdate}>
               Update
             </Button>
           </div>
@@ -84,7 +87,7 @@ const EditUserModal = ({ isOpen, setIsOpen, data, slug }) => {
             variant="destructive"
             className="w-fit"
             onClick={accountCloseHandler}
-            disabled={loading}
+            disabled={loading && !isUpdate}
           >
             Close Account
           </Button>
