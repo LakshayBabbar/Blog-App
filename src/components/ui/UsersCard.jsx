@@ -19,12 +19,18 @@ const UsersCard = ({ data, refetch }) => {
         body: JSON.stringify({ userId: data._id }),
       });
       const result = await res.json();
+      if (!res.ok) {
+        throw new Error(result.error || "Something went wrong");
+      }
       refetch();
       toast({
         title: result.message,
       });
     } catch (error) {
-      console.error(error);
+      toast({
+        title: "Error",
+        description: error.message,
+      });
     }
   };
 

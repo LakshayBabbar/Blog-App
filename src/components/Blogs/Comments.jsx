@@ -26,11 +26,13 @@ const Comments = ({ blogId }) => {
         description: comment,
       });
       toast({
-        title: res.message,
+        title: res.message || res.error,
         description: new Date().toString(),
       });
-      refetch();
-      setComment("");
+      if (!res.error) {
+        refetch();
+        setComment("");
+      }
     } else {
       toast({
         title: "Please login to add a comment.",
@@ -43,9 +45,9 @@ const Comments = ({ blogId }) => {
     const res = await fetchData(`/api/comments/delete`, "DELETE", {
       commentId: id,
     });
-    res.success && refetch();
+    !res.error && refetch();
     toast({
-      title: res.message,
+      title: res.message || res.error,
       description: new Date().toString(),
     });
   };

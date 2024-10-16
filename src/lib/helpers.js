@@ -18,7 +18,7 @@ export const getData = async (url, cacheDisabled = false) => {
     const res = await req.json();
 
     if (!req.ok) {
-      throw new Error(res.message || "Something went wrong");
+      throw new Error(res.error || "Something went wrong");
     }
 
     return res;
@@ -45,7 +45,7 @@ export const blogApproval = async (blogId, status) => {
     const res = await req.json();
 
     if (!req.ok) {
-      throw new Error(res.message || "Something went wrong");
+      throw new Error(res.error || "Something went wrong");
     }
 
     return res;

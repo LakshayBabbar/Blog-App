@@ -33,7 +33,7 @@ export const GET = async (request) => {
       .select("-content -__v -updatedAt -userId");
 
     if (!blogData || (blogData.length === 0 && !featuredBlog)) {
-      return NextResponse.json({ message: "No blogs found" }, { status: 404 });
+      return NextResponse.json({ error: "No blogs found" }, { status: 404 });
     }
 
     return NextResponse.json(
@@ -46,7 +46,7 @@ export const GET = async (request) => {
     );
   } catch (error) {
     return NextResponse.json(
-      { message: "Error fetching blogs", error },
+      { error: error.message || "Internal Server Error" },
       { status: 500 }
     );
   }

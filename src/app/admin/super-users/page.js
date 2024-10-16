@@ -6,6 +6,7 @@ import React, { useCallback } from "react";
 import SuperUser from "@/components/ui/SuperUser";
 import useFetch from "@/hooks/useFetch";
 import { useToast } from "@/components/ui/use-toast";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const IamUsers = () => {
   const { data, isError, error, isLoading, refetch } = useFetch(
@@ -31,7 +32,7 @@ const IamUsers = () => {
         );
         const res = await req.json();
         if (!req.ok) {
-          throw new Error(res?.message);
+          throw new Error(res?.error || "Something went wrong");
         }
         toast({
           title: "Success",
@@ -47,6 +48,16 @@ const IamUsers = () => {
     },
     [email]
   );
+
+  if (isLoading) return <LoadingSpinner />;
+
+  if (isError) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <p className="text-red-500">{error.message}</p>
+      </div>
+    );
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();

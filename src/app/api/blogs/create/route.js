@@ -18,11 +18,20 @@ export const POST = async (req) => {
   const user = session?.user;
   const sudoUser = await userModel.findOne({ _id: user.id });
 
+  if (!content || !description || !title || !category) {
+    return NextResponse.json(
+      {
+        error: "All fields are required",
+      },
+      { status: 400 }
+    );
+  }
+
   try {
     if (sudoUser.blocked === true) {
       return NextResponse.json(
         {
-          message: "You are blocked by admin",
+          error: "You are blocked by admin",
         },
         { status: 400 }
       );
@@ -31,7 +40,7 @@ export const POST = async (req) => {
     if (!img) {
       return NextResponse.json(
         {
-          message: "Image is required",
+          error: "Image is required",
         },
         { status: 400 }
       );
@@ -42,7 +51,7 @@ export const POST = async (req) => {
     if (img.size > maxSizeInBytes) {
       return NextResponse.json(
         {
-          message: "Image size should be less than 1 MB",
+          error: "Image size should be less than 1 MB",
         },
         { status: 400 }
       );
@@ -69,17 +78,17 @@ export const POST = async (req) => {
     });
     if (sudoUser?.isAdmin === true || sudoUser?.isSuper === true) {
       newBlog.approved = true;
-    } else {
-      revalidatePath("/admin/approval");
     }
+
     const createdBlog = await newBlog.save();
-    await revalidatePath("/");
+    revalidatePath("/");
+    revalidatePath(`/category/${category}`);
+    revalidatePath(`/blogs/${createdBlog.url}`);
 
     return NextResponse.json(
       {
         ...createdBlog._doc,
         message: "Blog created successfully!",
-        success: true,
       },
       { status: 201 }
     );
@@ -91,12 +100,12 @@ export const POST = async (req) => {
     ) {
       return NextResponse.json(
         {
-          message:
+          error:
             "A blog with this title already exists. Please make some changes to the title.",
         },
         { status: 400 }
       );
     }
-    return NextResponse.json({ message: error.message }, { status: 500 });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 };

@@ -48,11 +48,11 @@ const CreateBlog = () => {
     const response = await fetchData("/api/blogs/create", "POST", formData);
     const date = new Date();
     toast({
-      title: response?.message,
+      title: response.error ? response.error : response.message,
       description: date.toString(),
     });
-    setImg(null);
-    if (response?.success) {
+    if (!response.error) {
+      setImg(null);
       return redirect.push(`/blogs/${response.url}`);
     }
   };

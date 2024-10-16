@@ -16,7 +16,7 @@ export const PUT = async (req, res) => {
     const user = session?.user;
     if (!name || name.length < 3) {
       return NextResponse.json(
-        { message: "Name must be at least 3 characters long", success: false },
+        { error: "Name must be at least 3 characters long" },
         { status: 400 }
       );
     }
@@ -28,54 +28,73 @@ export const PUT = async (req, res) => {
         bio,
       }
     );
-    return NextResponse.json(
-      { message: "Profile Updated!", success: true },
-      { status: 200 }
-    );
+    return NextResponse.json({ message: "Profile Updated!" }, { status: 200 });
   } catch (error) {
-    return NextResponse.json(
-      { message: error.message, success: false },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 };
+
 export const DELETE = async (req, res) => {
   try {
     const session = await getServerSession(authOptions);
     const user = session?.user;
-    // Delete user document
+
     await connectDB();
-    if (user.isAdmin) {
+
+    const validUser = await userModel.findById(user?.id);
+
+    if (!validUser) {
       return NextResponse.json(
         {
-          message: "Admin account can't delete.",
-          success: false,
+          error: "User not found.",
+        },
+        { status: 404 }
+      );
+    }
+
+    if (validUser.isAdmin || validUser.isSuper) {
+      return NextResponse.json(
+        {
+          error: "Admin or super user account can't be deleted.",
         },
         { status: 400 }
       );
     }
-    await userModel.findOneAndDelete({ _id: user?.id });
-    await commentModel.deleteMany({ userId: user?.id });
-    const allBlogs = await blogs.find({ userId: user?.id });
-    if (allBlogs.length > 0) {
-      const imageUrls = allBlogs.map((blog) => blog.img.public_id);
-      await deleteMultipleImages(imageUrls);
-      await blogs.deleteMany({ userId: user?.id });
-    }
-    revalidatePath("/");
+
+    const userBlogs = await blogs.find({ userId: user?.id });
+
+    const blogIds = userBlogs.map((blog) => blog._id);
+    const imageUrls = userBlogs.map((blog) => blog.img.public_id);
+    const categories = [...new Set(userBlogs.map((blog) => blog.category))];
+    const urls = userBlogs.map((blog) => `/blog/${blog.url}`);
+
+    await Promise.all([
+      userModel.findByIdAndDelete(user?.id),
+      commentModel.deleteMany({
+        $or: [{ userId: user?.id }, { blogId: { $in: blogIds } }],
+      }),
+      deleteMultipleImages(imageUrls),
+      blogs.deleteMany({ userId: user?.id }),
+    ]);
+
+    const revalidatePromises = [
+      ...categories.map((category) => revalidatePath(`/category/${category}`)),
+      ...urls.map((url) => revalidatePath(url)),
+      revalidatePath("/"),
+    ];
+    await Promise.all(revalidatePromises);
+
     return NextResponse.json(
       {
-        message: "Account closed.",
-        success: true,
+        message: "Account and related content successfully deleted.",
       },
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error deleting user:", error);
     return NextResponse.json(
       {
-        message: "Internal error",
-        success: false,
+        error: "Internal server error.",
+        details: error.message,
       },
       { status: 500 }
     );

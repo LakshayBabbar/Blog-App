@@ -2,6 +2,7 @@
 import UsersCard from "@/components/ui/UsersCard";
 import SearchBar from "@/components/SearchBar";
 import useFetch from "@/hooks/useFetch";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const Users = () => {
   const { data, isError, error, isLoading, refetch } = useFetch(
@@ -19,13 +20,7 @@ const Users = () => {
     );
   }
 
-  if (isLoading) {
-    return (
-      <div className="mt-32 space-y-10 w-full text-center ">
-        <h1 className="text-xl font-semibold text-blue-100">Loading...</h1>
-      </div>
-    );
-  }
+  if (isLoading) return <LoadingSpinner />;
 
   return (
     <div className="my-24 md:mt-28 p-5 space-y-10">

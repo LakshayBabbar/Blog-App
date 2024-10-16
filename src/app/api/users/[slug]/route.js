@@ -12,7 +12,7 @@ export const GET = async (req, { params }) => {
     if (!userDetails) {
       return NextResponse.json(
         {
-          message: "User not found.",
+          error: "User not found.",
         },
         { status: 404 }
       );
@@ -29,9 +29,8 @@ export const GET = async (req, { params }) => {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error:", error);
     return NextResponse.json(
-      { message: "Internal Server Error" },
+      { error: "Internal Server Error" },
       { status: 500 }
     );
   }

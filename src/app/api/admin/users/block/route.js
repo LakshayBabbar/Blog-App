@@ -14,12 +14,9 @@ export const GET = async (req, res) => {
   try {
     connectDB();
     const blockedusers = await userModel.find({ blocked: true });
-    return NextResponse.json({ blockedusers, success: true }, { status: 200 });
+    return NextResponse.json({ blockedusers }, { status: 200 });
   } catch (error) {
-    return NextResponse.json(
-      { message: error.message, success: false },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 };
 
@@ -29,17 +26,13 @@ export const PUT = async (req, res) => {
   const { userId } = await req.json();
 
   if (!user || (!user.isAdmin && !user.isSuper)) {
-    return NextResponse.json(
-      { message: "Unauthorized", success: false },
-      { status: 401 }
-    );
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   if (user.id === userId) {
     return NextResponse.json(
       {
-        message: "You cannot be block yourself",
-        success: false,
+        error: "You cannot be block yourself",
       },
       { status: 400 }
     );
@@ -54,8 +47,7 @@ export const PUT = async (req, res) => {
       if (isRegularUser.isAdmin === true) {
         return NextResponse.json(
           {
-            message: "Super Users cannot block Admins",
-            success: false,
+            error: "Super Users cannot block Admins",
           },
           { status: 400 }
         );
@@ -63,8 +55,7 @@ export const PUT = async (req, res) => {
       if (isRegularUser.isSuper === true) {
         return NextResponse.json(
           {
-            message: "Only Admin can block Super Users",
-            success: false,
+            error: "Only Admin can block Super Users",
           },
           { status: 400 }
         );
@@ -72,29 +63,33 @@ export const PUT = async (req, res) => {
     }
 
     if (user.isAdmin !== true && user.isSuper !== true) {
-      return NextResponse.json(
-        { message: "Unauthorized", success: false },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     const userblogs = await blogs.find({ userId });
-    if (userblogs.length > 0) {
-      const imageUrls = userblogs.map((blog) => blog.img.public_id);
-      await deleteMultipleImages(imageUrls);
-      await blogs.deleteMany({ userId });
-    }
+    const imageUrls = userblogs.map((blog) => blog.img.public_id);
+    const blogIds = userblogs.map((blog) => blog._id);
+    const categories = [...new Set(userblogs.map((blog) => blog.category))];
+    const blogUrls = userblogs.map((blog) => blog.url);
 
-    await commentModel.deleteMany({ userId });
-    await userModel.findOneAndUpdate({ _id: userId }, { blocked: true });
-    revalidatePath("/");
-    return NextResponse.json(
-      { message: "Account Suspended", success: true },
-      { status: 200 }
-    );
+    await Promise.all([
+      deleteMultipleImages(imageUrls),
+      blogs.deleteMany({ userId }),
+      commentModel.deleteMany({
+        $or: [{ userId: user?.id }, { blogId: { $in: blogIds } }],
+      }),
+      userModel.findOneAndUpdate({ _id: userId }, { blocked: true }),
+    ]);
+
+    // revalidate all the categories and blog urls
+    const revalidatePromises = [
+      ...categories.map((category) => revalidatePath(`/category/${category}`)),
+      ...blogUrls.map((url) => revalidatePath(url)),
+      revalidatePath("/"),
+    ];
+    await Promise.all(revalidatePromises);
+
+    return NextResponse.json({ message: "Account Suspended" }, { status: 200 });
   } catch (error) {
-    return NextResponse.json(
-      { message: error.message, success: false },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 };

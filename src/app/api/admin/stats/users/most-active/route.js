@@ -1,3 +1,5 @@
+export const revalidate = 0;
+
 import { NextResponse } from "next/server";
 import blogs from "@/models/blogModel";
 import userModel from "@/models/userModel";
@@ -37,8 +39,7 @@ export async function GET(req) {
   } catch (error) {
     return NextResponse.json(
       {
-        success: false,
-        message: "Error fetching most active users",
+        error: "Error fetching most active users",
       },
       { status: 500 }
     );

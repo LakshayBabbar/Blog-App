@@ -15,7 +15,7 @@ export const GET = async (req, { params }) => {
     if (!comments) {
       return NextResponse.json(
         {
-          message: "This blog has no comments.",
+          error: "This blog has no comments.",
         },
         { status: 404 }
       );
@@ -25,9 +25,8 @@ export const GET = async (req, { params }) => {
     });
     return NextResponse.json(sortedComments);
   } catch (error) {
-    console.log(error);
     return NextResponse.json({
-      message: error.message,
+      error: error.message,
     });
   }
 };

@@ -1,3 +1,5 @@
+export const revalidate = 0;
+
 import { connectDB } from "@/config/db";
 import blogs from "@/models/blogModel";
 import { NextResponse } from "next/server";
@@ -12,6 +14,6 @@ export const GET = async (req, res) => {
 
     return NextResponse.json(topCategories);
   } catch (err) {
-    return NextResponse.json({ message: err.message }, { status: 500 });
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 };

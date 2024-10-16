@@ -27,15 +27,15 @@ const useSend = () => {
       const req = await fetch(process.env.NEXT_PUBLIC_API_URL + url, options);
       const res = await req.json();
       if (!req.ok) {
-        throw new Error(res.message || "Something went wrong");
+        throw new Error(res.error || "Something went wrong");
       }
-      setLoading(false);
       return res;
     } catch (error) {
       setIsError(true);
       setError(error.message);
+      return { error: error.message };
+    } finally {
       setLoading(false);
-      return { success: false, message: error.message };
     }
   };
 

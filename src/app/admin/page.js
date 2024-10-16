@@ -25,6 +25,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 export default function Dashboard() {
   const [activeUsersData, setActiveUsersData] = useState([]);
@@ -72,9 +73,7 @@ export default function Dashboard() {
     fetchData();
   }, []);
 
-  if (loading) {
-    return <div className="mt-28 mx-10 text-xl">Loading...</div>;
-  }
+  if (loading) return <LoadingSpinner />;
 
   if (error) {
     return <div>Error loading data: {error}</div>;
@@ -217,7 +216,7 @@ export default function Dashboard() {
                               y={viewBox.cy}
                               className="fill-foreground text-3xl font-bold"
                             >
-                              {categoriesData.length}
+                              {activeUsersData.length}
                             </tspan>
                           </text>
                         );

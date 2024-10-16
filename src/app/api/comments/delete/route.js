@@ -14,8 +14,7 @@ export const DELETE = async (req) => {
     if (!mongoose.Types.ObjectId.isValid(commentId)) {
       return NextResponse.json(
         {
-          message: "Invalid comment ID.",
-          success: false,
+          error: "Invalid comment ID.",
         },
         { status: 400 }
       );
@@ -27,8 +26,7 @@ export const DELETE = async (req) => {
     if (!comment) {
       return NextResponse.json(
         {
-          message: "Comment not found.",
-          success: false,
+          error: "Comment not found.",
         },
         { status: 404 }
       );
@@ -36,8 +34,7 @@ export const DELETE = async (req) => {
     if (user?.id !== comment.userId.toString()) {
       return NextResponse.json(
         {
-          message: "User is not authorised.",
-          success: false,
+          error: "User is not authorised.",
         },
         { status: 401 }
       );
@@ -46,15 +43,13 @@ export const DELETE = async (req) => {
     return NextResponse.json(
       {
         message: "Comment deleted successfully.",
-        success: true,
       },
       { status: 200 }
     );
   } catch (error) {
     return NextResponse.json(
       {
-        message: error.message,
-        success: false,
+        error: error.message,
       },
       { status: 500 }
     );

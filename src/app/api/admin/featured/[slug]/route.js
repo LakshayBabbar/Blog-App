@@ -14,7 +14,7 @@ export const PUT = async (req, { params }) => {
   try {
     await connectDB();
     if (!user.isAdmin && !user.isSuper) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     await blogs.updateOne(
       { featured: true, category },
@@ -25,6 +25,6 @@ export const PUT = async (req, { params }) => {
     revalidatePath("/");
     return NextResponse.json({ message: "Feature status updated" });
   } catch (error) {
-    return NextResponse.json({ message: error.message }, { status: 500 });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 };

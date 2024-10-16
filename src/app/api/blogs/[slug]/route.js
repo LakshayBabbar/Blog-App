@@ -10,17 +10,16 @@ export const GET = async (req, { params }) => {
     if (!blogData) {
       return NextResponse.json(
         {
-          message: "Blog not found.",
+          error: "Blog not found.",
         },
         { status: 404 }
       );
     }
     return NextResponse.json(blogData, { status: 200 });
   } catch (error) {
-    console.error("Error fetching blog:", error);
     return NextResponse.json(
       {
-        message: "Internal server error.",
+        error: "Internal server error.",
       },
       { status: 500 }
     );

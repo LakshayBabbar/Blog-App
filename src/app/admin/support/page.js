@@ -1,4 +1,5 @@
 "use client";
+import LoadingSpinner from "@/components/LoadingSpinner";
 import RequestCard from "@/components/support/RequestCard";
 import useFetch from "@/hooks/useFetch";
 import React from "react";
@@ -9,13 +10,7 @@ const SupportReq = () => {
     "support-requests"
   );
 
-  if (isLoading) {
-    return (
-      <div className="w-full text-center mt-32">
-        <h1>Loading...</h1>
-      </div>
-    );
-  }
+  if (isLoading) return <LoadingSpinner />;
 
   if (isError) {
     return (

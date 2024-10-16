@@ -18,7 +18,7 @@ export const POST = async (req) => {
     if (!isValidUsr || isValidUsr?.blocked) {
       return NextResponse.json(
         {
-          message: "User not found or blocked",
+          error: "User not found or blocked",
         },
         { status: 404 }
       );
@@ -27,7 +27,7 @@ export const POST = async (req) => {
     if (!blog) {
       return NextResponse.json(
         {
-          message: "Blog not found.",
+          error: "Blog not found.",
         },
         { status: 404 }
       );
@@ -50,7 +50,7 @@ export const POST = async (req) => {
   } catch (error) {
     return NextResponse.json(
       {
-        message: error.message,
+        error: error.message,
       },
       { status: 500 }
     );

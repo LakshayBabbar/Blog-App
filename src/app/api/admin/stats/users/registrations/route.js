@@ -1,3 +1,5 @@
+export const revalidate = 0;
+
 import { connectDB } from "@/config/db";
 import userModel from "@/models/userModel";
 import { startOfMonth, subMonths, format } from "date-fns";
@@ -34,7 +36,7 @@ export async function GET() {
     return NextResponse.json(userRegistrations.reverse(), { status: 200 });
   } catch (error) {
     return NextResponse.json(
-      { message: "Failed to fetch user registrations" },
+      { error: "Failed to fetch user registrations" },
       { status: 500 }
     );
   }

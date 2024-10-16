@@ -16,15 +16,12 @@ export const DELETE = async (req, { params }) => {
     connectDB();
     const blogData = await blogs.findOne({ _id: blogId });
     if (!blogData) {
-      return NextResponse.json(
-        { message: "Blog not found", success: false },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Blog not found" }, { status: 404 });
     }
 
     if (blogData.userId !== user?.id) {
       return NextResponse.json(
-        { message: "User is not authorized.", success: false },
+        { error: "User is not authorized." },
         { status: 403 }
       );
     }
@@ -39,17 +36,17 @@ export const DELETE = async (req, { params }) => {
 
     revalidatePath("/");
     revalidatePath(`/blogs/${blogData.url}`);
+    revalidatePath(`/category/${blogData.category}`);
     return NextResponse.json(
       {
         message: "Blog is deleted successfully.",
-        success: true,
       },
       { status: 200 }
     );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { message: "Internal Server Error", success: false },
+      { error: "Internal Server Error" },
       { status: 500 }
     );
   }
@@ -63,10 +60,7 @@ export const PUT = async (req, { params }) => {
     const user = session?.user;
 
     if (!user) {
-      return NextResponse.json(
-        { message: "Unauthorized", success: false },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const data = await req.formData();
@@ -77,7 +71,7 @@ export const PUT = async (req, { params }) => {
 
     if (!title || !description || !content) {
       return NextResponse.json(
-        { message: "Missing required fields", success: false },
+        { error: "Missing required fields" },
         { status: 400 }
       );
     }
@@ -88,10 +82,7 @@ export const PUT = async (req, { params }) => {
 
     const oldBlogData = await blogs.findOne({ _id: blogId, userId: user.id });
     if (!oldBlogData) {
-      return NextResponse.json(
-        { message: "Blog not found", success: false },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Blog not found" }, { status: 404 });
     }
 
     if (img) {
@@ -122,21 +113,17 @@ export const PUT = async (req, { params }) => {
 
     if (!updatedBlog) {
       return NextResponse.json(
-        { message: "Failed to update blog", success: false },
-        { status: 500 }
+        { error: "Failed to update blog" },
+        { status: 400 }
       );
     }
 
     revalidatePath(`/blogs/${updatedBlog.url}`);
 
-    return NextResponse.json(
-      { blog: updatedBlog, success: true },
-      { status: 200 }
-    );
+    return NextResponse.json({ blog: updatedBlog }, { status: 200 });
   } catch (error) {
-    console.error("Error updating blog:", error);
     return NextResponse.json(
-      { message: "Internal Server Error", success: false },
+      { error: "Internal Server Error" },
       { status: 500 }
     );
   }

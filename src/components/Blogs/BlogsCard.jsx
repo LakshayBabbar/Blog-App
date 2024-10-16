@@ -9,7 +9,7 @@ import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 import React from "react";
 import { useToast } from "../ui/use-toast";
 
-const BlogsCard = ({ data, route, refetch }) => {
+const BlogsCard = ({ data, route, refetchData }) => {
   const date = data.createdAt;
   const { data: session } = useSession();
   const [featured, setFeatured] = React.useState(data.featured);
@@ -18,7 +18,7 @@ const BlogsCard = ({ data, route, refetch }) => {
 
   const approvaleHandler = (id, status) => async () => {
     blogApproval(id, status);
-    refetch();
+    refetchData();
   };
 
   const featuredHandler = async () => {
@@ -33,7 +33,7 @@ const BlogsCard = ({ data, route, refetch }) => {
       });
       const res = await req.json();
       if (!req.ok) {
-        throw new Error(res.message);
+        throw new Error(res.error || "Something went wrong");
       }
       setFeatured(true);
     } catch (error) {

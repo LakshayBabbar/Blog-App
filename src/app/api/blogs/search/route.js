@@ -17,21 +17,14 @@ export const GET = async (req) => {
       })
       .select("title url updatedAt");
     if (!blogData) {
-      return NextResponse.json(
-        { message: "No blogs found", success: false },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "No blogs found" }, { status: 404 });
     }
 
-    return NextResponse.json(
-      { blogs: blogData, success: true },
-      { status: 200 }
-    );
+    return NextResponse.json({ blogs: blogData }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       {
-        message: "Internal server error",
-        success: false,
+        error: "Internal server error",
       },
       { status: 500 }
     );

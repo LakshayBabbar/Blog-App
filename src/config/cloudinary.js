@@ -5,7 +5,7 @@ cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUD_API,
   api_secret: process.env.CLOUD_API_SECRET,
-  secure: true, 
+  secure: true,
 });
 
 export const uploadImage = async (buffer) => {
@@ -19,8 +19,7 @@ export const uploadImage = async (buffer) => {
               reject(error);
               return NextResponse.json(
                 {
-                  message: `Error while uploading image: ${error.message}`,
-                  success: false,
+                  error: `Error while uploading image: ${error.message}`,
                 },
                 { status: 400 }
               );
@@ -35,8 +34,7 @@ export const uploadImage = async (buffer) => {
     console.log(error);
     return NextResponse.json(
       {
-        message: `Error while uploading image: ${error.message}`,
-        success: false,
+        error: `Error while uploading image: ${error.message}`,
       },
       { status: 500 }
     );
@@ -51,8 +49,7 @@ export const deleteImage = async (public_id) => {
     console.log(error);
     return NextResponse.json(
       {
-        message: `Error while deleting image: ${error.message}`,
-        success: false,
+        error: `Error while deleting image: ${error.message}`,
       },
       { status: 500 }
     );

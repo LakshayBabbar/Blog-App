@@ -23,7 +23,7 @@ const Support = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const res = await fetchData("/api/support/new-request", "POST", inputs);
-    if (res?.success) {
+    if (!res?.error) {
       toast({
         title: "Success",
         description: "Request submitted successfully",
@@ -90,7 +90,7 @@ const Support = () => {
         </form>
         {isErr && <p className="text-red-500">{err}</p>}
       </section>
-      <div className="fixed -bottom-10 -right-10 bg-gradient-to-l from-indigo-700 to-indigo-950 w-2/3 h-40 -rotate-6 -z-1 blur-[100px]" /> 
+      <div className="fixed -bottom-10 -right-10 bg-gradient-to-l from-indigo-700 to-indigo-950 w-2/3 h-40 -rotate-6 -z-1 blur-[100px]" />
     </main>
   );
 };

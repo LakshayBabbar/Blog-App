@@ -13,8 +13,7 @@ export const GET = async (req) => {
   if (!user.isAdmin && !user.isSuper) {
     return NextResponse.json(
       {
-        message: "Unauthorized",
-        success: false,
+        error: "Unauthorized",
       },
       { status: 401 }
     );
@@ -28,15 +27,13 @@ export const GET = async (req) => {
     return NextResponse.json(
       {
         requests,
-        success: true,
       },
       { status: 200 }
     );
   } catch (error) {
     return NextResponse.json(
       {
-        message: "Internal Server Error",
-        success: false,
+        error: "Internal Server Error",
       },
       { status: 500 }
     );
@@ -50,8 +47,7 @@ export const DELETE = async (req) => {
   if (!user.isAdmin && !user.isSuper) {
     return NextResponse.json(
       {
-        message: "Unauthorized",
-        success: false,
+        error: "Unauthorized",
       },
       { status: 401 }
     );
@@ -66,15 +62,13 @@ export const DELETE = async (req) => {
     return NextResponse.json(
       {
         message: "Request deleted successfully",
-        success: true,
       },
       { status: 200 }
     );
   } catch (error) {
     return NextResponse.json(
       {
-        message: "Internal Server Error",
-        success: false,
+        error: "Internal Server Error",
       },
       { status: 500 }
     );

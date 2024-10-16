@@ -52,7 +52,7 @@ const UpdateBlog = ({ params }) => {
       "PUT",
       updateData
     );
-    if (response?.success) {
+    if (!response.error) {
       router.push(`/blogs/${params.slug}`);
     }
   };

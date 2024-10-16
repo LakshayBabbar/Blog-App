@@ -12,11 +12,11 @@ const RequestCard = ({ req, refetch }) => {
     const res = await fetchData("/api/admin/support", "DELETE", {
       id: req._id,
     });
-    if (res?.success) {
+    if (!res?.error) {
       refetch();
       toast({ description: "Request deleted successfully" });
     } else {
-      toast({ description: res?.message, title: "An Error Occured" });
+      toast({ description: res?.error, title: "An Error Occured" });
     }
   };
   return (

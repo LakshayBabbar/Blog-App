@@ -21,24 +21,17 @@ export const GET = async (req) => {
         ],
       });
       if (user.length >= 0) {
-        return NextResponse.json(
-          { users: user, success: true },
-          { status: 200 }
-        );
+        return NextResponse.json({ users: user }, { status: 200 });
       } else {
         return NextResponse.error(
           {
-            message: "User not found.",
-            success: false,
+            error: "User not found.",
           },
           { status: 404 }
         );
       }
     } catch (error) {
-      return NextResponse.json(
-        { message: "Internal error.", success: false },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: "Internal error." }, { status: 500 });
     }
   }
 };

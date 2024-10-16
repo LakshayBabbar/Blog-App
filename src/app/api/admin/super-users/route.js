@@ -11,10 +11,7 @@ export const GET = async (req, res) => {
     const superUsers = await userModel.find({ isSuper: true });
     return NextResponse.json({ users: superUsers }, { status: 200 });
   } catch (error) {
-    return NextResponse.json(
-      { message: error.message, success: false },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 };
 
@@ -25,47 +22,41 @@ export const PUT = async (req, res) => {
 
   if (!user.isAdmin) {
     return NextResponse.json(
-      { message: "Unauthorized, Only Admin have the access" },
+      { error: "Unauthorized, Only Admin have the access" },
       { status: 401 }
     );
   }
 
   if (status !== "add" && status !== "remove") {
-    return NextResponse.json(
-      { message: "Invalid status", success: false },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Invalid status" }, { status: 400 });
   }
 
   if (!email) {
-    return NextResponse.json(
-      { message: "Email is required", success: false },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Email is required" }, { status: 400 });
   }
 
   try {
     const userExists = await userModel.findOne({ email });
     if (!userExists || userExists?.blocked) {
       return NextResponse.json(
-        { message: "User not found or blocked", success: false },
+        { error: "User not found or blocked" },
         { status: 404 }
       );
     }
     if (status === "add") {
       await userModel.findOneAndUpdate({ email }, { isSuper: true });
       return NextResponse.json(
-        { message: "User added to Super Users", success: true },
+        { message: "User added to Super Users" },
         { status: 200 }
       );
     }
     await userModel.findOneAndUpdate({ email }, { isSuper: false });
     revalidatePath("/admin/super-users");
     return NextResponse.json(
-      { message: "User removed from Super Users", success: true },
+      { message: "User removed from Super Users" },
       { status: 200 }
     );
   } catch (error) {
-    return NextResponse.json({ message: error.message }, { status: 500 });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 };

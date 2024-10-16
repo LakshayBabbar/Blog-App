@@ -14,21 +14,15 @@ export const PUT = async (req, res) => {
   try {
     connectDB();
     if (user.isAdmin !== true && user.isSuper !== true) {
-      return NextResponse.json(
-        { message: "Unauthorized", success: false },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     await userModel.findOneAndUpdate({ _id: userId }, { blocked: false });
     return NextResponse.json(
-      { message: "Account Reactivated", success: true },
+      { message: "Account Reactivated" },
       { status: 200 }
     );
   } catch (error) {
-    return NextResponse.json(
-      { message: error.message, success: false },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 };

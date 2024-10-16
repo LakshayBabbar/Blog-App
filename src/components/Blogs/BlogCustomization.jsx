@@ -14,13 +14,14 @@ const BlogCustomization = ({ slug, blogId, userId }) => {
   const { fetchData, loading } = useSend();
   const { toast } = useToast();
   const router = useRouter();
+
   const deleteBlogHandler = async () => {
     const response = await fetchData(`/api/blogs/${blogId}/edit`, "DELETE");
-    if (response?.success) {
+    if (!response?.error) {
       router.push(`/users/${data?.user?.username}`);
     }
     toast({
-      title: response?.message,
+      title: response?.message || response?.error,
       description: new Date().toString(),
     });
   };

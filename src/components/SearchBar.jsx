@@ -15,7 +15,7 @@ const SearchBar = ({ type, url }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const res = await fetchData(url + searchTerm);
-    if (res?.success) {
+    if (!res?.error) {
       setSearchResults(type === "Blogs" ? res.blogs : res.users);
     } else {
       setSearchResults([]);

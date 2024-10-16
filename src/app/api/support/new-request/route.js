@@ -11,8 +11,7 @@ export const POST = async (req) => {
     if (!email && !subject && !message) {
       return NextResponse.json(
         {
-          message: "Please fill in all fields",
-          success: false,
+          error: "Please fill in all fields",
         },
         { status: 400 }
       );
@@ -27,15 +26,13 @@ export const POST = async (req) => {
     return NextResponse.json(
       {
         message: "Request submitted successfully",
-        success: true,
       },
       { status: 201 }
     );
   } catch (error) {
     return NextResponse.json(
       {
-        message: "Internal Server Error",
-        success: false,
+        error: "Internal Server Error",
       },
       { status: 500 }
     );

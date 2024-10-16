@@ -25,27 +25,27 @@ const EditUserModal = ({ isOpen, setIsOpen, data, slug }) => {
     e.preventDefault();
     setIsUpdate(true);
     const res = await fetchData(`/api/users/${slug}/edit`, "PUT", formData);
-    if (res?.success) {
-      toast({
-        title: res.message,
-        description: new Date().toString(),
-      });
+    if (!res?.error) {
       setIsOpen(false);
     }
+    toast({
+      title: res.message || res.error,
+      description: new Date().toString(),
+    });
   };
 
   const accountCloseHandler = async () => {
     setIsUpdate(false);
     const res = await fetchData(`/api/users/${slug}/edit`, "DELETE");
-    if (res?.success) {
-      toast({
-        title: res.message,
-        description: new Date().toString(),
-      });
+    if (!res?.error) {
       setIsOpen(false);
       await signOut();
       router.push("/");
     }
+    toast({
+      title: res.message || res.error,
+      description: new Date().toString(),
+    });
   };
   return isOpen ? (
     <div className="fixed top-0 left-0 w-full h-screen bg-[rgba(0,0,0,0.46)] backdrop-blur-lg flex items-center justify-center z-[10]">
