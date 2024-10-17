@@ -95,13 +95,16 @@
 .ql-toolbar.ql-snow {
   border: 1px solid rgb(30, 41, 59) !important;
 }
-.ql-container.ql-snow {
+.ql-container {
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
+  position: sticky !important;
+  top: 0 !important;
 }
 .ql-toolbar.ql-snow {
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
+  position: relative;
 }
 * {
   scrollbar-width: 8px;

@@ -1,37 +1,24 @@
-/* eslint-disable react/prop-types */
 "use client";
 import Link from "next/link";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import Image from "next/image";
 import { useToast } from "./use-toast";
+import useSend from "@/hooks/useSend";
 
 const UsersCard = ({ data, refetch }) => {
   const { toast } = useToast();
+  const { fetchData } = useSend();
+
   const userHandler = async (type) => {
     const url =
       type === "block" ? "/api/admin/users/block" : "/api/admin/users/unblock";
-    try {
-      const res = await fetch(process.env.NEXT_PUBLIC_API_URL + url, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId: data._id }),
-      });
-      const result = await res.json();
-      if (!res.ok) {
-        throw new Error(result.error || "Something went wrong");
-      }
-      refetch();
-      toast({
-        title: result.message,
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: error.message,
-      });
-    }
+
+    const res = await fetchData(url, "PUT", { userId: data._id });
+    if (!res.error) refetch();
+    toast({
+      title: res.error ? "Error" : "Success",
+      description: res.message || res.error,
+    });
   };
 
   return (

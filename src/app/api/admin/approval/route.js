@@ -36,12 +36,12 @@ export const PUT = async (req) => {
         const img = blog?.img?.public_id;
         await deleteImage(img);
         await blogs.findByIdAndDelete(blogId);
-        return NextResponse.json({ error: "Blog rejected" }, { status: 200 });
+        return NextResponse.json({ message: "Blog rejected" }, { status: 200 });
       }
       await blogs.findByIdAndUpdate(blogId, { approved: true }, { new: true });
       revalidatePath("/");
       revalidatePath(`/category/${blog.category}`);
-      return NextResponse.json({ blog: updatedBlog });
+      return NextResponse.json({ message: "Blog approved" }, { status: 200 });
     }
     return NextResponse.json(
       {

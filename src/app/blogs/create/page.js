@@ -74,7 +74,7 @@ const CreateBlog = () => {
 
   return (
     <div className="flex justify-center w-full mt-28 sm:mt-36">
-      <div className="flex flex-col h-fit gap-10 px-5">
+      <div className="flex flex-col md:4/5 xl:w-2/4 h-fit gap-10 px-5">
         <div className="space-y-2 text-sm">
           <h1 className="text-4xl font-[500]">What&#39;s on your mind?</h1>
           <p className="text-slate-300">

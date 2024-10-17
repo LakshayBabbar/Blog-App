@@ -7,6 +7,7 @@ import SuperUser from "@/components/ui/SuperUser";
 import useFetch from "@/hooks/useFetch";
 import { useToast } from "@/components/ui/use-toast";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import useSend from "@/hooks/useSend";
 
 const IamUsers = () => {
   const { data, isError, error, isLoading, refetch } = useFetch(
@@ -15,38 +16,22 @@ const IamUsers = () => {
   );
   const [email, setEmail] = React.useState("");
   const { toast } = useToast();
+  const { fetchData } = useSend();
 
   const handleSuperUsers = useCallback(
     async (status, userEmail) => {
       const targetEmail = status === "add" ? email : userEmail;
-      try {
-        const req = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/admin/super-users`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email: targetEmail || userEmail, status }),
-          }
-        );
-        const res = await req.json();
-        if (!req.ok) {
-          throw new Error(res?.error || "Something went wrong");
-        }
-        toast({
-          title: "Success",
-          description: res.message,
-        });
-        refetch();
-      } catch (error) {
-        toast({
-          title: "Error",
-          description: error.message,
-        });
-      }
+      const res = await fetchData("/api/admin/super-users", "PUT", {
+        email: targetEmail || userEmail,
+        status,
+      });
+      if (!res.error) refetch();
+      toast({
+        title: res.error ? "Error" : "Success",
+        description: res.message || res.error,
+      });
     },
-    [email]
+    [refetch, toast, fetchData]
   );
 
   if (isLoading) return <LoadingSpinner />;

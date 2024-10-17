@@ -66,7 +66,7 @@ const UserDetails = async ({ params }) => {
             </div>
           </div>
         </div>
-        <hr className="w-4/5 border-zinc-600" />
+        <hr className="w-11/12 xl:w-4/5 border-zinc-600" />
         <div
           className={`flex justify-${
             data.auth ? "between" : "center"
@@ -80,7 +80,7 @@ const UserDetails = async ({ params }) => {
           )}
         </div>
         {data.blogs.length > 0 ? (
-          <div className="flex flex-wrap p-4 justify-items-center gap-8 w-full md:w-4/5">
+          <div className="flex flex-wrap justify-items-center gap-5 w-11/12 xl:w-4/5">
             {data.blogs.map((items, index) => {
               return <BlogsCard key={items._id} data={items} />;
             })}

@@ -34,7 +34,7 @@ const page = async ({ params, searchParams }) => {
       <div className="w-11/12 xl:w-4/5">
         <h1 className="text-4xl font-semibold tracking-wider">{`${category.toUpperCase()} BLOGS`}</h1>
       </div>
-      <div className="flex flex-wrap w-11/12 xl:w-4/5 gap-10 justify-center sm:justify-normal">
+      <div className="flex flex-wrap w-11/12 xl:w-4/5 gap-5 justify-center sm:justify-normal">
         {category !== "all" && <Featured blog={data?.featured} />}
         {data?.blogs?.map((blog) => {
           return <BlogsCard key={blog._id} data={blog} />;

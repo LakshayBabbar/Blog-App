@@ -28,7 +28,7 @@ const Approval = () => {
     );
   }
   return (
-    <div className="flex my-24 md:mt-28 p-5 flex-wrap gap-6 w-full">
+    <div className="flex my-24 md:mt-28 p-5 flex-wrap gap-5 w-full">
       {data?.blogs?.map((blog) => (
         <BlogsCard
           key={blog._id}

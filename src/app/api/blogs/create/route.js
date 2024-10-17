@@ -8,62 +8,64 @@ import { revalidatePath } from "next/cache";
 import userModel from "@/models/userModel";
 
 export const POST = async (req) => {
-  const data = await req.formData();
-  const title = data.get("title");
-  const description = data.get("description");
-  const content = data.get("content");
-  const category = data.get("category");
-  const img = data.get("img");
-  const session = await getServerSession(authOptions);
-  const user = session?.user;
-  const sudoUser = await userModel.findOne({ _id: user.id });
-
-  if (!content || !description || !title || !category) {
-    return NextResponse.json(
-      {
-        error: "All fields are required",
-      },
-      { status: 400 }
-    );
-  }
-
   try {
-    if (sudoUser.blocked === true) {
+    const data = await req.formData();
+    const title = data.get("title");
+    const description = data.get("description");
+    const content = data.get("content");
+    const category = data.get("category");
+    const img = data.get("img");
+
+    const session = await getServerSession(authOptions);
+    if (!session?.user) {
       return NextResponse.json(
-        {
-          error: "You are blocked by admin",
-        },
+        { error: "User not authenticated" },
+        { status: 401 }
+      );
+    }
+
+    const user = session?.user;
+    const sudoUser = await userModel.findById(user.id);
+
+    if (!content || !description || !title || !category || !img) {
+      return NextResponse.json(
+        { error: "All fields are required, including image" },
         { status: 400 }
       );
     }
 
-    if (!img) {
+    if (sudoUser?.blocked) {
       return NextResponse.json(
-        {
-          error: "Image is required",
-        },
-        { status: 400 }
+        { error: "You are blocked by admin" },
+        { status: 403 }
       );
     }
 
-    const maxSizeInBytes = 1 * 1024 * 1024; // 1 MB in bytes
-
+    const maxSizeInBytes = 1 * 1024 * 1024;
     if (img.size > maxSizeInBytes) {
       return NextResponse.json(
-        {
-          error: "Image size should be less than 1 MB",
-        },
+        { error: "Image size must be less than 1MB" },
         { status: 400 }
       );
     }
 
-    const byteData = await img.arrayBuffer();
-    const buffer = new Uint8Array(byteData);
-    const cloudinaryRes = await uploadImage(buffer);
-    if (!cloudinaryRes) {
-      throw new Error("Failed to upload image to Cloudinary");
-    }
     await connectDB();
+
+    let cloudinaryRes;
+    try {
+      const byteData = await img.arrayBuffer();
+      const buffer = new Uint8Array(byteData);
+      cloudinaryRes = await uploadImage(buffer);
+      if (!cloudinaryRes) {
+        throw new Error("Failed to upload image to Cloudinary");
+      }
+    } catch (err) {
+      return NextResponse.json(
+        { error: "Image upload failed" },
+        { status: 500 }
+      );
+    }
+
     const newBlog = new blogs({
       title,
       description,
@@ -76,36 +78,30 @@ export const POST = async (req) => {
       author: user?.username,
       userId: user?.id,
     });
-    if (sudoUser?.isAdmin === true || sudoUser?.isSuper === true) {
+
+    if (sudoUser?.isAdmin || sudoUser?.isSuper) {
       newBlog.approved = true;
     }
 
     const createdBlog = await newBlog.save();
+
     revalidatePath("/");
     revalidatePath(`/category/${category}`);
     revalidatePath(`/blogs/${createdBlog.url}`);
 
     return NextResponse.json(
-      {
-        ...createdBlog._doc,
-        message: "Blog created successfully!",
-      },
+      { ...createdBlog._doc, message: "Blog created successfully!" },
       { status: 201 }
     );
   } catch (error) {
-    if (
-      error.code === 11000 &&
-      error.keyPattern &&
-      error.keyPattern.url === 1
-    ) {
+    if (error.code === 11000 && error.keyPattern?.url === 1) {
       return NextResponse.json(
-        {
-          error:
-            "A blog with this title already exists. Please make some changes to the title.",
-        },
+        { error: "A blog with this title already exists." },
         { status: 400 }
       );
     }
+
+    console.error("Error creating blog:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 };

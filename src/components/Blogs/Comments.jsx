@@ -17,6 +17,7 @@ const Comments = ({ blogId }) => {
   const [comment, setComment] = useState("");
   const { fetchData, loading } = useSend();
   const { toast } = useToast();
+  const [cid, setCid] = useState("");
 
   const handleComment = async (e) => {
     e.preventDefault();
@@ -42,6 +43,7 @@ const Comments = ({ blogId }) => {
   };
 
   const deleteComment = async (id) => {
+    setCid(id);
     const res = await fetchData(`/api/comments/delete`, "DELETE", {
       commentId: id,
     });
@@ -82,7 +84,10 @@ const Comments = ({ blogId }) => {
               <div className="flex items-center gap-1 ">
                 <span>{item.createdAt.substring(0, 10)}</span>
                 {item.isUser && (
-                  <button disabled={loading} className="disabled:brightness-50">
+                  <button
+                    disabled={loading && cid === item._id}
+                    className="disabled:brightness-50"
+                  >
                     <MdDelete
                       onClick={() => deleteComment(item._id)}
                       className="cursor-pointer text-red-600"

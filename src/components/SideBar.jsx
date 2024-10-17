@@ -39,7 +39,7 @@ const SideBar = () => {
         setActiveIndex(index);
       }
     });
-  }, []);
+  }, [pathname]);
 
   return (
     <aside className="fixed bottom-0 md:bottom-auto left-0 md:top-0 z-50 w-full md:w-52 h-24 md:h-screen shadow-xl bg-black flex flex-col items-center overflow-auto">
