@@ -18,9 +18,9 @@ const menuItems = [
 
 const SideBar = () => {
   const linkStyle =
-    "flex flex-col md:flex-row text-sm md:text-base gap-2 md:hover:gap-4 transition-all ease-in-out duration-400 items-center font-semibold";
+    "flex flex-col md:flex-row text-sm md:text-base w-full gap-2 md:hover:gap-4 transition-all ease-in-out duration-400 items-center font-semibold";
   const listStyle =
-    "rounded-md md:rounded-l-xl py-2 px-3 text-center md:px-5 w-full";
+    "rounded-md md:rounded-none md:rounded-l-2xl py-2 px-3 text-center md:px-5 w-full";
   const icoSize = "20px";
   const [activeIndex, setActiveIndex] = React.useState(0);
   const pathname = usePathname();

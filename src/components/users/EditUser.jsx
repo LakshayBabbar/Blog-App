@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import { useToast } from "../ui/use-toast";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import AlertWrapper from "../ui/AlertWrapper";
 
 const EditUserModal = ({ isOpen, setIsOpen, data, slug }) => {
   const [formData, setFormData] = useState(data);
@@ -48,8 +49,8 @@ const EditUserModal = ({ isOpen, setIsOpen, data, slug }) => {
     });
   };
   return isOpen ? (
-    <div className="fixed top-0 left-0 w-full h-screen bg-[rgba(0,0,0,0.46)] backdrop-blur-lg flex items-center justify-center z-[10]">
-      <div className="w-4/5 sm:w-[30rem] bg-black border rounded-xl p-10 space-y-5">
+    <div className="fixed top-0 left-0 w-full h-screen backdrop-blur-lg flex items-center justify-center z-[10]">
+      <div className="w-4/5 sm:w-[30rem] bg-card border rounded-xl p-10 space-y-5">
         <h1 className="text-xl font-semibold">Edit Details</h1>
         <form className="flex flex-col gap-4" onSubmit={handleUpdate}>
           <Input
@@ -77,25 +78,21 @@ const EditUserModal = ({ isOpen, setIsOpen, data, slug }) => {
             </Button>
           </div>
         </form>
-        {isErr && <p className="text-red-500 text-sm text-center">{err}</p>}
         <div className="text-center flex items-center justify-between">
           <hr className="flex-grow" /> <span>Or</span>{" "}
           <hr className="flex-grow" />
         </div>
         <div className="flex w-full flex-col items-center gap-4">
-          <Button
+          <AlertWrapper
             variant="destructive"
             className="w-fit"
             onClick={accountCloseHandler}
             disabled={loading && !isUpdate}
           >
             Close Account
-          </Button>
-          <p className="text-amber-400 text-sm text-center">
-            Note: Clicking this button will permanently close your account and
-            delete all associated data.
-          </p>
+          </AlertWrapper>
         </div>
+        {isErr && <p className="text-red-500 text-sm text-center">{err}</p>}
       </div>
     </div>
   ) : null;
