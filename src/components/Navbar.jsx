@@ -48,16 +48,16 @@ const Navbar = () => {
               <Link href="/">Home</Link>
             </li>
             <li className={linkStyle} onClick={menuHandler}>
-              <a href="/category/tech">Tech</a>
+              <Link href="/category/tech">Tech</Link>
             </li>
             <li className={linkStyle} onClick={menuHandler}>
-              <a href="/category/tutorial">Tutorials</a>
+              <Link href="/category/tutorial">Tutorials</Link>
             </li>
             <li className={linkStyle} onClick={menuHandler}>
-              <a href="/category/shopping">Shopping</a>
+              <Link href="/category/shopping">Shopping</Link>
             </li>
             <li className={linkStyle} onClick={menuHandler}>
-              <a href="/support">Support</a>
+              <Link href="/support">Support</Link>
             </li>
             {!auth ? (
               <li className={linkStyle} onClick={menuHandler}>

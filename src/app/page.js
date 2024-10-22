@@ -25,7 +25,7 @@ const Home = async ({ searchParams }) => {
   return (
     <>
       <header>
-        <div className="mt-32 md:mt-44 mb-20 flex flex-col gap-5 items-center justify-center text-center px-5">
+        <div className="mt-32 md:mt-48 mb-32 flex flex-col gap-5 items-center justify-center text-center px-5">
           <h1 className="text-5xl md:w-[75%] md:text-6xl xl:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50 leading-tight px-4 md:px-0">
             Discover Engaging and Insightful Blogs
           </h1>

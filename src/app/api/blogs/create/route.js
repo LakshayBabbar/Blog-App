@@ -88,6 +88,7 @@ export const POST = async (req) => {
     revalidatePath("/");
     revalidatePath(`/category/${category}`);
     revalidatePath(`/blogs/${createdBlog.url}`);
+    revalidatePath("/category/all");
 
     return NextResponse.json(
       { ...createdBlog._doc, message: "Blog created successfully!" },

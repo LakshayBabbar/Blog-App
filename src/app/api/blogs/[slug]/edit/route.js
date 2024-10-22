@@ -37,6 +37,7 @@ export const DELETE = async (req, { params }) => {
     revalidatePath("/");
     revalidatePath(`/blogs/${blogData.url}`);
     revalidatePath(`/category/${blogData.category}`);
+    revalidatePath("/category/all");
     return NextResponse.json(
       {
         message: "Blog is deleted successfully.",
@@ -119,6 +120,9 @@ export const PUT = async (req, { params }) => {
     }
 
     revalidatePath(`/blogs/${updatedBlog.url}`);
+    revalidatePath(`/category/${updatedBlog.category}`);
+    revalidatePath("/category/all");
+    revalidatePath("/");
 
     return NextResponse.json({ blog: updatedBlog }, { status: 200 });
   } catch (error) {
